@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "node fix-blockstack-angular-error.js"
+    "postinstall": "node node_modules_fixes.js"
   },
   "private": true,
   "dependencies": {
