@@ -1,0 +1,243 @@
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300);
+.wrapper {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 100px);
+  overflow: hidden;
+} 
+.wrapper.form-success .container h1 {
+  -webkit-transform: translateY(85px);
+          transform: translateY(85px);
+}
+.container {
+  max-width: 600px;
+  margin: calc(50vh - 250px) auto;
+  padding: 80px 0;
+  height: 400px;
+  text-align: center;
+  transition: transform 1s cubic-bezier(.175,.885,.32,1), opacity 1s ease-out;
+}
+.container h1 {
+  font-size: 40px;
+  transition-duration: 1s;
+  transition-timing-function: ease-in-put;
+  font-weight: 200;
+  color: transparent;
+}
+form {
+  padding: 20px 0;
+  position: relative;
+  z-index: 2;
+}
+form input {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  outline: 0;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 250px;
+  border-radius: 0.3rem;
+  padding: 10px 15px;
+  margin: 0 auto 10px auto;
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  color: white;
+  transition-duration: 0.25s;
+  font-weight: 300;
+}
+form input:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+form input:focus {
+  background-color: white;
+  width: 300px;
+  color: #047bf8;
+}
+form button {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  outline: 0;
+  background-color: white;
+  border: 0;
+  padding: 10px 15px;
+  color: #047bf8;
+  border-radius: 0.3rem;
+  width: 250px;
+  cursor: pointer;
+  font-size: 18px;
+  transition-duration: 0.25s;
+}
+form button:hover {
+  background-color: #f5f7f9;
+}
+.pk{
+  padding: 15px 0;
+  font-size: 0.8vmax;
+}
+
+.click-here{
+  position: relative;
+  text-decoration: none;
+  padding-bottom: 8px;
+  cursor: pointer;
+}
+.click-here:before, .click-here:after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: rgba(252, 252, 252,0.5);
+}
+.click-here:before {
+  opacity: 0;
+  -webkit-transform: translateY(-8px);
+      -ms-transform: translateY(-8px);
+          transform: translateY(-8px);
+  -webkit-transition: -webkit-transform 0s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0s;
+          transition: transform 0s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0s;
+}
+.click-here:after {
+  opacity: 0;
+  -webkit-transform: translateY(4px);
+      -ms-transform: translateY(4px);
+          transform: translateY(4px);
+  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+          transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+}
+.click-here:hover:before, .click-here:hover:after, .click-here:focus:before, .click-here:focus:after {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+          transform: translateY(0);
+}
+.click-here:hover:before, .click-here:focus:before {
+  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+          transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+}
+.click-here:hover:after, .click-here:focus:after {
+  -webkit-transition: -webkit-transform 0s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0s 0.2s;
+          transition: transform 0s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0s 0.2s;
+}
+#JSON-label{
+    cursor: pointer;
+   -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: 0;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.2);
+    width: 250px;
+    border-radius: 0.3rem;
+    padding: 10px 15px;
+    margin: 0 auto 10px auto;
+    display: block;
+    text-align: center;
+    font-size: 18px;
+    color: white;
+    -webkit-transition-duration: 0.25s;
+    transition-duration: 0.25s;
+    font-weight: 300;
+}
+#JSONInput {
+  display: none;
+}
+.logo {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 12vmax;
+  width: auto;
+}
+#login{
+  h4{
+    color: white;
+  }
+/* Winona */
+.button--winona {
+  margin-top: 20px;
+  display: inline-block;
+  overflow: hidden;
+  padding: 0;
+  -webkit-transition: border-color 0.3s, background-color 0.3s;
+  transition: border-color 0.3s, background-color 0.3s;
+  -webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+  transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+  text-align: center;
+  font-size: calc(max(1vmax, 19.04px));
+  border-radius: 0.3rem;
+  background: white;//did
+  color: #047bf8;//did
+  position: relative;
+  border: 1px white solid;//did
+  cursor: pointer;
+}
+.button--winona::after {
+  font-weight: 300;
+  content: attr(data-text);
+  white-space: nowrap;
+position: absolute;
+width: 100%;
+height: 100%;
+top: 0;
+left: 0;
+opacity: 0;
+color: #056fe0;//did
+-webkit-transform: translate3d(0, 25%, 0);
+transform: translate3d(0, 25%, 0);
+}
+.button--winona > span {
+display: block;
+}
+.button--winona::after,
+.button--winona > span {
+padding: 0.5em 1em;
+-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+transition: transform 0.3s, opacity 0.3s;
+-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+}
+.button--winona:hover {
+border-color: rgb(247, 244, 244);
+background-color: rgb(247, 244, 244);
+}
+.button--winona:hover::after {
+opacity: 1;
+-webkit-transform: translate3d(0, 0, 0);
+transform: translate3d(0, 0, 0);
+}
+.button--winona:hover > span {
+opacity: 0;
+-webkit-transform: translate3d(0, -25%, 0);
+transform: translate3d(0, -25%, 0);
+}
+.blockstack.button--winona {
+  background: #270f34;
+  border: 1px #270f34 solid;
+  color: #e91e63;
+}
+.blockstack.button--winona:after {
+  color: #bb174e;
+}
+.blockstack.button--winona:hover {
+  background: #200d2b;
+  border: 1px #200d2b solid;
+}
+.blockstack > .logo {
+  position: absolute;
+  left: 0%;
+  top: 50%;
+  transform: translate(10%, -50%);
+  height: 100%;
+  width: auto;
+}
+.blockstack.button--winona > span,
+.blockstack.button--winona:after {
+  font-weight: 800;
+}
+}

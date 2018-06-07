@@ -1,0 +1,164 @@
+#setup{
+    padding: 2vmax 10vmax;
+}
+.value {
+    font-size: 5vmax;
+}
+.label {
+    font-size: 1vmax;
+}
+form {
+  padding: 20px 0;
+  position: relative;
+  z-index: 2;
+}
+form input {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  outline: 0;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background-color: #047bf8;
+  color: white;
+  width: 250px;
+  border-radius: 0.3rem;
+  padding: 10px 15px;
+  margin: 0 auto 10px auto;
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  transition-duration: 0.25s;
+  font-weight: 300;
+}
+form input:hover {
+    background-color: #047bf8D0;
+}
+form input:focus {
+  width: 300px;
+  background-color: white;
+  color: #047bf8;
+}
+
+.el-tablo.active {
+    -webkit-transform: translateY(-5px) scale(1.02);
+    transform: translateY(-5px) scale(1.02);
+    -webkit-box-shadow: 0px 5px 12px rgba(126, 142, 177, 0.2);
+    box-shadow: 0px 5px 12px rgba(126, 142, 177, 0.2);
+    .value {
+        -webkit-transform: scale(1.1) translateY(-3px);
+        transform: scale(1.1) translateY(-3px);
+        color: #047bf8;
+    }
+    .label {
+        color: #3395fc;
+        transform: translateY(-2px);
+    }
+}
+
+.setup-buttons {
+    text-align: center;
+}
+
+
+/* Winona */
+.button--winona {
+    margin-top: 20px;
+    display: inline-block;
+	overflow: hidden;
+	padding: 0;
+	-webkit-transition: border-color 0.3s, background-color 0.3s;
+	transition: border-color 0.3s, background-color 0.3s;
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+    transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+    text-align: center;
+    font-size: 1vmax;
+    border-radius: 0.3rem;
+    background: #047bf8;
+    color: white;
+    position: relative;
+    border: 1px #047bf8 solid;
+    cursor: pointer;
+}
+.button--winona::after {
+    font-weight: 300;
+    content: attr(data-text);
+    white-space: nowrap;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	color: white;
+	-webkit-transform: translate3d(0, 25%, 0);
+	transform: translate3d(0, 25%, 0);
+}
+.button--winona > span {
+	display: block;
+}
+.button--winona::after,
+.button--winona > span {
+	padding: 0.5em 1em;
+	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+	transition: transform 0.3s, opacity 0.3s;
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+}
+.button--winona:hover {
+	border-color: #047bf8CC;
+	background-color: #047bf8CC;
+}
+.button--winona:hover::after {
+	opacity: 1;
+	-webkit-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+}
+.button--winona:hover > span {
+	opacity: 0;
+	-webkit-transform: translate3d(0, -25%, 0);
+	transform: translate3d(0, -25%, 0);
+}
+
+.intro-row {
+    color: #3E4B5B;
+    font-size: 2vmax;
+}
+
+.coin-selection {
+    overflow-y: auto;
+    height: 50vh;
+}
+.coin-selection::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
+    border-radius: 12px;
+    background-color: transparent;
+}
+
+.coin-selection::-webkit-scrollbar {
+    width: 2px;
+}
+
+.coin-selection::-webkit-scrollbar-thumb {
+    border-radius: 12px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #047bf8;
+}
+.add-address-box{
+    display: inline-block!important;
+    margin: 0!important;
+}
+
+svg {
+    height: 5vmax;
+    transform: translateY(25%);
+}
+
+svg * {
+    fill:#3E4B5B;
+    transition: all 0.25s ease;
+}
+
+.el-tablo:hover svg *,
+.active svg * {
+    fill: #3b75e3;
+}

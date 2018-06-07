@@ -1,0 +1,69 @@
+#resCoins{
+    .margin-tb-1{
+        margin-bottom:1.5vmax;
+    }
+    /* Winona */
+.button--winona {
+    margin-top: 20px;
+    display: inline-block;
+	overflow: hidden;
+	padding: 0;
+	-webkit-transition: border-color 0.3s, background-color 0.3s;
+	transition: border-color 0.3s, background-color 0.3s;
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+    transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+    text-align: center;
+    font-size: 1vmax;
+    border-radius: 0.3rem;
+    background: #047bf8;
+    color: white;
+    position: relative;
+    border: 1px #047bf8 solid;
+    cursor: pointer;
+}
+.button--winona::after {
+    font-weight: 300;
+    content: attr(data-text);
+    white-space: nowrap;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	color: white;
+	-webkit-transform: translate3d(0, 25%, 0);
+	transform: translate3d(0, 25%, 0);
+}
+.button--winona > span {
+	display: block;
+}
+.button--winona::after,
+.button--winona > span {
+	padding: 0.5em 1em;
+	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+	transition: transform 0.3s, opacity 0.3s;
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+}
+.button--winona:hover {
+	border-color: #047bf8CC;
+	background-color: #047bf8CC;
+}
+.button--winona:hover::after {
+	opacity: 1;
+	-webkit-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+}
+.button--winona:hover > span {
+	opacity: 0;
+	-webkit-transform: translate3d(0, -25%, 0);
+	transform: translate3d(0, -25%, 0);
+}
+.qr-code {
+    text-align: center;
+}
+app-qrcode {
+    display: inline-block;
+}
+}

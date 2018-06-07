@@ -1,0 +1,27 @@
+#settings {
+  .settings {
+    position: absolute;
+    display: inline-block;
+    right: 0;
+    top: 0;
+    white-space: nowrap;
+    color: #047bf8;
+    font-size: 1vmax;
+
+    div {
+      display: inline-block;
+      padding: 0.5vmax;
+      cursor: pointer;
+      backface-visibility: none;
+      transform: scale(1);
+      transition: transform 0.25s ease-in-out;
+      i {
+        margin: 0 0.5vmax;
+      }
+    }
+
+    div:hover {
+      transform: scale(1.1);
+    }
+  }
+}

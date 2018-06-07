@@ -1,0 +1,208 @@
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300);
+#wallet{
+    .crypto {
+        cursor: pointer;
+        transition: background 0.5s ease-out;
+    }
+    .sc {
+        font-size: 1.25vmax;
+        font-weight: 800;
+    }
+    .rc-controller {
+        position: relative;
+    }
+    .rc-controller > .row:not(.sr-button) {
+        padding: 2vmax 0;
+    }
+    .via{
+        display: block;
+    }
+    .cc {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,calc(-50% - 2vmax));
+        font-size: 7vmax;
+        opacity: 0.075;
+    }
+
+    svg.cc {
+        height: 10vmax;
+        transform: translate(-50%, calc(-50% - 1vmax));
+    }
+
+    .typcn {
+        font-size: 1.5vmax;
+    }
+    .cell-image-list {
+        font-size: 1vmax;
+    }
+    td.text-right {
+        font-size: 1vmax;
+    }
+
+    .cryptocoins > tr th {
+        font-size: 1vmax;
+        font-weight: 800;
+    }
+    form {
+      padding: 20px 0;
+      position: relative;
+      float: right;
+      z-index: 2;
+    }
+    form input {
+      -webkit-appearance: none;
+         -moz-appearance: none;
+              appearance: none;
+      outline: 0;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      background-color: #047bf8;
+      color: white;
+      width: 250px;
+      border-radius: 0.3rem;
+      padding: 10px 15px;
+      margin: 0 0 10px auto;
+      display: block;
+      text-align: center;
+      font-size: 18px;
+      transition-duration: 0.25s;
+      font-weight: 300;
+    }
+    form input:hover {
+        background-color: #047bf8D0;
+    }
+    form input:focus {
+      width: 300px;
+      background-color: white;
+      color: #047bf8;
+    }
+    .table-responsive {
+        overflow-y: auto;
+        height: 40vh;
+    }
+    .table-responsive::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
+        border-radius: 12px;
+        background-color: transparent;
+    }
+
+    .table-responsive::-webkit-scrollbar {
+        width: 2px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        border-radius: 12px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+        background-color: #047bf8;
+    }
+
+
+    /* Winona */
+    .button--winona {
+        margin-top: 20px;
+        display: inline-block;
+        overflow: hidden;
+        padding: 0;
+        -webkit-transition: border-color 0.3s, background-color 0.3s;
+        transition: border-color 0.3s, background-color 0.3s;
+        -webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+        transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+        text-align: center;
+        font-size: 1vmax;
+        border-radius: 0.3rem;
+        background: #047bf8;
+        color: white;
+        position: relative;
+        border: 1px #047bf8 solid;
+        cursor: pointer;
+    }
+    .sr-button > .button--winona {
+        transform: scale(0.9);
+    }
+    .button--winona::after {
+        font-weight: 800;
+        content: attr(data-text);
+        white-space: nowrap;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        color: white;
+        -webkit-transform: translate3d(0, 25%, 0);
+        transform: translate3d(0, 25%, 0);
+    }
+    .button--winona > span {
+        display: block;
+    }
+    .button--winona::after,
+    .button--winona > span {
+        padding: 0.5em 1em;
+        -webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+        transition: transform 0.3s, opacity 0.3s;
+        -webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+        transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+    }
+    .button--winona:hover {
+        border-color: #047bf8CC;
+        background-color: #047bf8CC;
+    }
+    .button--winona:hover::after {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    .button--winona:hover > span {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -25%, 0);
+        transform: translate3d(0, -25%, 0);
+    }
+    .font-weight-bold {
+        font-weight: 800;
+    }
+
+    .element-wrapper {
+        padding-bottom: 0;
+    }
+    .coin-value{
+        font-size: 2vmax;
+        color: #68410a;
+    }
+    .coin-name{
+        font-size: 1.2vmax;
+        color: #68410a;
+        font-weight: 500;
+    }
+    .coin-usd{
+        font-size: 1vmax;
+    }
+    .coin-euro{
+        font-size: 1vmax;
+    }
+    .new-coin-wrapper{
+        padding: 20px 0;
+    }
+    .add-new-coin{
+        cursor: pointer;
+        padding: 10px 15px;
+        background: #047bf8;
+        color: white;
+        border-radius: 0.3rem;
+        text-align: center;
+        font-size: 18px;
+        transition: all 0.2s ease-in-out;
+    }
+    .add-new-coin:hover{
+        transform: translateX(5px);
+    }
+    .fa{
+        font-size: 1vmax;
+        padding-right: 5px;
+    }
+    .unavailable {
+         opacity: 0.5;
+        pointer-events: none;
+    }
+}

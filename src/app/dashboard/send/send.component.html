@@ -1,0 +1,93 @@
+<!-- Send service -->
+
+<div id="sendCoins" class="element-wrapper">
+  <div class="element-box">
+    <div class="row">
+      <h3 class="col-sm-12 text-center margin-tb-1">Send {{coinName}}</h3>
+    </div>
+    <div class="row">
+      <!-- Addresses For Transactions -->
+      <div class="col-sm-6">
+        <div class="form-group row">
+          <div class="col-sm-2">
+            <label for="">From: </label>
+          </div>
+          <div class="col-sm-9">
+            <input class="effect-1" type="text" placeholder="From" [(ngModel)]="addressFrom" disabled/>
+            <span class="focus-border"></span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-2">
+            <label for="">To: </label>
+          </div>
+          <div class="col-sm-9">
+            <input class="effect-1" type="text" placeholder="Recipient Address" [(ngModel)]="recipientAddress" (input)="filterAddress($event)">
+            <span class="focus-border"></span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-3">
+            <label for=""> {{coinName}} Amount: </label>
+          </div>
+          <div class="col-sm-8">
+            <input class="effect-1" [(ngModel)]="coinAmount" (input)="filterEther($event)" [ngModelOptions]="{standalone: true}" placeholder="{{coinAmount}}"
+              type="text" />
+            <span class="focus-border"></span>
+          </div>
+        </div>
+      </div>
+      <!-- End Addresses For Transactions -->
+      <!-- Settings for transaction -->
+      <div class="col-sm-6">
+        <div class="form-group row">
+          <div class="col-sm-4">
+            <label for="">Gas Price: </label>
+          </div>
+          <div class="col-sm-5">
+            <input id="gasPrice" class="effect-1 gas-price" type="text" [(ngModel)]="gasPrice" (input)="filterPrice($event)" [ngModelOptions]="{standalone: true}"
+              placeholder="{{gasPrice}}" type="text" />
+            <span class="focus-border"></span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-4">
+            <label for=""> Gas Amount: </label>
+          </div>
+          <div class="col-sm-5">
+            <input class="effect-1" [(ngModel)]="gasAmount" (input)="filterAmount($event)" [ngModelOptions]="{standalone: true}" placeholder="{{gasAmount}}"
+              type="text" />
+            <span class="focus-border"></span>
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="this.coinName == 'ETH'">
+          <div class="col-sm-4">
+            <label for=""> Data: </label>
+          </div>
+          <div class="col-sm-5">
+            <input class="effect-1" [(ngModel)]="callData" (input)="filterCallcode($event)" [ngModelOptions]="{standalone: true}" placeholder="{{callData}}"
+              disabled="true" type="text" />
+            <i class="typcn typcn-lock-closed locked" (click)="toggleLock()"></i>
+            <span class="focus-border"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- End Settings for transaction -->
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3 col-offset-6">
+      <button [routerLink]="['/dashboard/wallet']" class="button--winona col-sm-12" data-text="Cancel Transaction">
+        <span>Cancel Transaction</span>
+      </button>
+    </div>
+    <div class="col-sm-3">
+      <button 
+       [ngClass]="{ 'unavailable' : coinAmount == 0 }" class="button--winona col-sm-12" data-text="Start Transaction" (click)="startTransaction()">
+        <span>Start Transaction</span>
+      </button>
+    </div>
+  </div>
+</div>
+<!-- End Send service -->
