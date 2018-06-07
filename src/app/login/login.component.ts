@@ -71,7 +71,8 @@ export class LoginComponent implements OnInit {
             alert('An error occured while communicating with the Blockstack service.');
           });
         }
-      }).catch(() => {
+      }).catch((err) => {
+        console.log(err);
       });
     } else if (blockstack.isSignInPending()) {
       blockstack.handlePendingSignIn().then(function(userData) {
