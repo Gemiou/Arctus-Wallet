@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import * as shapeshift from 'shapeshift.io';
 
 // import * as Chartjs from 'chart.js';
 
@@ -8,5 +9,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
-  constructor() {}
+  constructor() {
+
+    shapeshift.coins(function (err, coinData) {
+      console.log('shapeshift', coinData);
+    });
+
+  }
 }
