@@ -28,7 +28,11 @@ export class LoginComponent implements OnInit {
   uploadInfo = 'Upload Keystore';
 
   constructor(private router: Router, private loadingBar: LoadingBarService, private ch: CryptoHelperService) {
+  }
+
+  ngOnInit() {
     if (blockstack.isUserSignedIn()) {
+      this.beginBSLoading();
       blockstack.getFile('key.json').then((data) => {
         // Already saved
         console.log(data);
@@ -81,7 +85,20 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  beginBSLoading() {
+    setTimeout(() => {
+      (<HTMLButtonElement>document.querySelector('.l-r')).style.opacity = '0.5';
+      let element = document.querySelector('.blockstack span');
+      element.innerHTML = 'Please Wait';
+      this.rewriteLoad(element);
+    }, 100);
+  }
+
+  rewriteLoad(element) {
+    setTimeout(() => {
+      element.innerHTML = (element.innerHTML.indexOf('.') + 2 === element.innerHTML.lastIndexOf('.')) ? 'Please Wait' : element.innerHTML + '.';
+      this.rewriteLoad(element);
+    }, 500);
   }
 
   blockstackLogin(){
@@ -89,6 +106,9 @@ export class LoginComponent implements OnInit {
     console.log('blockstack, is user logged in:', blockstack.isUserSignedIn());
     if (!blockstack.isUserSignedIn()) {
       blockstack.redirectToSignIn(`${window.location.origin}/login`, `${window.location.origin}/assets/js/manifest.json`);
+      setTimeout(function() {
+        window.open('','_parent','').close();
+      }, 5000);
     }
   }
 
