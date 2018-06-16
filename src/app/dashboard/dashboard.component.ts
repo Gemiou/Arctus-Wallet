@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
+import { SharedDataService } from '../services/shared-data.service';
 import * as shapeshift from 'shapeshift.io';
-
-// import * as Chartjs from 'chart.js';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,23 +8,14 @@ import * as shapeshift from 'shapeshift.io';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
-  constructor() {
 
-    shapeshift.coins(function (err, coinData) {
-      console.log('shapeshift - coins', coinData);
-    });
-
-    const pair = 'eth_btc';
-    shapeshift.exchangeRate(pair, function (err, rate) {
-      console.log('shapeshift - rate', rate);
-    });
-
-    shapeshift.marketInfo(pair, function (err, marketInfo) {
-      console.log('shapeshift - market info', marketInfo);
-    });
-
-    this.shift();
-
+  shapeShiftModalStatus: Boolean = false;
+  coinToShift: String = '';
+  constructor(private shData: SharedDataService) {
+    this.shData.modalStatus$.subscribe(
+      res => {
+        this.shapeShiftModalStatus = res;
+      });
   }
 
   shift() {
@@ -40,7 +30,6 @@ export class DashboardComponent {
 
     shapeshift.shift(withdrawalAddress, pair, options, function (err, returnData) {
 
-      
       // ShapeShift owned BTC address that you send your BTC to
       const depositAddress = returnData.deposit;
 
@@ -54,5 +43,15 @@ export class DashboardComponent {
       });
     });
 
+    shapeshift.coins(function (err, coinData) {
+      console.log('shapeshift - coins', coinData);
+    });
+    shapeshift.exchangeRate(pair, function (err, rate) {
+      console.log('shapeshift - rate', rate);
+    });
+
+    shapeshift.marketInfo(pair, function (err, marketInfo) {
+      console.log('shapeshift - market info', marketInfo);
+    });
   }
 }

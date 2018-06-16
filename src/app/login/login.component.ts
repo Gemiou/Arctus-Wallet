@@ -106,14 +106,15 @@ export class LoginComponent implements OnInit {
     console.log('blockstack, is user logged in:', blockstack.isUserSignedIn());
     if (!blockstack.isUserSignedIn()) {
       blockstack.redirectToSignIn(`${window.location.origin}/login`, `${window.location.origin}/assets/js/manifest.json`);
-      setTimeout(function() {
-        window.open('','_parent','').close();
-      }, 5000);
     }
   }
 
   showNumpad(e) {
     e.preventDefault();
+    if (this.username === '' || this.password === '') {
+      alert('ERROR: Username / Password cannot be empty');
+      return;
+    }
     const el = <HTMLScriptElement>document.querySelector('.container');
     el.style.opacity = '0';
     el.style.transform = 'scale(0.7)';
@@ -198,6 +199,7 @@ export class LoginComponent implements OnInit {
       }
     });
   }
+
   loginFromSite(){
     this.loginscreen = false;
     this.loginShow = true;

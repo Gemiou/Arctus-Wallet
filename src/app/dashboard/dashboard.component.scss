@@ -236,3 +236,37 @@
     app-settings{
         float: right;
     }
+    #shapeshift-modal {
+        position: absolute;
+        z-index: 2;
+        width: 50vw;
+        height: 50vh;
+        background: rgba(255, 255, 255, 1);
+        transform: translate(-50%, -25%) scale(0.9);
+        pointer-events: none;
+        opacity: 0;
+        left: 50%;
+        top: 50%;
+        transition: transform 0.75s cubic-bezier(.175,.885,.32,1), opacity 0.5s ease-out;
+    }
+    #shapeshift-modal.active {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .overlay {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        left: 0;
+        top: 0;
+        z-index: 9999;
+        background: transparent;
+        transition: background 0.75s ease-out;
+    }
+    .overlay.active {
+        background: rgba(0,0,0,0.75);
+        pointer-events: auto;
+    }
+    

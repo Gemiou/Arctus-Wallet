@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import * as ethers from 'ethers';
 import * as availableCoins from '../../assets/js/available-tokens.json';
 import * as CryptoJS from 'crypto-js';
+import { Wallet, Contract, providers, utils } from 'ethers';
 
 @Injectable()
 export class CryptoHelperService {
@@ -242,5 +243,44 @@ export class CryptoHelperService {
         );
       }
     );
+  }
+
+  sendTransaction(coinName, amount, targetAddress) {
+    if (coinName === 'ETH') {
+      const mainProvider = new providers.InfuraProvider('homestead', 'Mohcm5md9NBp71v7gHjv');
+      const userWallet = new Wallet(this.decryptKey(), mainProvider);
+      userWallet.send(
+        targetAddress,
+        utils.parseEther(amount)
+      ).then((txReceipt) => {
+        // You have sent the money, handle UI etc.
+        return txReceipt;
+      }).catch((err) => {
+        console.log(err);
+      });
+    } else if (coinName === 'BTC') {
+      // Not supported yet
+
+      // supporting is coming
+    } else {
+      const mainProvider = new providers.InfuraProvider('homestead', 'Mohcm5md9NBp71v7gHjv');
+      const userWallet = new Wallet(this.decryptKey(), mainProvider);
+      let index = 0;
+      this.coins.forEach((el, i) => {
+        if (el.type === coinName) {
+          index = i;
+        }
+      });
+      const tokenAmount = (amount * Math.pow(10, this.coins[index].decimals)) || 0;
+      const tokenContract = new Contract(this.coins[index].tokenAddress, this.erc20ABI, userWallet);
+      tokenContract.transfer(targetAddress, tokenAmount, {
+        gasLimit: 400000
+      }).then((txReceipt) => {
+        // You have sent the money, handle UI etc.
+        return txReceipt;
+      }).catch((err) => {
+        console.log(err);
+      });
+    }
   }
 }

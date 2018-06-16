@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Wallet, Contract, providers, utils } from 'ethers';
 import { CryptoHelperService } from '../../services/crypto-helper.service';
+import * as pAny from 'p-any';
 import * as bigi from 'bigi';
 import * as bitcoin from 'bitcoinjs-lib';
 
@@ -59,6 +60,8 @@ export class SendComponent implements OnInit {
       });
     } else if (this.coinName === 'BTC') {
       // Not supported yet
+
+      // supporting is coming
     } else {
       let index = 0;
       this.ch.coins.forEach((el, i) => {

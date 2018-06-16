@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, NgControl } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { CryptoHelperService } from './services/crypto-helper.service';
+import { SharedDataService } from './services/shared-data.service';
 import { QRCodeModule } from 'angularx-qrcode';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 
@@ -21,7 +22,8 @@ import { LoadingComponent } from './loading/loading.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WalletComponent } from './dashboard/wallet/wallet.component';
 import { TxhashComponent } from './dashboard/send/txhash/txhash.component';
-
+import { BlockchainAPIService } from './services/blockchain-api.service';
+import { ShapeshiftComponent } from './dashboard/shapeshift/shapeshift.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { TxhashComponent } from './dashboard/send/txhash/txhash.component';
     LoadingComponent,
     SettingsComponent,
     WalletComponent,
-    TxhashComponent
+    TxhashComponent,
+    ShapeshiftComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +53,9 @@ import { TxhashComponent } from './dashboard/send/txhash/txhash.component';
     LoadingBarModule.forRoot()
   ],
   providers: [
-    CryptoHelperService
+    CryptoHelperService,
+    BlockchainAPIService,
+    SharedDataService
   ],
   bootstrap: [AppComponent]
 })

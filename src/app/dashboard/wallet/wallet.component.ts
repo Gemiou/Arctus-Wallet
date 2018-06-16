@@ -1,17 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { keccak_256 } from 'js-sha3';
 
 import { CryptoHelperService } from '../../services/crypto-helper.service';
+import { BlockchainAPIService } from '../../services/blockchain-api.service';
+import { SharedDataService } from '../../services/shared-data.service';
 
 import { Wallet, utils } from 'ethers';
 import * as bigi from 'bigi';
 import * as bitcoin from 'bitcoinjs-lib';
-import * as $ from 'jquery';
 import * as countUp from 'countup.js';
 import { Observable } from 'rxjs/Observable';
+import * as shapeshift from 'shapeshift.io';
 
 // import * as Chartjs from 'chart.js';
 @Component({
@@ -36,18 +38,70 @@ export class WalletComponent implements OnInit {
   generatedAddresses: any = {};
   showLoading = true;
   coinsLoaded = 0;
+  shapeShiftModalStatus: Boolean = false;
 
-  constructor(private ch: CryptoHelperService, private http: Http, private router: Router, private loadingBar: LoadingBarService) {
-    if (this.ch.decryptKey() === null || this.ch.decryptKey() == "") {
+  constructor(
+    private ch: CryptoHelperService,
+    private bc: BlockchainAPIService,
+    private http: Http,
+    private router: Router,
+    private loadingBar: LoadingBarService,
+    private shData: SharedDataService
+  ) {
+    if (this.ch.decryptKey() === null || this.ch.decryptKey() === '') {
       this.router.navigate(['/login/']);
     }
+  }
+
+  shapeshift() {
+
+    shapeshift.coins(function (err, coinData) {
+      console.log('shapeshift', coinData);
+    });
+
+
+    const withdrawalAddress = 'YOUR_LTC_ADDRESS';
+    const pair = 'btc_ltc';
+
+    // if something fails
+    const options = {
+      returnAddress: 'YOUR_BTC_RETURN_ADDRESS'
+    };
+
+    shapeshift.shift(withdrawalAddress, pair, options, (err, returnData) => {
+
+      // ShapeShift owned BTC address that you send your BTC to
+      const depositAddress = returnData.deposit;
+
+      // you need to actually then send your BTC to ShapeShift
+      // you could use module `spend`: https://www.npmjs.com/package/spend
+      // spend(SS_BTC_WIF, depositAddress, shiftAmount, function (err, txId) { /.. ../ })
+      
+      // this.ch.sendTransaction(pair.split('_')[0],
+
+      shapeshift.status(depositAddress, function (err, status, data) {
+        console.log(status); // => should be 'received' or 'complete'
+      });
+
+
+      // later, you can then check the deposit status
+
+
+    });
   }
 
   ngOnInit() {
     this.loadingBar.start();
     setTimeout(() => this.executeGetters(), 10);
+    this.bc.getTXInfo('1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa');
   }
 
+  toggleShapeshift() {
+    this.shapeShiftModalStatus = true;
+    this.shData.getShapeshiftModalStatus(true);
+    this.shData.getSelectedCoin(this.coins[this.selectedCoin].type);
+    // data from child
+  }
   async executeGetters() {
     const preferences = JSON.parse( localStorage.getItem( 'preferences-' + keccak_256( this.ch.decryptKey() ) ) );
     for (let i = 0; i < preferences.coins.length; i++) {
@@ -160,6 +214,6 @@ export class WalletComponent implements OnInit {
   }
 
   alreadyExists(type: string) {
-    return document.querySelectorAll('.'+type+'-identifier').length == 0;
+    return document.querySelectorAll('.'+type+'-identifier').length === 0;
   }
 }

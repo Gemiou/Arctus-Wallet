@@ -43,3 +43,12 @@
     white-space: nowrap;
   }
   *:focus {outline:0;}
+
+  #assistant{
+    position: absolute;
+    bottom: 1%;
+    right: 1%;
+    width: 350px;
+    height: 400px;
+    z-index: 99999999999999;
+  }

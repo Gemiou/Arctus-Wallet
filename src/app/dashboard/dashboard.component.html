@@ -1,4 +1,9 @@
 <ngx-loading-bar></ngx-loading-bar>
+<div class='overlay' [ngClass]="{ 'active': shapeShiftModalStatus }">
+  <div id="shapeshift-modal" [ngClass]="{ 'active': shapeShiftModalStatus }">
+    <app-shapeshift></app-shapeshift>
+  </div>
+</div>
 <div class="all-wrapper menu-side with-side-panel">
   <div class="layout-w">
     <div class="content-w">
@@ -48,29 +53,6 @@
                   <div class="col-sm-11">
                     <app-settings></app-settings>
                   </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="row menu unavailable">
-                          <ul>
-                            <li>
-                              <span class="exchange">
-                                <i class="typcn typcn-arrow-sync"></i>
-                                <span>Token <span class="font-weight-bold">Exchange</span></span>
-                              </span>
-                            </li>
-                            <li>
-                              <span class="exchange">
-                                <i class="typcn typcn-credit-card"></i>
-                                <span>Buy
-                                  <span class="font-weight-bold">BTC</span>
-                                </span>
-                              </span>
-                            </li>
-                          </ul>
-                        </div>
-                    </div>
-                    <div class="cols-sm-9"></div>
                 </div>
                 <div class="row">
                   <div class="col-sm-12">

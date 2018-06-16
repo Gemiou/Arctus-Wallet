@@ -117,6 +117,10 @@
         border: 1px #047bf8 solid;
         cursor: pointer;
     }
+    .button--winona.shapeshift-button {
+        background-color: #29384d;
+        border: 1px #29384d solid;
+    }
     .sr-button > .button--winona {
         transform: scale(0.9);
     }
@@ -148,6 +152,10 @@
     .button--winona:hover {
         border-color: #047bf8CC;
         background-color: #047bf8CC;
+    }
+    .button--winona.shapeshift-button {
+        background-color: #29384dCC;
+        border: 1px #29384dCC solid;
     }
     .button--winona:hover::after {
         opacity: 1;
@@ -204,5 +212,9 @@
     .unavailable {
          opacity: 0.5;
         pointer-events: none;
+    }
+    .shapeshift-image {
+        height: 1.75vmax;
+        filter: brightness(2) hue-rotate(54deg);
     }
 }
