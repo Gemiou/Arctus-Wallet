@@ -21,7 +21,7 @@ export class AddnewcoinComponent implements OnInit {
   ngOnInit() {
     this.coins = this.ch.coins;
     this.selectedCoins = JSON.parse( localStorage.getItem( 'preferences-' + keccak_256( this.ch.decryptKey() ) ) ).coins;
-    let customCoins = this.selectedCoins.filter(el => !this.coins.some((innerEl) => innerEl.tokenAddress == el.tokenAddress));
+    const customCoins = this.selectedCoins.filter(el => !this.coins.some((innerEl) => innerEl.tokenAddress === el.tokenAddress));
     this.coins = customCoins.concat(this.coins);
     for (let i = 0; i < this.selectedCoins.length; i++) {
       for (let j = 0; j < this.coins.length; j++) {
@@ -57,7 +57,7 @@ export class AddnewcoinComponent implements OnInit {
   }
 
   alreadyExists(type: string) {
-    return document.querySelectorAll('.'+type+'-identifier').length == 0;
+    return document.querySelector('.' + type + '-identifier') === null;
   }
 
   resetSettings() {

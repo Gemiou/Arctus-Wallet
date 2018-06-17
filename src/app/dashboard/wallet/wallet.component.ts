@@ -57,9 +57,15 @@ export class WalletComponent implements OnInit {
   }
 
   toggleShapeshift() {
-    this.shapeShiftModalStatus = true;
-    this.shData.getShapeshiftModalStatus(true);
-    this.shData.getSelectedCoin(this.coins[this.selectedCoin].type);
+    this.shData.changeShapeShiftModalStatus(true);
+    this.shData.changeShapeShiftPair(
+      [
+        this.coins[this.selectedCoin].type,
+        this.availableSSCoins[0] === this.coins[this.selectedCoin].type ?
+        this.availableSSCoins[1] :
+        this.availableSSCoins[0]
+      ]
+    );
     // data from child
   }
   async executeGetters() {
@@ -76,8 +82,8 @@ export class WalletComponent implements OnInit {
         this.coins[(<any>obj).coin].balance =
           Number((<any>obj).balance === undefined ?
             this.coins[(<any>obj).coin].balance :
-            parseInt((<any>obj).balance+'') / Math.pow(10, this.coins[(<any>obj).coin].realDecimals));
-        if ((<any>obj).value == 'N/A') {
+            parseInt((<any>obj).balance + '', 10) / Math.pow(10, this.coins[(<any>obj).coin].realDecimals));
+        if ((<any>obj).value === 'N/A') {
           this.coins[(<any>obj).coin].value = 'N/A';
         } else {
           this.coins[(<any>obj).coin].value =
@@ -133,12 +139,17 @@ export class WalletComponent implements OnInit {
             observer.complete();
           }
         }).catch((err) => {
-          if (err.toString().indexOf('call exception') != -1) {
+          if (err.toString().indexOf('call exception') !== -1) {
             observer.next({
               coin: i,
               value: 'N/A'
             });
-            alert('WARNING: Token Contract of ' + this.coins[i].class + ' at address ' + this.coins[i].tokenAddress + ' does not exist or is not compatible with ERC-20. Remove it via the \'Add New Coin\' option.');
+            alert(
+              'WARNING: Token Contract of ' +
+              this.coins[i].class +
+              ' at address ' +
+              this.coins[i].tokenAddress +
+              ' does not exist or is not compatible with ERC-20. Remove it via the \'Add New Coin\' option.');
             this.coinsLoaded++;
             if (this.coinsLoaded === coins.length) {
               observer.complete();
@@ -198,10 +209,10 @@ export class WalletComponent implements OnInit {
   makeActive(index: any) {
     this.createCountUp(index);
     this.selectedCoin = index;
-    this.shData.changeCoinBalance(this.coins[index].balance/this.coins[index].decimals);
+    this.shData.changeCoinBalance(this.coins[index].balance / this.coins[index].decimals);
   }
 
   alreadyExists(type: string) {
-    return document.querySelectorAll('.'+type+'-identifier').length === 0;
+    return document.querySelectorAll('.' + type + '-identifier').length === 0;
   }
 }

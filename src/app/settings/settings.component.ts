@@ -50,6 +50,6 @@ export class SettingsComponent implements OnInit {
     });
   }
   redirectToFAQ() {
-    window.location.href = "https://www.arctus.io/FAQ";
+    window.location.href = 'https://www.arctus.io/FAQ';
   }
 }

@@ -56,10 +56,10 @@ export class LoginComponent implements OnInit {
           const keySeed = keccak_256(utils.randomBytes(32));
           this.ch.encryptKey('0x' + keySeed);
           localStorage.setItem('pass', '');
-          console.log("PASS: "+this.ch.decryptKey());
+          console.log('PASS: ' + this.ch.decryptKey());
           blockstack.putFile('key.json', JSON.stringify({'seed': keySeed})).then(() => {
             // Saved successfully
-            console.log("Seed successfully saved");
+            console.log('Seed successfully saved');
             const el = <HTMLScriptElement>document.querySelector('.container');
             el.style.opacity = '0';
             el.style.transform = 'scale(0.7)';
@@ -88,7 +88,7 @@ export class LoginComponent implements OnInit {
   beginBSLoading() {
     setTimeout(() => {
       (<HTMLButtonElement>document.querySelector('.l-r')).style.opacity = '0.5';
-      let element = document.querySelector('.blockstack span');
+      const element = document.querySelector('.blockstack span');
       element.innerHTML = 'Please Wait';
       this.rewriteLoad(element);
     }, 100);
@@ -96,12 +96,15 @@ export class LoginComponent implements OnInit {
 
   rewriteLoad(element) {
     setTimeout(() => {
-      element.innerHTML = (element.innerHTML.indexOf('.') + 2 === element.innerHTML.lastIndexOf('.')) ? 'Please Wait' : element.innerHTML + '.';
+      element.innerHTML = (
+        element.innerHTML.indexOf('.') + 2 === element.innerHTML.lastIndexOf('.')) ?
+        'Please Wait' :
+        element.innerHTML + '.';
       this.rewriteLoad(element);
     }, 500);
   }
 
-  blockstackLogin(){
+  blockstackLogin() {
     // blockstack.signUserOut('google.com');
     console.log('blockstack, is user logged in:', blockstack.isUserSignedIn());
     if (!blockstack.isUserSignedIn()) {
@@ -200,7 +203,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  loginFromSite(){
+  loginFromSite() {
     this.loginscreen = false;
     this.loginShow = true;
   }

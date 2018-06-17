@@ -7,23 +7,23 @@ import { SharedDataService } from '../../services/shared-data.service';
   styleUrls: ['./shapeshift.component.scss']
 })
 export class ShapeshiftComponent implements OnInit {
-  coinToShift: String;
-  modalStatusOpen: Boolean;
+  depositCoin: String;
+  receiveCoin: String;
   constructor(private shData: SharedDataService, private chRef: ChangeDetectorRef) {
   }
 
   ngOnInit() {
-    this.shData.coinToShift$.subscribe(
+    this.shData.shapeShiftPair$.subscribe(
       res => {
-        console.log(res);
-        this.coinToShift = res;
+        this.depositCoin = res[0];
+        this.receiveCoin = res[1];
         this.chRef.detectChanges();
-      });
+      }
+    );
   }
 
   closeModal() {
-    this.modalStatusOpen = false;
-    this.shData.getShapeshiftModalStatus(this.modalStatusOpen);
+    this.shData.changeShapeShiftModalStatus(false);
   }
 
 }

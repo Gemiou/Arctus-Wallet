@@ -26,7 +26,13 @@ export class SendComponent implements OnInit {
   gasAmount = 21000;
   userBalance = 0;
 
-  constructor(private route: ActivatedRoute, private routing: Router, private ch: CryptoHelperService, private bc: BlockchainAPIService, private shData: SharedDataService) {
+  constructor(
+    private route: ActivatedRoute,
+    private routing: Router,
+    private ch: CryptoHelperService,
+    private bc: BlockchainAPIService,
+    private shData: SharedDataService
+  ) {
     this.route.params.subscribe((params) => {
       this.addressFrom = params.address;
       this.coinName = params.coinName;
@@ -39,7 +45,7 @@ export class SendComponent implements OnInit {
 
   ngOnInit() {
     // console.log(this.ch.decryptKey());
-    if (this.coinName == 'BTC') {
+    if (this.coinName === 'BTC') {
       this.userWallet = new bitcoin.ECPair(bigi.fromHex(this.ch.decryptKey().substring(2)));
     } else {
       const mainProvider = new providers.InfuraProvider('homestead', 'Mohcm5md9NBp71v7gHjv');
@@ -54,7 +60,7 @@ export class SendComponent implements OnInit {
 
 
   startTransaction() {
-    this.gasAmount = parseInt(this.gasAmount + "");
+    this.gasAmount = parseInt(this.gasAmount + '', 10);
     if (this.coinName === 'ETH') {
       const weiAmount = utils.parseEther(this.coinAmount);
       this.userWallet.send(this.recipientAddress, weiAmount, {
@@ -70,7 +76,7 @@ export class SendComponent implements OnInit {
     } else if (this.coinName === 'BTC') {
       this.bc.getTXInfo(this.userWallet.getAddress())
       .then((res) => {
-        let txArray = JSON.parse((<any>res)._body).unspent_outputs;
+        const txArray = JSON.parse((<any>res)._body).unspent_outputs;
         return this.bc.calculateTransaction(txArray, this.userWallet, this.recipientAddress, this.coinAmount);
       })
       .then((tx) => {
@@ -112,7 +118,7 @@ export class SendComponent implements OnInit {
   }
 
   filterAddress(e) {
-    if (this.coinName == 'BTC') {
+    if (this.coinName === 'BTC') {
       this.filterBTCAddress(e);
     } else {
       this.filterETHAddress(e);

@@ -72,11 +72,13 @@ export class SetupComponent implements OnInit {
   }
 
   alreadyExists(type: string) {
-    return document.querySelectorAll('.'+type+'-identifier').length == 0;
+    return document.querySelector('.' + type + '-identifier') === null;
   }
 
   toggleCustomCoinModal($event) {
-    if($event.target !== $event.currentTarget) return;
+    if ($event.target !== $event.currentTarget) {
+      return;
+    }
     document.querySelector('.overlay').classList.toggle('active');
     document.querySelector('#custom-coin-modal').classList.toggle('active');
   }
@@ -96,19 +98,19 @@ export class SetupComponent implements OnInit {
   }
 
   addCustomToken($event) {
-    let tokenAddress = (<HTMLInputElement>document.querySelector('.token-address')).value;
-    let tokenSymbol = (<HTMLInputElement>document.querySelector('.token-symbol')).value;
-    let tokenDecimals = (<HTMLInputElement>document.querySelector('.token-decimals')).value;
-    let token = {
-       "class":tokenSymbol,
-       "type":tokenSymbol,
-       "icon":"",
-       "urlIndex":2,
-       "decimals":parseInt(tokenDecimals) > 4?4:tokenDecimals,
-       "realDecimals":tokenDecimals,
-       "pipe":"1.1-4",
-       "tokenAddress": tokenAddress
-    }
+    const tokenAddress = (<HTMLInputElement>document.querySelector('.token-address')).value;
+    const tokenSymbol = (<HTMLInputElement>document.querySelector('.token-symbol')).value;
+    const tokenDecimals = (<HTMLInputElement>document.querySelector('.token-decimals')).value;
+    const token = {
+       'class': tokenSymbol,
+       'type': tokenSymbol,
+       'icon': '',
+       'urlIndex': 2,
+       'decimals': parseInt(tokenDecimals, 10) > 4 ? 4 : tokenDecimals,
+       'realDecimals': tokenDecimals,
+       'pipe': '1.1-4',
+       'tokenAddress': tokenAddress
+    };
     this.coins.unshift(token);
     this.selectedCoins.unshift(token);
     this.coins[0].selected = true;

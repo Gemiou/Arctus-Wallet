@@ -26,6 +26,6 @@ export class DashboardComponent {
     if ($event.target !== $event.currentTarget) {
       return;
     }
-    this.shData.getShapeshiftModalStatus(false);
+    this.shData.changeShapeShiftModalStatus(false);
   }
 }

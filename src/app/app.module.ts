@@ -1,18 +1,21 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, NgControl } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { CryptoHelperService } from './services/crypto-helper.service';
-import { SharedDataService } from './services/shared-data.service';
+import { FilterPipe } from './filter.pipe';
+import { FilterPipeModule } from 'ngx-filter-pipe';
 import { QRCodeModule } from 'angularx-qrcode';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
+import { AppRoutingModule } from './/app-routing.module';
+
+import { CryptoHelperService } from './services/crypto-helper.service';
+import { ShapeShiftHelperService } from './services/shapeshift-helper.service';
+import { SharedDataService } from './services/shared-data.service';
+import { BlockchainAPIService } from './services/blockchain-api.service';
 
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AppRoutingModule } from './/app-routing.module';
 import { LoginComponent } from './login/login.component';
-import { FilterPipe } from './filter.pipe';
-import { FilterPipeModule } from 'ngx-filter-pipe';
 import { SetupComponent } from './setup/setup.component';
 import { SendComponent } from './dashboard/send/send.component';
 import { ReceiveComponent } from './dashboard/receive/receive.component';
@@ -22,9 +25,8 @@ import { LoadingComponent } from './loading/loading.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WalletComponent } from './dashboard/wallet/wallet.component';
 import { TxhashComponent } from './dashboard/send/txhash/txhash.component';
-import { BlockchainAPIService } from './services/blockchain-api.service';
 import { ShapeshiftComponent } from './dashboard/shapeshift/shapeshift.component';
-import { ShapeShiftHelperService } from './services/shapeshift-helper.service';
+import { CoinSelectionComponent } from './dashboard/shapeshift/coinselection/coinselection.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,8 @@ import { ShapeShiftHelperService } from './services/shapeshift-helper.service';
     SettingsComponent,
     WalletComponent,
     TxhashComponent,
-    ShapeshiftComponent
+    ShapeshiftComponent,
+    CoinSelectionComponent
   ],
   imports: [
     BrowserModule,

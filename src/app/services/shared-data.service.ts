@@ -5,20 +5,20 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class SharedDataService {
-  // Observable string sources
   private shapeshiftModalStatus = new Subject<any>();
-  private selectedCoin = new Subject<any>();
+  // ShapeShift Pair (As Array of 2 values)
+  public shapeShiftPair = new BehaviorSubject<any>(['BTC', 'ETH']);
   public coinBalance = new BehaviorSubject<any>(0);
   // Observable string streams
   modalStatus$ = this.shapeshiftModalStatus.asObservable();
-  coinToShift$ = this.selectedCoin.asObservable();
+  shapeShiftPair$ = this.shapeShiftPair.asObservable();
   balanceCoin$ = this.coinBalance.asObservable();
   // Service message commands
-  getShapeshiftModalStatus(change: any) {
+  changeShapeShiftModalStatus(change: any) {
     this.shapeshiftModalStatus.next(change);
   }
-  getSelectedCoin(change: any) {
-      this.selectedCoin.next(change);
+  changeShapeShiftPair(change: any) {
+    this.shapeShiftPair.next(change);
   }
   changeCoinBalance(change: any) {
     this.coinBalance.next(change);

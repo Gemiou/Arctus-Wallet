@@ -8,7 +8,7 @@ export class BlockchainAPIService {
   constructor(private http: Http) { }
 
   getTXInfo(address) {
-    let options = new RequestOptions({ headers: null, withCredentials: false });
+    const options = new RequestOptions({ headers: null, withCredentials: false });
     return this.http.get(`https://blockchain.info/el/unspent?cors=true&active=${address}`, options).toPromise();
   }
 
@@ -19,12 +19,12 @@ export class BlockchainAPIService {
   calculateTransaction(unspent, wallet, targetAddress, amount) {
     this.http.get('https://bitcoinfees.earn.com/api/v1/fees/recommended').toPromise()
     .then((feesPerSpeed) => {
-      let feePerKByte = JSON.parse((<any>feesPerSpeed)._body).halfHourFee;
-      let tx = new bitcoin.TransactionBuilder();
+      const feePerKByte = JSON.parse((<any>feesPerSpeed)._body).halfHourFee;
+      const tx = new bitcoin.TransactionBuilder();
       for (let i = 0; i < unspent.length; i++) {
         for (let j = i + 1; j < unspent.length; j++) {
           if (unspent[i].value < unspent[j].value) {
-            let temp = unspent[i];
+            const temp = unspent[i];
             unspent[i] = unspent[j];
             unspent[j] = temp;
           }
@@ -51,7 +51,7 @@ export class BlockchainAPIService {
   }
 
   pushTransaction(tx) {
-    let options = new RequestOptions({ headers: null, withCredentials: false });
+    const options = new RequestOptions({ headers: null, withCredentials: false });
     return this.http.post(
       `https://blockchain.info/pushtx?cors=true&tx=${tx}`,
       options

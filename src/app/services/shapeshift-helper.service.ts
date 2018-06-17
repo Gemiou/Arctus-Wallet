@@ -13,7 +13,7 @@ export class ShapeShiftHelperService {
           resolve(
             Object.keys(coinData)
             .filter(
-              key => currentCoins.some((el) => el.type == key.toUpperCase()) && coinData[key].status == 'available'
+              key => currentCoins.some((el) => el.type === key.toUpperCase()) && coinData[key].status === 'available'
             )
           );
         } else {
@@ -25,7 +25,7 @@ export class ShapeShiftHelperService {
 
   getPairInfo(deposit, receive) {
     return new Promise((resolve, reject) => {
-      let pair = `${deposit}_${receive}`;
+      const pair = `${deposit}_${receive}`;
       shapeshift.marketInfo(pair, (err, marketInfo) => {
         if (!err) {
           resolve(marketInfo);
@@ -35,6 +35,4 @@ export class ShapeShiftHelperService {
       });
     });
   }
-
-  
 }
