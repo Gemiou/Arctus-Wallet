@@ -245,10 +245,27 @@
         pointer-events: none;
         opacity: 0;
         left: 50%;
-        top: 50%;
+        top: 30%;
         transition: transform 0.75s cubic-bezier(.175,.885,.32,1), opacity 0.5s ease-out;
     }
     #shapeshift-modal.active {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        pointer-events: auto;
+    }
+    #shapeshift-coinselection {
+        position: absolute;
+        z-index: 1;
+        width: 1000px;
+        height: 500px;
+        transform: translate(-50%, -25%) scale(0.9);
+        pointer-events: none;
+        opacity: 0;
+        left: 50%;
+        top: 86%;
+        transition: transform 0.75s cubic-bezier(.175,.885,.32,1), opacity 0.5s ease-out;
+    }
+    #shapeshift-coinselection.active {
         transform: translate(-50%, -50%) scale(1);
         opacity: 1;
         pointer-events: auto;
