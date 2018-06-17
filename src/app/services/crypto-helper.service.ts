@@ -252,65 +252,55 @@ export class CryptoHelperService {
   }
 
   sendTransaction(coinName, amount, targetAddress) {
-    if (coinName === 'ETH') {
-      const mainProvider = new providers.InfuraProvider('homestead', 'Mohcm5md9NBp71v7gHjv');
-      const userWallet = new Wallet(this.decryptKey(), mainProvider);
-      userWallet.send(
-        targetAddress,
-        utils.parseEther(amount)
-      ).then((txReceipt) => {
-        // You have sent the money, handle UI etc.
-        return txReceipt;
-      }).catch((err) => {
-        console.log(err);
-      });
-    } else if (coinName === 'BTC') {
-      const userWallet = new bitcoin.ECPair(bigi.fromHex(this.decryptKey().substring(2)));
-      this.bc.getTXInfo(userWallet.getAddress()).then((res) => {
-        const txArray = JSON.parse((<any>res)._body).unspent_outputs;
-        return this.bc.calculateTransaction(txArray, userWallet, targetAddress, amount);
-      })
-      .then((tx) => {
-        return this.bc.pushTransaction(tx);
-      })
-      .then((res) => {
-        // You have sent the money, handle UI etc.
-        return res;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    } else {
-      const mainProvider = new providers.InfuraProvider('homestead', 'Mohcm5md9NBp71v7gHjv');
-      const userWallet = new Wallet(this.decryptKey(), mainProvider);
-      let index = 0;
-      this.coins.forEach((el, i) => {
-        if (el.type === coinName) {
-          index = i;
-        }
-      });
-      const tokenAmount = (amount * Math.pow(10, this.coins[index].decimals)) || 0;
-      const tokenContract = new Contract(this.coins[index].tokenAddress, this.erc20ABI, userWallet);
-      tokenContract.transfer(targetAddress, tokenAmount, {
-        gasLimit: 400000
-      }).then((txReceipt) => {
-        // You have sent the money, handle UI etc.
-        return txReceipt;
-      }).catch((err) => {
-        console.log(err);
-      });
-    }
+    return new Promise((resolve, reject) => {
+      if (coinName === 'ETH') {
+        const mainProvider = new providers.InfuraProvider('homestead', 'Mohcm5md9NBp71v7gHjv');
+        const userWallet = new Wallet(this.decryptKey(), mainProvider);
+        userWallet.send(
+          targetAddress,
+          utils.parseEther(amount)
+        ).then((txReceipt) => {
+          // You have sent the money, handle UI etc.
+          resolve(txReceipt);
+        }).catch((err) => {
+          reject(err);
+        });
+      } else if (coinName === 'BTC') {
+        const userWallet = new bitcoin.ECPair(bigi.fromHex(this.decryptKey().substring(2)));
+        this.bc.getTXInfo(userWallet.getAddress()).then((res) => {
+          const txArray = JSON.parse((<any>res)._body).unspent_outputs;
+          return this.bc.calculateTransaction(txArray, userWallet, targetAddress, amount);
+        })
+        .then((tx) => {
+          return this.bc.pushTransaction(tx);
+        })
+        .then((res) => {
+          // You have sent the money, handle UI etc.
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+      } else {
+        const mainProvider = new providers.InfuraProvider('homestead', 'Mohcm5md9NBp71v7gHjv');
+        const userWallet = new Wallet(this.decryptKey(), mainProvider);
+        let index = 0;
+        this.coins.forEach((el, i) => {
+          if (el.type === coinName) {
+            index = i;
+          }
+        });
+        const tokenAmount = (amount * Math.pow(10, this.coins[index].decimals)) || 0;
+        const tokenContract = new Contract(this.coins[index].tokenAddress, this.erc20ABI, userWallet);
+        tokenContract.transfer(targetAddress, tokenAmount, {
+          gasLimit: 400000
+        }).then((txReceipt) => {
+          // You have sent the money, handle UI etc.
+          resolve(txReceipt);
+        }).catch((err) => {
+          reject(err);
+        });
+      }
+    });
   }
-
-  // updateCoins(coinArray) {
-  //   this.coins.map((el) => {
-  //     if (coinArray.some((coin) => coin.type == el.type)) {
-  //       console.log('Before:', el);
-  //       el = coinArray.find((coin) => coin.type == el.type);
-  //       console.log('After:', el);
-  //     } else {
-  //       el = el;
-  //     }
-  //   });
-  // }
 }

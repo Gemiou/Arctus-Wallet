@@ -1,11 +1,42 @@
-<div class="element-wrapper">
+<div class="overlay-coin" (click)="toggleCustomCoinModal($event)">
+  <div id="custom-coin-modal">
+    <div class="modal-title">
+      ERC-20 Token
+    </div>
+    <div class="row justify-content-center modal-row active">
+      <div class="value col-sm-12 text-center">
+          <svg style="display: inline-block" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 125" enable-background="new 0 0 100 100" xml:space="preserve"><g><polygon points="49.252,39.702 49.252,18.46 31.677,47.807  "/><polygon points="49.252,60.282 49.252,41.55 31.419,49.774  "/><polygon points="49.175,81.325 49.175,67.637 32.507,57.77  "/><polygon points="50.852,81.326 67.565,57.726 50.852,67.636  "/><polygon points="50.93,60.172 68.714,49.704 50.93,41.555  "/><path d="M49.333,4.875C24.411,4.875,4.208,25.078,4.208,50c0,24.922,20.203,45.125,45.125,45.125S94.458,74.922,94.458,50   C94.458,25.078,74.255,4.875,49.333,4.875z M71.213,55.479L50.698,84.447c-0.157,0.222-0.413,0.354-0.685,0.354   s-0.528-0.132-0.685-0.354L28.867,55.53c-0.229-0.323-0.2-0.762,0.068-1.053c0.27-0.291,0.704-0.354,1.044-0.153l20.034,11.859   L70.1,54.272c0.338-0.201,0.775-0.139,1.044,0.153C71.412,54.716,71.441,55.156,71.213,55.479z M71.358,49.806   c-0.055,0.216-0.194,0.402-0.387,0.515L50.422,62.417c-0.131,0.078-0.278,0.116-0.425,0.116s-0.294-0.039-0.426-0.116L29.16,50.39   c-0.193-0.113-0.332-0.299-0.387-0.515c-0.056-0.217-0.022-0.446,0.093-0.638l20.505-34.242c0.152-0.253,0.425-0.408,0.72-0.408   s0.568,0.155,0.72,0.408l20.454,34.173C71.38,49.36,71.413,49.59,71.358,49.806z"/><polygon points="50.93,18.461 50.93,39.709 68.455,47.739  "/></g></svg>
+      </div><br/>
+      <form class="col-sm-8 classic-token">
+        <div class="form-group">
+          <input type="text" class="form-control token-address" placeholder="Token Contract Address" (input)="filterAddress($event)">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control token-symbol" placeholder="Token Symbol">
+        </div>
+        <div class="form-group">
+          <input type="number" class="form-control token-decimals" placeholder="Token Decimals">
+        </div>
+        <button class="button--winona" data-text="Add Token" (click)="addCustomToken($event)">
+          <span>Add Token</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="element-wrapper" id="setup">
   <div class="element-box">
     <div class="row">
-      <div class="offset-sm-4 col-sm-4">
-          <form class="form">
-            <input type="text" [(ngModel)]="coinName.class" [(ngModel)]="coinAbbr.type" [ngModelOptions]="{standalone: true}" placeholder="Search Coin">
-          </form>
-      </div>
+        <div class="col-sm-4 offset-sm-2">
+            <form class="form">
+              <input type="text" [(ngModel)]="coinName.class" [(ngModel)]="coinAbbr.type" [ngModelOptions]="{standalone: true}" placeholder="Search Coin">
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <button class="button--winona" data-text="Open Modal" (click)="toggleCustomCoinModal($event)">
+              <span>Add Custom ERC-20 Token</span>
+            </button>
+        </div>
     </div>
     <div class="row coin-selection">
       <div class="col-sm-2" *ngFor="let coin of coins | filterBy: coinName;let i = index">

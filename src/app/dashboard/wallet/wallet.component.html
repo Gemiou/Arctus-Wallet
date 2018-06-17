@@ -63,16 +63,10 @@
     <div class="element-wrapper">
       <div class="element-box">
         <div class="row">
-            <div class="col-sm-3">
-                <div [routerLink]="['/dashboard/addCoin/']" class="new-coin-wrapper">
-                  <div class="add-new-coin">
-                    <i class="fa fa-plus-circle"></i>
-                    <span class="typlab">Add New Coin</span>
-                  </div>
-                </div>
-              </div>
-          <div class="col-sm-6"></div>
-          <div class="col-sm-3">
+          <button class="button--winona col-sm-3 add-coin" data-text="Go to Coin Page" [routerLink]="['/dashboard/addCoin/']">
+            <span class="typlab"><i class="fa fa-plus-circle"></i>Add New Coin</span>
+          </button>
+          <div class="col-sm-3 offset-sm-6">
               <form class="form">
                 <input type="text" [(ngModel)]="coinName.class" [(ngModel)]="coinAbbr.type" [ngModelOptions]="{standalone: true}" placeholder="Search Coin">
               </form>

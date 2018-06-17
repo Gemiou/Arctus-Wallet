@@ -1,5 +1,8 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300);
 #wallet{
+    .add-coin {
+      height: 50%;
+    }
     .crypto {
         cursor: pointer;
         transition: background 0.5s ease-out;
