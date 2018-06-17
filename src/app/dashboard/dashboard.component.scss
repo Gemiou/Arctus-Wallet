@@ -239,10 +239,8 @@
     #shapeshift-modal {
         position: absolute;
         z-index: 2;
-        width: 50vw;
-        height: 50vh;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 1);
+        width: 1000px;
+        height: 500px;
         transform: translate(-50%, -25%) scale(0.9);
         pointer-events: none;
         opacity: 0;

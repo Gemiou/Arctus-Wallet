@@ -17,8 +17,15 @@ export class DashboardComponent {
       res => {
         this.shapeShiftModalStatus = res;
       });
-    if (this.ch.decryptKey() === null || this.ch.decryptKey() === '') {
-      this.router.navigate(['/login/']);
+    // if (this.ch.decryptKey() === null || this.ch.decryptKey() === '') {
+    //   this.router.navigate(['/login/']);
+    // }
+  }
+
+  closeModal($event) {
+    if ($event.target !== $event.currentTarget) {
+      return;
     }
+    this.shData.getShapeshiftModalStatus(false);
   }
 }

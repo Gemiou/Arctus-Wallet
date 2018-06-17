@@ -1,5 +1,5 @@
 <ngx-loading-bar></ngx-loading-bar>
-<div class='overlay' [ngClass]="{ 'active': shapeShiftModalStatus }">
+<div class='overlay' [ngClass]="{ 'active': shapeShiftModalStatus }" (click)="closeModal($event)">
   <div id="shapeshift-modal" [ngClass]="{ 'active': shapeShiftModalStatus }">
     <app-shapeshift></app-shapeshift>
   </div>
