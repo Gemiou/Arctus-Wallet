@@ -12,7 +12,7 @@ export class SharedDataService {
   coinToShift$ = this.selectedCoin.asObservable();
   // Service message commands
   getShapeshiftModalStatus(change: any) {
-      this.shapeshiftModalStatus.next(change);
+    this.shapeshiftModalStatus.next(change);
   }
   getSelectedCoin(change: any) {
     this.selectedCoin.next(change);

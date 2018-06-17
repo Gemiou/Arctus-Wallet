@@ -1,4 +1,63 @@
 <div class="shapeshift-main">
-  Shift {{coinToShift}}
-  <button (click)="closeModal()">Close</button>
+  <i class="fa fa-close close-modal" (click)="closeModal()"></i>
+  <div class="header">
+    <div>
+      <span class="title">Instant Rate</span> 1 NMR = 191.28857419 DNT
+    </div>
+    <div class="row text-center">
+      <div class="col-sm-4 vertical-line">
+        <div class="title">Deposit Min</div>
+        <div class="desc">1.07906559 NMR</div>
+      </div>
+      <div class="col-sm-4 vertical-line">
+        <div class="title">Deposit Max</div>
+        <div class="desc">561.90658780 NMR</div>
+      </div>
+      <div class="col-sm-4">
+        <div class="title">Miner Fee</div>
+        <div class="desc">110.7586</div>
+      </div>
+    </div>
+  </div>
+  <div class="form">
+    <div class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4">
+        <div class="row">
+          <div class="col-sm-5 text-center">
+            <img class="image-shift" src="../../../assets/img/sp/bitcoin.png" alt="">
+            <div>Bitcoin</div>
+          </div>
+          <div class="col-sm-2">
+            <i class="fa fa-arrow-right"></i>
+          </div>
+          <div class="col-sm-5">
+            <img class="image-shift" src="../../../assets/img/sp/bitcoin.png" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4"></div>
+    </div>
+  </div>
+  <div class="input-c row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+      <input class="form-control" placeholder="Your 0x Address (destination address)" type="text">
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
+  <div class="input-c row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+      <input class="form-control" placeholder="Your 0x Address (destination address)" type="text">
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
+  <div class="input-c row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+      <div class="transaction-button">Start Transaction</div>
+    </div>
+    <div class="col-sm-2"></div>
+  </div>
 </div>
