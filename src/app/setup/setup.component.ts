@@ -74,4 +74,44 @@ export class SetupComponent implements OnInit {
   alreadyExists(type: string) {
     return document.querySelectorAll('.'+type+'-identifier').length == 0;
   }
+
+  toggleCustomCoinModal($event) {
+    if($event.target !== $event.currentTarget) return;
+    document.querySelector('.overlay').classList.toggle('active');
+    document.querySelector('#custom-coin-modal').classList.toggle('active');
+  }
+
+  filterAddress(e) {
+    let current = e.target.value.replace(/^0x/, '');
+    current = current.replace(/[^a-fA-F0-9]*/g, '').substring(0, 40);
+    e.target.value = '0x' + current;
+    current = e.target.value;
+    if (/^0x[a-fA-F0-9]{40}$/.test(current)) {
+      e.target.parentElement.classList.remove('has-danger');
+      e.target.parentElement.classList.add('has-success');
+    } else {
+      e.target.parentElement.classList.add('has-danger');
+      e.target.parentElement.classList.remove('has-success');
+    }
+  }
+
+  addCustomToken($event) {
+    let tokenAddress = (<HTMLInputElement>document.querySelector('.token-address')).value;
+    let tokenSymbol = (<HTMLInputElement>document.querySelector('.token-symbol')).value;
+    let tokenDecimals = (<HTMLInputElement>document.querySelector('.token-decimals')).value;
+    let token = {
+       "class":tokenSymbol,
+       "type":tokenSymbol,
+       "icon":"",
+       "urlIndex":2,
+       "decimals":parseInt(tokenDecimals) > 4?4:tokenDecimals,
+       "realDecimals":tokenDecimals,
+       "pipe":"1.1-4",
+       "tokenAddress": tokenAddress
+    }
+    this.coins.unshift(token);
+    this.selectedCoins.unshift(token);
+    this.coins[0].selected = true;
+    this.toggleCustomCoinModal($event);
+  }
 }

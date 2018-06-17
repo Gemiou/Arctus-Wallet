@@ -206,15 +206,18 @@ export class CryptoHelperService {
 
   getTokenValue(tokenAddress: string) {
     return new Promise((resolve, reject) => {
-      this.http.get('https://api.coinmarketcap.com/v2/ticker/' + this.CMCMap[tokenAddress] + '/').subscribe(
-        res => {
-          resolve(JSON.parse((<any>res)._body).data.quotes.USD.price);
-        },
-        err => {
-          console.log(err);
-          resolve(undefined);
-        }
-      );
+      if (this.CMCMap[tokenAddress] == undefined) {
+        resolve('N/A');
+      } else {
+        this.http.get('https://api.coinmarketcap.com/v2/ticker/' + this.CMCMap[tokenAddress] + '/').subscribe(
+          res => {
+            resolve(JSON.parse((<any>res)._body).data.quotes.USD.price);
+          },
+          err => {
+            resolve(undefined);
+          }
+        );
+      }
     });
   }
 

@@ -7,13 +7,13 @@ import { keccak_256 } from 'js-sha3';
 import { CryptoHelperService } from '../../services/crypto-helper.service';
 import { BlockchainAPIService } from '../../services/blockchain-api.service';
 import { SharedDataService } from '../../services/shared-data.service';
+import { ShapeShiftHelperService } from '../../services/shapeshift-helper.service';
 
 import { Wallet, utils } from 'ethers';
 import * as bigi from 'bigi';
 import * as bitcoin from 'bitcoinjs-lib';
 import * as countUp from 'countup.js';
 import { Observable } from 'rxjs/Observable';
-import * as shapeshift from 'shapeshift.io';
 
 // import * as Chartjs from 'chart.js';
 @Component({
@@ -26,13 +26,13 @@ export class WalletComponent implements OnInit {
   coins: Array<any> = [{
     type: ''
   }];
+  availableSSCoins: Array<any> = [];
   balance: Number = 10;
   value: Number = 10000;
   selectedCoin: any = 0;
   sign: String = '$';
   USDtoEUR = 0;
   denomination: String;
-  test: Array<any> = [];
   coinName: any = { class: '' };
   coinAbbr: any = { type: '' };
   generatedAddresses: any = {};
@@ -46,45 +46,9 @@ export class WalletComponent implements OnInit {
     private http: Http,
     private router: Router,
     private loadingBar: LoadingBarService,
-    private shData: SharedDataService
+    private shData: SharedDataService,
+    private SS: ShapeShiftHelperService
   ) {
-  }
-
-  shapeshift() {
-
-    shapeshift.coins(function (err, coinData) {
-      console.log('shapeshift', coinData);
-    });
-
-
-    const withdrawalAddress = 'YOUR_LTC_ADDRESS';
-    const pair = 'btc_ltc';
-
-    // if something fails
-    const options = {
-      returnAddress: 'YOUR_BTC_RETURN_ADDRESS'
-    };
-
-    shapeshift.shift(withdrawalAddress, pair, options, (err, returnData) => {
-
-      // ShapeShift owned BTC address that you send your BTC to
-      const depositAddress = returnData.deposit;
-
-      // you need to actually then send your BTC to ShapeShift
-      // you could use module `spend`: https://www.npmjs.com/package/spend
-      // spend(SS_BTC_WIF, depositAddress, shiftAmount, function (err, txId) { /.. ../ })
-
-      // this.ch.sendTransaction(pair.split('_')[0],
-
-      shapeshift.status(depositAddress, function (err, status, data) {
-        console.log(status); // => should be 'received' or 'complete'
-      });
-
-
-      // later, you can then check the deposit status
-
-
-    });
   }
 
   ngOnInit() {
@@ -106,16 +70,21 @@ export class WalletComponent implements OnInit {
     }
     this.coins = preferences.coins;
     this.getUSDPrice();
+    this.getShapeShiftCoins();
     this.refreshUI(this.coins).subscribe(
       (obj) => {
         this.coins[(<any>obj).coin].balance =
           Number((<any>obj).balance === undefined ?
             this.coins[(<any>obj).coin].balance :
             parseInt((<any>obj).balance+'') / Math.pow(10, this.coins[(<any>obj).coin].realDecimals));
-        this.coins[(<any>obj).coin].value =
-          Number((<any>obj).value === undefined ?
-            this.coins[(<any>obj).coin].value :
-            (<any>obj).value * this.coins[(<any>obj).coin].balance);
+        if ((<any>obj).value == 'N/A') {
+          this.coins[(<any>obj).coin].value = 'N/A';
+        } else {
+          this.coins[(<any>obj).coin].value =
+            Number((<any>obj).value === undefined ?
+              this.coins[(<any>obj).coin].value :
+              (<any>obj).value * this.coins[(<any>obj).coin].balance);
+        }
       },
       (err) => console.log(err),
       () => {
@@ -130,6 +99,16 @@ export class WalletComponent implements OnInit {
   getUSDPrice() {
     this.http.get('https://free.currencyconverterapi.com/api/v5/convert?q=USD_EUR&compact=y').subscribe(price => {
       this.USDtoEUR = JSON.parse((<any>price)._body).USD_EUR.val;
+    });
+  }
+
+  getShapeShiftCoins() {
+    this.SS.getAvailableCoins(this.coins)
+    .then((availableCoins) => {
+      this.availableSSCoins = <Array<any>>availableCoins;
+    })
+    .catch((err) => {
+      console.log(err);
     });
   }
 
@@ -154,7 +133,19 @@ export class WalletComponent implements OnInit {
             observer.complete();
           }
         }).catch((err) => {
-          observer.error(err);
+          if (err.toString().indexOf('call exception') != -1) {
+            observer.next({
+              coin: i,
+              value: 'N/A'
+            });
+            alert('WARNING: Token Contract of ' + this.coins[i].class + ' at address ' + this.coins[i].tokenAddress + ' does not exist or is not compatible with ERC-20. Remove it via the \'Add New Coin\' option.');
+            this.coinsLoaded++;
+            if (this.coinsLoaded === coins.length) {
+              observer.complete();
+            }
+          } else {
+            observer.error(err);
+          }
         });
       }
     });

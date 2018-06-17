@@ -24,6 +24,7 @@ import { WalletComponent } from './dashboard/wallet/wallet.component';
 import { TxhashComponent } from './dashboard/send/txhash/txhash.component';
 import { BlockchainAPIService } from './services/blockchain-api.service';
 import { ShapeshiftComponent } from './dashboard/shapeshift/shapeshift.component';
+import { ShapeShiftHelperService } from './services/shapeshift-helper.service';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { ShapeshiftComponent } from './dashboard/shapeshift/shapeshift.component
   providers: [
     CryptoHelperService,
     BlockchainAPIService,
-    SharedDataService
+    SharedDataService,
+    ShapeShiftHelperService
   ],
   bootstrap: [AppComponent]
 })

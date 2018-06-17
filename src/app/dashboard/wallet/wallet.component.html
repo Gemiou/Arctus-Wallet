@@ -28,10 +28,10 @@
             <span class="coin-name">{{coins[selectedCoin].type}}</span>
           </div>
           <div class="col-sm-6 text-center">
-            <span class="coin-usd">$ {{coins[selectedCoin].value | number:'1.2-2'}}</span>
+            <span class="coin-usd">$ {{coins[selectedCoin].value == 'N/A'?'N/A':coins[selectedCoin].value | number:'1.2-2'}}</span>
           </div>
           <div class="col-sm-6 text-center">
-            <span class="coin-euro">€ {{coins[selectedCoin].value * USDtoEUR | number:'1.2-2'}}</span>
+            <span class="coin-euro">€ {{coins[selectedCoin].value == 'N/A'?'N/A':coins[selectedCoin].value * USDtoEUR | number:'1.2-2'}}</span>
           </div>
           <div class="eth-c"></div>
         </div>
@@ -52,7 +52,7 @@
       </div>
     </div>
     <div class="element-wrapper">
-      <button class="button--winona col-sm-12 shapeshift-button" data-text="Shift Now" (click)="toggleShapeshift()">
+      <button class="button--winona col-sm-12 shapeshift-button" data-text="Shift Now" [ngClass]="{ 'unavailable': !availableSSCoins.includes(coins[selectedCoin].type) }" (click)="toggleShapeshift()">
         <span>
           <img class="shapeshift-image" src="../../../assets/img/shapeshift.png" /> ShapeShift {{coins[selectedCoin].type}}
         </span>
