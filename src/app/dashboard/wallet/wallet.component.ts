@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, RequestOptions } from '@angular/http';
 import { Router } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { keccak_256 } from 'js-sha3';
@@ -48,9 +48,6 @@ export class WalletComponent implements OnInit {
     private loadingBar: LoadingBarService,
     private shData: SharedDataService
   ) {
-    if (this.ch.decryptKey() === null || this.ch.decryptKey() === '') {
-      this.router.navigate(['/login/']);
-    }
   }
 
   shapeshift() {
@@ -76,7 +73,7 @@ export class WalletComponent implements OnInit {
       // you need to actually then send your BTC to ShapeShift
       // you could use module `spend`: https://www.npmjs.com/package/spend
       // spend(SS_BTC_WIF, depositAddress, shiftAmount, function (err, txId) { /.. ../ })
-      
+
       // this.ch.sendTransaction(pair.split('_')[0],
 
       shapeshift.status(depositAddress, function (err, status, data) {
@@ -93,7 +90,6 @@ export class WalletComponent implements OnInit {
   ngOnInit() {
     this.loadingBar.start();
     setTimeout(() => this.executeGetters(), 10);
-    this.bc.getTXInfo('1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa');
   }
 
   toggleShapeshift() {
@@ -112,11 +108,10 @@ export class WalletComponent implements OnInit {
     this.getUSDPrice();
     this.refreshUI(this.coins).subscribe(
       (obj) => {
-        // console.log(this.coins[(<any>obj).coin]);
         this.coins[(<any>obj).coin].balance =
           Number((<any>obj).balance === undefined ?
             this.coins[(<any>obj).coin].balance :
-            (<any>obj).balance / Math.pow(10, this.coins[(<any>obj).coin].realDecimals));
+            parseInt((<any>obj).balance+'') / Math.pow(10, this.coins[(<any>obj).coin].realDecimals));
         this.coins[(<any>obj).coin].value =
           Number((<any>obj).value === undefined ?
             this.coins[(<any>obj).coin].value :
@@ -127,6 +122,7 @@ export class WalletComponent implements OnInit {
         this.createCountUp(this.selectedCoin);
         this.showLoading = false;
         this.loadingBar.complete();
+        // this.ch.updateCoins(this.coins);
       }
     );
   }
@@ -196,8 +192,8 @@ export class WalletComponent implements OnInit {
     };
     const countAntimation = new countUp(
       'count-up',
-      (this.coins[this.selectedCoin].balance === undefined) ? 0 : this.coins[this.selectedCoin].balance,
-      (this.coins[index].balance === undefined) ? 0 : this.coins[index].balance, this.coins[index].decimals,
+      (isNaN(parseFloat(this.coins[this.selectedCoin].balance))) ? 0 : this.coins[this.selectedCoin].balance,
+      (isNaN(parseFloat(this.coins[index].balance))) ? 0 : this.coins[index].balance, this.coins[index].decimals,
       1.5,
       options
     );
@@ -211,6 +207,7 @@ export class WalletComponent implements OnInit {
   makeActive(index: any) {
     this.createCountUp(index);
     this.selectedCoin = index;
+    this.shData.changeCoinBalance(this.coins[index].balance/this.coins[index].decimals);
   }
 
   alreadyExists(type: string) {

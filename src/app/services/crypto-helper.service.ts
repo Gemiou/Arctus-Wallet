@@ -3,7 +3,10 @@ import { Http } from '@angular/http';
 import * as ethers from 'ethers';
 import * as availableCoins from '../../assets/js/available-tokens.json';
 import * as CryptoJS from 'crypto-js';
+import * as bigi from 'bigi';
+import * as bitcoin from 'bitcoinjs-lib';
 import { Wallet, Contract, providers, utils } from 'ethers';
+import { BlockchainAPIService } from '../services/blockchain-api.service';
 
 @Injectable()
 export class CryptoHelperService {
@@ -145,7 +148,7 @@ export class CryptoHelperService {
   		"type": "function"
   	}
   ];
-  constructor(private http: Http) {
+  constructor(private http: Http, private bc: BlockchainAPIService) {
   }
 
   getCoinBalance(coin: Number, address: String, tokenAddress: String) {
@@ -259,9 +262,21 @@ export class CryptoHelperService {
         console.log(err);
       });
     } else if (coinName === 'BTC') {
-      // Not supported yet
-
-      // supporting is coming
+      const userWallet = new bitcoin.ECPair(bigi.fromHex(this.decryptKey().substring(2)));
+      this.bc.getTXInfo(userWallet.getAddress()).then((res) => {
+        let txArray = JSON.parse((<any>res)._body).unspent_outputs;
+        return this.bc.calculateTransaction(txArray, userWallet, targetAddress, amount);
+      })
+      .then((tx) => {
+        return this.bc.pushTransaction(tx);
+      })
+      .then((res) => {
+        // You have sent the money, handle UI etc.
+        return res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     } else {
       const mainProvider = new providers.InfuraProvider('homestead', 'Mohcm5md9NBp71v7gHjv');
       const userWallet = new Wallet(this.decryptKey(), mainProvider);
@@ -283,4 +298,16 @@ export class CryptoHelperService {
       });
     }
   }
+
+  // updateCoins(coinArray) {
+  //   this.coins.map((el) => {
+  //     if (coinArray.some((coin) => coin.type == el.type)) {
+  //       console.log('Before:', el);
+  //       el = coinArray.find((coin) => coin.type == el.type);
+  //       console.log('After:', el);
+  //     } else {
+  //       el = el;
+  //     }
+  //   });
+  // }
 }
