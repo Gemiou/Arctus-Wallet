@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Wallet, Contract, providers, utils } from 'ethers';
+import { WalletComponent } from '../wallet/wallet.component';
 import { CryptoHelperService } from '../../services/crypto-helper.service';
+import { BlockchainAPIService } from '../../services/blockchain-api.service';
+import { SharedDataService } from '../../services/shared-data.service';
 import * as pAny from 'p-any';
 import * as bigi from 'bigi';
 import * as bitcoin from 'bitcoinjs-lib';
@@ -21,8 +24,9 @@ export class SendComponent implements OnInit {
   callData = '0x';
   userWallet: Wallet;
   gasAmount = 21000;
+  userBalance = 0;
 
-  constructor(private route: ActivatedRoute, private routing: Router, private ch: CryptoHelperService) {
+  constructor(private route: ActivatedRoute, private routing: Router, private ch: CryptoHelperService, private bc: BlockchainAPIService, private shData: SharedDataService) {
     this.route.params.subscribe((params) => {
       this.addressFrom = params.address;
       this.coinName = params.coinName;
@@ -30,17 +34,22 @@ export class SendComponent implements OnInit {
         this.gasAmount = 200000;
       }
     });
+    this.userBalance = this.shData.coinBalance.getValue();
    }
 
   ngOnInit() {
-    const mainProvider = new providers.InfuraProvider('homestead', 'Mohcm5md9NBp71v7gHjv');
-    mainProvider.getGasPrice().then((res) => {
-      this.gasPrice = utils.formatUnits(res, 'gwei');
-      (<HTMLInputElement>document.getElementById('gasPrice')).value = this.gasPrice + '';
-      document.getElementById('gasPrice').dispatchEvent(new Event('input'));
-    });
     // console.log(this.ch.decryptKey());
-    this.userWallet = new Wallet(this.ch.decryptKey(), mainProvider);
+    if (this.coinName == 'BTC') {
+      this.userWallet = new bitcoin.ECPair(bigi.fromHex(this.ch.decryptKey().substring(2)));
+    } else {
+      const mainProvider = new providers.InfuraProvider('homestead', 'Mohcm5md9NBp71v7gHjv');
+      mainProvider.getGasPrice().then((res) => {
+        this.gasPrice = utils.formatUnits(res, 'gwei');
+        (<HTMLInputElement>document.getElementById('gasPrice')).value = this.gasPrice + '';
+        document.getElementById('gasPrice').dispatchEvent(new Event('input'));
+      });
+      this.userWallet = new Wallet(this.ch.decryptKey(), mainProvider);
+    }
   }
 
 
@@ -59,9 +68,20 @@ export class SendComponent implements OnInit {
         console.log(err);
       });
     } else if (this.coinName === 'BTC') {
-      // Not supported yet
-
-      // supporting is coming
+      this.bc.getTXInfo(this.userWallet.getAddress()).then((res) => {
+        let txArray = JSON.parse((<any>res)._body).unspent_outputs;
+        return this.bc.calculateTransaction(txArray, this.userWallet, this.recipientAddress, this.coinAmount);
+      })
+      .then((tx) => {
+        return this.bc.pushTransaction(tx);
+      })
+      .then((res) => {
+        console.log(res);
+        this.routing.navigate(['/dashboard/txhash', JSON.parse((<any>res)._body).tx_hash]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     } else {
       let index = 0;
       this.ch.coins.forEach((el, i) => {
@@ -91,6 +111,27 @@ export class SendComponent implements OnInit {
   }
 
   filterAddress(e) {
+    if (this.coinName == 'BTC') {
+      this.filterBTCAddress(e);
+    } else {
+      this.filterETHAddress(e);
+    }
+  }
+
+  filterBTCAddress(e) {
+    let current = e.target.value;
+    current = current.replace(/[^a-zA-Z0-9]*/g, '').substring(0, 34);
+    try {
+      bitcoin.address.fromBase58Check(current);
+      e.target.parentElement.classList.remove('has-danger');
+      e.target.parentElement.classList.add('has-success');
+    } catch (err) {
+      e.target.parentElement.classList.add('has-danger');
+      e.target.parentElement.classList.remove('has-success');
+    }
+  }
+
+  filterETHAddress(e) {
     let current = e.target.value.replace(/^0x/, '');
     current = current.replace(/[^a-fA-F0-9]*/g, '').substring(0, 40);
     e.target.value = '0x' + current;
