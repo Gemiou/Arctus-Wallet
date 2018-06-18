@@ -11,12 +11,19 @@ import { Router } from '@angular/router';
 export class DashboardComponent {
 
   shapeShiftModalStatus: Boolean = false;
+  isSelectingCoin: Boolean = false;
   coinToShift: String = '';
   constructor(private shData: SharedDataService, private router: Router, private ch: CryptoHelperService) {
     this.shData.modalStatus$.subscribe(
       res => {
         this.shapeShiftModalStatus = res;
-      });
+      }
+    );
+    this.shData.isSelectingCoin$.subscribe(
+      res => {
+        this.isSelectingCoin = res;
+      }
+    );
     // if (this.ch.decryptKey() === null || this.ch.decryptKey() === '') {
     //   this.router.navigate(['/login/']);
     // }

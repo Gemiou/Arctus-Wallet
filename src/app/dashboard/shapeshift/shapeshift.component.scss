@@ -124,4 +124,12 @@
         right: 0;
         font-size: 16px;
     }
+    .hover-fade {
+        opacity: 1;
+        transition: 0.25s opacity ease-in-out;
+    }
+    .hover-fade:hover {
+        opacity: 0.75;
+        cursor: pointer;
+    }
 }

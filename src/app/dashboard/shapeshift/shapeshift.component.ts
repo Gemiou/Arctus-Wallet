@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { SharedDataService } from '../../services/shared-data.service';
+import { ShapeShiftHelperService } from '../../services/shapeshift-helper.service';
 
 @Component({
   selector: 'app-shapeshift',
@@ -9,7 +10,11 @@ import { SharedDataService } from '../../services/shared-data.service';
 export class ShapeshiftComponent implements OnInit {
   depositCoin: String;
   receiveCoin: String;
-  constructor(private shData: SharedDataService, private chRef: ChangeDetectorRef) {
+  calculatedRate: String;
+  depositMin: String;
+  depositMax: String;
+  minerFee: String;
+  constructor(private shData: SharedDataService, private chRef: ChangeDetectorRef, private SS: ShapeShiftHelperService) {
   }
 
   ngOnInit() {
@@ -17,7 +22,17 @@ export class ShapeshiftComponent implements OnInit {
       res => {
         this.depositCoin = res[0];
         this.receiveCoin = res[1];
-        this.chRef.detectChanges();
+        this.SS.getPairInfo(this.depositCoin, this.receiveCoin)
+        .then((pairInfo) => {
+          this.calculatedRate = (<any>pairInfo).rate;
+          this.depositMin = (<any>pairInfo).minimum;
+          this.depositMax = (<any>pairInfo).limit;
+          this.minerFee = (<any>pairInfo).minerFee;
+          this.chRef.detectChanges();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       }
     );
   }
@@ -26,4 +41,7 @@ export class ShapeshiftComponent implements OnInit {
     this.shData.changeShapeShiftModalStatus(false);
   }
 
+  selectCoin(type) {
+    this.shData.changeSelectStatus(type);
+  }
 }

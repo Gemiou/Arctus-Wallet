@@ -7,13 +7,13 @@
       <div class="row">
         <div class="col-sm-12 text-center heading-c">
           <div class="title">Instant Rate</div>
-          <div class="desc">1 NMR = 123.12332 DNT</div>
+          <div class="desc">1 {{depositCoin}} = {{calculatedRate}} {{receiveCoin}}</div>
         </div>
         <div class="col-sm-12">
           <div class="row">
             <div class="heading-ch row">
               <div class="col-sm-6 text-right title nopadding">Deposit Min:&nbsp;</div>
-              <div class="col-sm-6 text-left desc nopadding">1.0732365 NMR</div>
+              <div class="col-sm-6 text-left desc nopadding">{{depositMin}} {{depositCoin}}</div>
             </div>
           </div>
         </div>
@@ -21,7 +21,7 @@
           <div class="row">
             <div class="heading-ch row">
               <div class="col-sm-6 text-right title nopadding">Deposit Max:&nbsp;</div>
-              <div class="col-sm-6 text-left desc nopadding">1.0732365 NMR</div>
+              <div class="col-sm-6 text-left desc nopadding">{{depositMax}} {{depositCoin}}</div>
             </div>
           </div>
         </div>
@@ -29,7 +29,7 @@
           <div class="row">
             <div class="heading-ch row">
               <div class="col-sm-6 text-right title nopadding">Miner Fee:&nbsp;</div>
-              <div class="col-sm-6 text-left desc nopadding">1.0732365 NMR</div>
+              <div class="col-sm-6 text-left desc nopadding">{{minerFee}} {{receiveCoin}}</div>
             </div>
           </div>
         </div>
@@ -38,13 +38,13 @@
     </div>
     <div class="col-sm-8 right-side">
       <div class="row justify-content-center coins-selection">
-        <div class="col-sm-4">
+        <div class="col-sm-4 hover-fade" (click)="selectCoin(1)">
           <div class="c-labels">Deposit</div>
           <img class="img-icon" src="../../../assets/img/sp/bitcoin.png" alt="">
           <div class="c-labels">{{depositCoin}}</div>
         </div>
         <i class="fa fa-exchange"></i>
-        <div class="col-sm-4">
+        <div class="col-sm-4 hover-fade" (click)="selectCoin(2)">
           <div class="c-labels">Receive</div>
           <img class="img-icon" src="../../../assets/img/sp/bitcoin.png" alt="">
           <div class="c-labels">{{receiveCoin}}</div>
