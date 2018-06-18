@@ -1,5 +1,9 @@
 #shapeshift-coin-selection {
-
+    border-radius: 0px;
+    height: 100vh;
+    .row:not(:first-child) {
+        max-height: 90%;
+    }
     .crypto-image {
         width: 5vmax;
     }
@@ -9,6 +13,7 @@
         overflow: hidden;
     }
     form {
+        text-align: center;
     padding: 20px 0;
     position: relative;
     z-index: 2;
@@ -125,13 +130,12 @@
         color: #3E4B5B;
         font-size: 2vmax;
     }
-    .coinrow{
+    .coinrow {
         display: inline-block;
     }
     .coin-selection {
-        overflow-x: scroll;
-        overflow-y: hidden;
-        white-space: nowrap;
+        overflow: visible;
+        overflow-y: auto;
         padding-top: 7.25px;
     }
     .coin-selection::-webkit-scrollbar-track {
@@ -141,7 +145,7 @@
     }
 
     .coin-selection::-webkit-scrollbar {
-        height: 5px;
+        width: 2px;
     }
 
     .coin-selection::-webkit-scrollbar-thumb {

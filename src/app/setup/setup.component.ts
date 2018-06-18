@@ -12,15 +12,20 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 })
 export class SetupComponent implements OnInit {
   coins: Array<any>;
-  clicked: boolean;
+  clicked: Boolean = false;
   selectedCoins: Array<any> = [];
   coinName: any = { class: '' };
   coinAbbr: any = { type: '' };
+  noJSON: Boolean = false;
 
   constructor(private ch: CryptoHelperService, private router: Router, private loadingBar: LoadingBarService) { }
 
   ngOnInit() {
     this.coins = this.ch.coins;
+    if (!!localStorage.getItem('pass')) {
+      this.clicked = true;
+      this.noJSON = true;
+    }
   }
 
   selectCoin(e, coin: any, index: any) {
@@ -72,7 +77,7 @@ export class SetupComponent implements OnInit {
   }
 
   alreadyExists(type: string) {
-    return document.querySelector('.' + type + '-identifier') === null;
+    return document.querySelector('.coin-' + type + '-identifier') === null;
   }
 
   toggleCustomCoinModal($event) {

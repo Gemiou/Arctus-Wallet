@@ -2,6 +2,7 @@
 #wallet{
     .add-coin {
       height: 50%;
+      transform: translateX(15px);
     }
     .crypto {
         cursor: pointer;
@@ -219,5 +220,14 @@
     .shapeshift-image {
         height: 1.75vmax;
         filter: brightness(2) hue-rotate(54deg);
+    }
+    .coin-ticker {
+        border-radius: 12px;
+        overflow: hidden;
+        padding: 0;
+        box-shadow: 0px 2px 4px rgba(126, 142, 177, 0.12);
+    }
+    .coin-ticker:first-child {
+        margin-top: calc(1rem + 20px);
     }
 }

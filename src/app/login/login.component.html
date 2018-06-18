@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div *ngIf="pklogin">
-                <input [(ngModel)]="privateKey" [ngModelOptions]="{standalone: true}" type="text" placeholder="Paste Your Private Key">
+                <input [(ngModel)]="privateKey" [ngModelOptions]="{standalone: true}" type="password" placeholder="Paste Your Private Key">
                 <button (click)="showNumpad($event)" id="pk-button">Login</button>
                 <div class="pk">
                     <span class="click-here" (click)="toJSONToggle()">Import Keystore</span>

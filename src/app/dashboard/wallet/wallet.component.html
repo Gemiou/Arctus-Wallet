@@ -54,9 +54,13 @@
     <div class="element-wrapper">
       <button class="button--winona col-sm-12 shapeshift-button" data-text="Shift Now" [ngClass]="{ 'unavailable': !availableSSCoins.includes(coins[selectedCoin].type) }" (click)="toggleShapeshift()">
         <span>
-          <img class="shapeshift-image" src="../../../assets/img/shapeshift.png" /> ShapeShift {{coins[selectedCoin].type}}
+          <img class="shapeshift-image" src="../../../assets/img/shapeshift.png" /> <span class="font-weight-bold">ShapeShift</span> {{coins[selectedCoin].type}}
         </span>
       </button>
+    </div>
+    <div class="element-wrapper">
+      <div class="col-sm-12 coin-ticker"></div>
+      <div class="col-sm-12 coin-ticker"></div>
     </div>
   </div>
   <div class="col-sm-9">
@@ -95,7 +99,7 @@
                   {{coin.type}}
                 </td>
                 <td>
-                  <div class="cell-image-list {{coin.type}}-identifier">
+                  <div class="cell-image-list coin-{{coin.type}}-identifier">
                     {{coin.address}}
                   </div>
                 </td>

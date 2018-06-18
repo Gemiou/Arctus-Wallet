@@ -1,5 +1,5 @@
 <div class="shapeshift-main">
-    <div class="poweredby">Powered By <a href="#">shapeshift.io</a></div>
+    <div class="poweredby">Powered By <a href="https://shapeshift.io/#/coins" target="_blank">shapeshift.io</a></div>
   <i class="fa fa-close close-modal" (click)="closeModal()"></i>
   <div class="row">
     <!-- left side -->
@@ -37,30 +37,42 @@
       </div>
     </div>
     <div class="col-sm-8 right-side">
-      <div class="row justify-content-center coins-selection">
-        <div class="col-sm-4 hover-fade" (click)="selectCoin(1)">
-          <div class="c-labels">Deposit</div>
-          <img class="img-icon" src="../../../assets/img/sp/bitcoin.png" alt="">
-          <div class="c-labels">{{depositCoin}}</div>
-        </div>
-        <i class="fa fa-exchange"></i>
-        <div class="col-sm-4 hover-fade" (click)="selectCoin(2)">
-          <div class="c-labels">Receive</div>
-          <img class="img-icon" src="../../../assets/img/sp/bitcoin.png" alt="">
-          <div class="c-labels">{{receiveCoin}}</div>
-        </div>
-      </div>
-      <div class="row justify-content-center coins-selection">
-        <form class="col-sm-8">
-          <div class="form-group">
-            <input type="email" class="form-control" id="coinaddress" aria-describedby="emailHelp" placeholder="Your Coin Address">
+      <ng-container *ngIf="!startedTransaction">
+        <div class="row justify-content-center coins-selection">
+          <div class="col-sm-3 hover-fade" (click)="selectCoin(1)">
+            <div class="c-labels">Send</div>
+            <img class="img-icon" src="../../../assets/img/sp/{{depositCoin}}.png" alt="">
+            <div class="c-labels">{{depositCoin}}</div>
           </div>
-          <div class="form-group">
-            <input type="email" class="form-control" id="refundaddress" aria-describedby="emailHelp" placeholder="Your Coin Refund Address">
+          <i class="fa fa-exchange hover-fade" (click)="swapCoins()"></i>
+          <div class="col-sm-3 offset-sm-1 hover-fade" (click)="selectCoin(2)">
+            <div class="c-labels">Receive</div>
+            <img class="img-icon" src="../../../assets/img/sp/{{receiveCoin}}.png" alt="">
+            <div class="c-labels">{{receiveCoin}}</div>
           </div>
-          <div class="form-group transaction-button">Transaction</div>
-        </form>
-      </div>
+        </div>
+        <div class="row justify-content-center coins-selection">
+          <form class="col-sm-8">
+            <div class="form-group">
+              <input type="text" class="form-control" id="coinaddress" placeholder="Amount of {{depositCoin}} you want to transfer to {{receiveCoin}}" (input)="filterAmount($event)">
+            </div>
+            <div class="form-group transaction-button" [ngClass]="{ 'unavailable' : !(userBalance < amount || amount == '' || amount < depositMin || amount > depositMax) }" (click)="executeTransaction()"><span>{{amount == ''?'No Amount Specified':(amount > userBalance?'Insufficient Funds for Conversion':(amount > depositMax?'Amount is above ShapeShift allowed maximum deposit':(amount < depositMin?'Amount is below ShapeShift allowed minimum deposit':'Convert ' + depositCoin + ' to ' + receiveCoin)))}}</span></div>
+          </form>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="startedTransaction">
+        <div class="row justify-content-center transaction-status">
+          <div class="col-sm-4">
+            {{transactionStatus}}
+          </div>
+          <div class="col-sm-12">
+
+          </div>
+          <div class="col-sm-8">
+            {{transactionStatusDescription}}
+          </div>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>

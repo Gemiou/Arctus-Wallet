@@ -57,7 +57,7 @@ export class AddnewcoinComponent implements OnInit {
   }
 
   alreadyExists(type: string) {
-    return document.querySelector('.' + type + '-identifier') === null;
+    return document.querySelector('.coin-' + type + '-identifier') === null;
   }
 
   toggleCustomCoinModal($event) {

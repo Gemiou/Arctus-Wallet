@@ -14,7 +14,6 @@ export class CoinSelectionComponent implements OnInit {
   @Output() messageEvent = new EventEmitter<string>();
 
   coins: Array<any>;
-  selectedCoins: Array<any> = [];
   coinName: any = { class: '' };
   coinAbbr: any = { type: '' };
 
@@ -24,16 +23,7 @@ export class CoinSelectionComponent implements OnInit {
     this.shData.isSelectingCoin$.subscribe(
       (res) => {
         if (res > 0) {
-          if (document.getElementById('scroll-horizontal').addEventListener) {
-              // IE9, Chrome, Safari, Opera
-              document.getElementById('scroll-horizontal').addEventListener('mousewheel', this.scrollHorizontally, false);
-              // Firefox
-              document.getElementById('scroll-horizontal').addEventListener('DOMMouseScroll', this.scrollHorizontally, false);
-          }
-          this.coins = this.ch.coins;
-          this.selectedCoins = JSON.parse( localStorage.getItem( 'preferences-' + keccak_256( this.ch.decryptKey() ) ) ).coins;
-          const customCoins = this.selectedCoins.filter(el => !this.coins.some((innerEl) => innerEl.tokenAddress === el.tokenAddress));
-          this.coins = customCoins.concat(this.coins);
+          this.coins = JSON.parse( localStorage.getItem( 'preferences-' + keccak_256( this.ch.decryptKey() ) ) ).coins;
           const currentSelection = this.shData.shapeShiftPair.getValue();
           this.SS.getAvailableCoins(this.coins)
           .then((availableCoins) => {
@@ -51,23 +41,16 @@ export class CoinSelectionComponent implements OnInit {
     );
   }
 
-  selectCoin(e, index: any) {
+  selectCoin(e, coin: any) {
     e.preventDefault();
     const pair = this.shData.shapeShiftPair.getValue();
-    pair[this.shData.isSelectingCoin.getValue() - 1] = this.coins[index].type;
+    pair[this.shData.isSelectingCoin.getValue() - 1] = coin.type;
     this.shData.changeShapeShiftPair(pair);
     this.shData.changeSelectStatus(0);
   }
 
 
   alreadyExists(type: string) {
-    return document.querySelector('.' + type + '-identifier') === null;
-  }
-
-  scrollHorizontally(e) {
-      e = window.event || e;
-      const delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-      document.getElementById('scroll-horizontal').scrollLeft -= (delta * 40); // Multiplied by 40
-      e.preventDefault();
+    return document.querySelector('.coin-' + type + '-identifier') === null;
   }
 }

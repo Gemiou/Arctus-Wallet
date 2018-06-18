@@ -105,8 +105,6 @@ export class LoginComponent implements OnInit {
   }
 
   blockstackLogin() {
-    // blockstack.signUserOut('google.com');
-    console.log('blockstack, is user logged in:', blockstack.isUserSignedIn());
     if (!blockstack.isUserSignedIn()) {
       blockstack.redirectToSignIn(`${window.location.origin}/login`, `${window.location.origin}/assets/js/manifest.json`);
     }
@@ -114,7 +112,7 @@ export class LoginComponent implements OnInit {
 
   showNumpad(e) {
     e.preventDefault();
-    if (this.username === '' || this.password === '') {
+    if ((this.username === '' || this.password === '') && this.privateKey === '') {
       alert('ERROR: Username / Password cannot be empty');
       return;
     }

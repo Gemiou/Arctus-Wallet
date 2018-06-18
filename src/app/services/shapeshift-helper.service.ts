@@ -41,10 +41,11 @@ export class ShapeShiftHelperService {
     });
   }
 
-  shiftTokens(withdrawalAddress, deposit, receive, amount) {
+  shiftTokens(deposit, receive, amount) {
     return new Observable((observer) => {
       const pair = `${deposit}_${receive}`;
       let backupAddress;
+      let withdrawalAddress;
       switch (deposit.toUpperCase()) {
         case 'BTC': {
           backupAddress = (new bitcoin.ECPair(bigi.fromHex(this.ch.decryptKey().substring(2)))).getAddress();
@@ -54,18 +55,27 @@ export class ShapeShiftHelperService {
           backupAddress = (new Wallet(this.ch.decryptKey())).getAddress();
         }
       }
+      switch (receive.toUpperCase()) {
+        case 'BTC': {
+          withdrawalAddress = (new bitcoin.ECPair(bigi.fromHex(this.ch.decryptKey().substring(2)))).getAddress();
+          break;
+        }
+        default: {
+          withdrawalAddress = (new Wallet(this.ch.decryptKey())).getAddress();
+        }
+      }
       const options = {
         returnAddress: backupAddress
       };
       shapeshift.shift(withdrawalAddress, pair, options, (err, returnData) => {
         if (!err) {
           const depositAddress = returnData.deposit;
-          observer.next(depositAddress);
+          observer.next({ depositAddress: depositAddress });
           shapeshift.status(depositAddress, (err2, status, data) => {
             if (status === 'no_deposits') {
               this.ch.sendTransaction(deposit.toUpperCase(), amount, depositAddress)
               .then((txReceipt) => {
-                observer.next(txReceipt);
+                observer.next({ txReceipt: txReceipt });
                 let ticks = 0;
                 const timerID = setInterval(() => {
                   if (ticks % 8 === 0) {
@@ -73,7 +83,7 @@ export class ShapeShiftHelperService {
                       if (innerStatus === 'received') {
                         observer.next('received');
                       } else if (innerStatus === 'complete') {
-                        observer.next(innerData.transaction);
+                        observer.next({ finalReceipt: innerData.transaction });
                         clearInterval(timerID);
                         observer.complete();
                       } else if (innerStatus === 'failed') {

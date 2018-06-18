@@ -52,6 +52,13 @@ export class WalletComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.shData.shapeShiftPair$.subscribe(
+      res => {
+        if (!this.showLoading) {
+          this.shData.changeCoinBalance(this.coins.filter((el) => el.type.toUpperCase() === res[0])[0].balance);
+        }
+      }
+    );
     this.loadingBar.start();
     setTimeout(() => this.executeGetters(), 10);
   }
@@ -97,6 +104,7 @@ export class WalletComponent implements OnInit {
         this.createCountUp(this.selectedCoin);
         this.showLoading = false;
         this.loadingBar.complete();
+        this.changeTicker(this.coins[this.selectedCoin].type);
         // this.ch.updateCoins(this.coins);
       }
     );
@@ -208,11 +216,65 @@ export class WalletComponent implements OnInit {
 
   makeActive(index: any) {
     this.createCountUp(index);
+    this.changeTicker(this.coins[index].type);
     this.selectedCoin = index;
-    this.shData.changeCoinBalance(this.coins[index].balance / this.coins[index].decimals);
+    this.shData.changeCoinBalance(this.coins[index].balance);
   }
 
   alreadyExists(type: string) {
-    return document.querySelectorAll('.' + type + '-identifier').length === 0;
+    return document.querySelectorAll('.coin-' + type + '-identifier').length === 0;
+  }
+
+  changeTicker(type: any) {
+    if (
+      document.querySelector('.coin-ticker').classList.contains('prev') ||
+      document.querySelectorAll('.coin-ticker')[1].classList.contains('prev')
+    ) {
+      return;
+    }
+    const baseUrl = 'https://widgets.cryptocompare.com/';
+    let appName = encodeURIComponent(window.location.hostname);
+    if (appName === '') {
+      appName = 'local';
+    }
+    const s = document.createElement('script');
+    if (document.querySelectorAll('.coin-ticker')[0].innerHTML !== '') {
+      document.querySelector('.coin-ticker').classList.add('prev');
+      (<HTMLScriptElement>document.querySelectorAll('.coin-ticker')[1]).appendChild(s);
+    } else if (document.querySelectorAll('.coin-ticker')[1].innerHTML !== '') {
+      document.querySelectorAll('.coin-ticker')[1].classList.add('prev');
+      (<HTMLScriptElement>document.querySelectorAll('.coin-ticker')[0]).appendChild(s);
+    } else {
+      document.querySelector('.coin-ticker').appendChild(s);
+    }
+    s.type = 'text/javascript';
+    s.async = true;
+    s.onload = () => {
+      if (document.querySelectorAll('.coin-ticker')[0].classList.contains('prev')) {
+        document.querySelector('.coin-ticker').classList.remove('prev');
+        document.querySelectorAll('.coin-ticker')[0].innerHTML = '';
+        (<HTMLElement>document.querySelector('.ccc-widget .header-div > a:last-child')).style.display = 'none';
+      } else {
+        document.querySelectorAll('.coin-ticker')[1].classList.remove('prev');
+        document.querySelectorAll('.coin-ticker')[1].innerHTML = '';
+        (<HTMLElement>document.querySelector('.ccc-widget .header-div > a:last-child')).style.display = 'none';
+      }
+      if (
+        parseFloat(
+          document.querySelector(
+            '.ccc-widget > div > div:nth-child(2) > a > span:nth-child(2)'
+          )
+          .innerHTML.replace(/[^0-9.,-]*/g, '')
+        ) > 0) {
+          (<HTMLElement>document.querySelector('.ccc-widget canvas')).style.filter = 'hue-rotate(287deg)';
+      } else {
+        (<HTMLElement>document.querySelector('.ccc-widget canvas')).style.filter = 'hue-rotate(120deg)';
+      }
+      if (!!document.querySelector('.ccc-widget > div:nth-child(2)')) {
+        (<HTMLElement>document.querySelector('.ccc-widget > div:nth-child(2)')).style.display = 'none';
+      }
+    };
+    const theUrl = baseUrl + `serve/v1/coin/chart?fsym=${type}&tsym=USD`;
+    s.src = theUrl + ( theUrl.indexOf('?') >= 0 ? '&' : '?') + 'app=' + appName;
   }
 }

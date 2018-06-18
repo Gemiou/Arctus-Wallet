@@ -17,6 +17,9 @@ export class DashboardComponent {
     this.shData.modalStatus$.subscribe(
       res => {
         this.shapeShiftModalStatus = res;
+        if (!this.shapeShiftModalStatus) {
+          this.isSelectingCoin = false;
+        }
       }
     );
     this.shData.isSelectingCoin$.subscribe(
@@ -24,9 +27,9 @@ export class DashboardComponent {
         this.isSelectingCoin = res;
       }
     );
-    // if (this.ch.decryptKey() === null || this.ch.decryptKey() === '') {
-    //   this.router.navigate(['/login/']);
-    // }
+    if (this.ch.decryptKey() === null || this.ch.decryptKey() === '') {
+      this.router.navigate(['/login/']);
+    }
   }
 
   closeModal($event) {

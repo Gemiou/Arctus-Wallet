@@ -1,4 +1,4 @@
-.shapeshift-main{
+.shapeshift-main {
     .left-side {
         background: #55779f;
         border-top-left-radius: 10px;
@@ -54,6 +54,7 @@
         top: 50%;
         transform: translate(-50%,-50%);
         z-index: 2;
+        cursor: pointer;
     }
     input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
         color: rgb(29, 11, 11)!important;
@@ -132,4 +133,27 @@
         opacity: 0.75;
         cursor: pointer;
     }
+    .unavailable {
+        opacity: 0.8;
+        pointer-events: none;
+    }
+    .transaction-status {
+        color: black;
+        text-align: center;
+        height: 100%;
+        div:first-child {
+            font-size: 2vmax;
+        }
+        div:nth-child(2) {
+            height: 45%;
+        }
+        div:last-child {
+            font-size: 1vmax;
+        }
+    }
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }

@@ -5,6 +5,7 @@ import * as availableCoins from '../../assets/js/available-tokens.json';
 import * as CryptoJS from 'crypto-js';
 import * as bigi from 'bigi';
 import * as bitcoin from 'bitcoinjs-lib';
+import * as pAny from 'p-any';
 import { Wallet, Contract, providers, utils } from 'ethers';
 import { BlockchainAPIService } from '../services/blockchain-api.service';
 
