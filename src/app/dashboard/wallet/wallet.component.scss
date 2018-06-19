@@ -74,7 +74,7 @@
       font-weight: 300;
     }
     form input:hover {
-        background-color: #047bf8D0;
+        background-color: rgba(4, 123, 248, 0.816);
     }
     form input:focus {
       width: 300px;
@@ -154,12 +154,12 @@
         transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
     }
     .button--winona:hover {
-        border-color: #047bf8CC;
-        background-color: #047bf8CC;
+        border-color: rgba(3, 120, 246, 0.8);
+        background-color: rgba(4, 123, 248, 0.8);
     }
     .button--winona.shapeshift-button {
-        background-color: #29384dCC;
-        border: 1px #29384dCC solid;
+        background-color: rgba(41, 56, 77, 0.8);
+        border: 1px rgba(41, 56, 77, 0.8) solid;
     }
     .button--winona:hover::after {
         opacity: 1;

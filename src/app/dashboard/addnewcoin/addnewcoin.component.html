@@ -43,9 +43,9 @@
               'active':coin.selected
             }">
           <div class="value" >
-              <img src="../../../../assets/img/sp/{{coin.type}}.png" class="crypto-image" alt="">
+              <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image" alt="">
           </div>
-          <div class="label coin-{{coin.type}}-identifier">
+          <div class="label coin-{{coin.type.trim()}}-identifier">
             {{coin.class | uppercase}}
           </div>
         </a>
@@ -56,7 +56,7 @@
                 'active':coin.selected
               }">
             <div class="value" >
-                <img src="../../../../assets/img/sp/{{coin.type}}.png" class="crypto-image" alt="">
+                <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image" alt="">
             </div>
             <div class="label">
               {{coin.class | uppercase}}

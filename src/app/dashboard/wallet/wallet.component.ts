@@ -73,7 +73,6 @@ export class WalletComponent implements OnInit {
         this.availableSSCoins[0]
       ]
     );
-    // data from child
   }
   async executeGetters() {
     const preferences = JSON.parse( localStorage.getItem( 'preferences-' + keccak_256( this.ch.decryptKey() ) ) );
@@ -105,6 +104,7 @@ export class WalletComponent implements OnInit {
         this.showLoading = false;
         this.loadingBar.complete();
         this.changeTicker(this.coins[this.selectedCoin].type);
+        this.shData.changeCoinBalance(this.coins[this.selectedCoin].balance);
         // this.ch.updateCoins(this.coins);
       }
     );
@@ -222,7 +222,7 @@ export class WalletComponent implements OnInit {
   }
 
   alreadyExists(type: string) {
-    return document.querySelectorAll('.coin-' + type + '-identifier').length === 0;
+    return document.querySelectorAll('.coin-' + type.trim() + '-identifier').length === 0;
   }
 
   changeTicker(type: any) {
@@ -253,22 +253,25 @@ export class WalletComponent implements OnInit {
       if (document.querySelectorAll('.coin-ticker')[0].classList.contains('prev')) {
         document.querySelector('.coin-ticker').classList.remove('prev');
         document.querySelectorAll('.coin-ticker')[0].innerHTML = '';
-        (<HTMLElement>document.querySelector('.ccc-widget .header-div > a:last-child')).style.display = 'none';
       } else {
         document.querySelectorAll('.coin-ticker')[1].classList.remove('prev');
         document.querySelectorAll('.coin-ticker')[1].innerHTML = '';
-        (<HTMLElement>document.querySelector('.ccc-widget .header-div > a:last-child')).style.display = 'none';
       }
-      if (
-        parseFloat(
-          document.querySelector(
-            '.ccc-widget > div > div:nth-child(2) > a > span:nth-child(2)'
-          )
-          .innerHTML.replace(/[^0-9.,-]*/g, '')
-        ) > 0) {
-          (<HTMLElement>document.querySelector('.ccc-widget canvas')).style.filter = 'hue-rotate(287deg)';
+      if (document.querySelector('.ccc-widget .header-div > a:last-child') === null) {
+        (<HTMLElement>document.querySelector('.ccc-widget')).style.marginBottom = '0';
       } else {
-        (<HTMLElement>document.querySelector('.ccc-widget canvas')).style.filter = 'hue-rotate(120deg)';
+        if (
+          parseFloat(
+            document.querySelector(
+              '.ccc-widget > div > div:nth-child(2) > a > span:nth-child(2)'
+            )
+            .innerHTML.replace(/[^0-9.,-]*/g, '')
+          ) > 0) {
+            (<HTMLElement>document.querySelector('.ccc-widget canvas')).style.filter = 'hue-rotate(287deg)';
+        } else {
+          (<HTMLElement>document.querySelector('.ccc-widget canvas')).style.filter = 'hue-rotate(120deg)';
+        }
+        (<HTMLElement>document.querySelector('.ccc-widget .header-div > a:last-child')).style.display = 'none';
       }
       if (!!document.querySelector('.ccc-widget > div:nth-child(2)')) {
         (<HTMLElement>document.querySelector('.ccc-widget > div:nth-child(2)')).style.display = 'none';

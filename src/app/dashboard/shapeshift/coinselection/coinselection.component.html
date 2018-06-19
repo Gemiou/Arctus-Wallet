@@ -10,20 +10,20 @@
     </div>
     <div class="coin-selection row">
       <div class="col-sm-6" *ngFor="let coin of coins | filterBy: coinName;let i = index">
-        <a class="element-box el-tablo centered" href="#" (click)="selectCoin($event, coin)">
+        <a class="element-box el-tablo centered" (click)="selectCoin($event, coin)">
           <div class="value">
-            <img src="../../../../assets/img/sp/{{coin.type}}.png" class="crypto-image" alt="">
+            <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image" alt="">
           </div>
-          <div class="label coin-{{coin.type}}-identifier">
+          <div class="label coin-{{coin.type.trim()}}-identifier">
             {{coin.class | uppercase}}
           </div>
         </a>
       </div>
       <ng-container *ngFor="let coin of coins | filterBy: coinAbbr;let i = index">
         <div class="col-sm-6" *ngIf="alreadyExists(coin.type)">
-          <a class="element-box el-tablo centered" href="#" (click)="selectCoin($event, coin)">
+          <a class="element-box el-tablo centered" (click)="selectCoin($event, coin)">
             <div class="value">
-                <img src="../../../../assets/img/sp/{{coin.type}}.png" class="crypto-image" alt="">
+                <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image" alt="">
             </div>
             <div class="label">
               {{coin.class | uppercase}}
@@ -31,13 +31,13 @@
           </a>
         </div>
       </ng-container>
-      <div class="col-sm-6 offset-sm-3" *ngIf="(coins | filterBy: coinName) == [] && (coins | filterBy: coinAbbr) == []">
-        <a class="element-box el-tablo centered" href="#">
+      <div class="col-sm-6 offset-sm-3" *ngIf="!!coins && (coins | filterBy: coinName).length === 0 && (coins | filterBy: coinAbbr).length === 0">
+        <a class="element-box el-tablo centered">
           <div class="value">
             X
           </div>
           <div class="label">
-            COIN {{coinName.class}} NOT FOUND
+            {{coinName.class == ''?'NO SHAPESHIFT AVAILABLE COINS FOUND IN PORTFOLIO':coinName.class + ' NOT SUPPORTED BY SHAPESHIFT OR NOT IN PORTFOLIO'}} 
           </div>
         </a>
       </div>

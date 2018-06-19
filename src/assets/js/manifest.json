@@ -3,7 +3,7 @@
     "start_url": "wallet.arctus.io",
     "description": "A multi-currency wallet rendered purely on the front-end completely decentralised.",
     "icons": [{
-      "src": "https://wallet.arctus.io/assets/img/white-logo.png",
+      "src": "https://wallet.arctus.io/assets/img/manifest-logo.png",
       "sizes": "1500x1500",
       "type": "image/png"
     }]

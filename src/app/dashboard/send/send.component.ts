@@ -74,17 +74,22 @@ export class SendComponent implements OnInit {
         console.log(err);
       });
     } else if (this.coinName === 'BTC') {
+      this.recipientAddress = this.recipientAddress.trim();
       this.bc.getTXInfo(this.userWallet.getAddress())
       .then((res) => {
         const txArray = JSON.parse((<any>res)._body).unspent_outputs;
-        return this.bc.calculateTransaction(txArray, this.userWallet, this.recipientAddress, this.coinAmount);
+        return this.bc.calculateTransaction(txArray, this.userWallet, this.recipientAddress, this.coinAmount * Math.pow(10, 8));
       })
       .then((tx) => {
+        console.log(tx);
         return this.bc.pushTransaction(tx);
       })
       .then((res) => {
-        console.log(res);
-        this.routing.navigate(['/dashboard/txhash', JSON.parse((<any>res)._body).tx_hash]);
+        if ((<any>res)._body.indexOf('dust') !== -1) {
+          // This means that user has put a low amount to transfer / spamming attack
+        } else {
+          this.routing.navigate(['/dashboard/txhash', (<any>res)._body]);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -129,13 +134,14 @@ export class SendComponent implements OnInit {
     let current = e.target.value;
     current = current.replace(/[^a-zA-Z0-9]*/g, '').substring(0, 34);
     try {
-      bitcoin.address.fromBase58Check(current);
+      console.log(bitcoin.address.fromBase58Check(current));
       e.target.parentElement.classList.remove('has-danger');
       e.target.parentElement.classList.add('has-success');
     } catch (err) {
       e.target.parentElement.classList.add('has-danger');
       e.target.parentElement.classList.remove('has-success');
     }
+    e.target.value = current;
   }
 
   filterETHAddress(e) {

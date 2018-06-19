@@ -51,9 +51,9 @@
                     'active':coin.selected
                   }">
                 <div class="value" >
-                    <img src="../../../../assets/img/sp/{{coin.type}}.png" class="crypto-image" alt="">
+                    <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image" alt="">
                 </div>
-                <div class="label coin-{{coin.type}}-identifier">
+                <div class="label coin-{{coin.type.trim()}}-identifier">
                   {{coin.class | uppercase}}
                 </div>
               </a>
@@ -64,7 +64,7 @@
                       'active':coin.selected
                     }">
                   <div class="value" >
-                      <img src="../../../../assets/img/sp/{{coin.type}}.png" class="crypto-image" alt="">
+                      <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image" alt="">
                   </div>
                   <div class="label">
                     {{coin.class | uppercase}}
@@ -85,11 +85,11 @@
         </div>
           <div class="row setup-buttons">
               <div class="col-sm-4 offset-sm-2">
-                  <button class="button--winona" [ngClass]="{ 'unavailable': !clicked }" data-text="Save Settings" (click)="saveSettings()">
+                  <button class="button--winona" [ngClass]="{ 'unavailable': shouldHaveJSON && !downloadedJSON }" data-text="Save Settings" (click)="saveSettings()">
                     <span>Save Settings</span>
                   </button>
               </div>
-              <div class="col-sm-4" *ngIf="!noJSON">
+              <div class="col-sm-4" *ngIf="shouldHaveJSON">
                   <button class="button--winona" data-text="Download" (click)="toJSON()">
                     <span>Wallet <b>JSON</b> Backup</span>
                   </button>

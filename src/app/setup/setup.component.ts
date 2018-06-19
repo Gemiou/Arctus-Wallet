@@ -12,19 +12,18 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 })
 export class SetupComponent implements OnInit {
   coins: Array<any>;
-  clicked: Boolean = false;
+  downloadedJSON: Boolean = false;
   selectedCoins: Array<any> = [];
   coinName: any = { class: '' };
   coinAbbr: any = { type: '' };
-  noJSON: Boolean = false;
+  shouldHaveJSON: Boolean = true;
 
   constructor(private ch: CryptoHelperService, private router: Router, private loadingBar: LoadingBarService) { }
 
   ngOnInit() {
     this.coins = this.ch.coins;
-    if (!!localStorage.getItem('pass')) {
-      this.clicked = true;
-      this.noJSON = true;
+    if (!localStorage.getItem('pass-' + keccak_256(this.ch.decryptKey()))) {
+      this.shouldHaveJSON = false;
     }
   }
 
@@ -57,7 +56,7 @@ export class SetupComponent implements OnInit {
     };
     localStorage.setItem('preferences-' + keccak_256( this.ch.decryptKey() ), JSON.stringify(obj));
     const p_key = this.ch.decryptKey();
-    const password = localStorage.getItem('pass');
+    const password = localStorage.getItem('pass-' + keccak_256(this.ch.decryptKey()));
     const wallet = new Wallet(p_key);
     this.loadingBar.start();
     const encryptPromise = wallet.encrypt(password);
@@ -72,12 +71,12 @@ export class SetupComponent implements OnInit {
       a.href = link;
       a.download = 'keystore.json';
       a.click();
-      this.clicked = true;
+      this.downloadedJSON = true;
     });
   }
 
   alreadyExists(type: string) {
-    return document.querySelector('.coin-' + type + '-identifier') === null;
+    return document.querySelector('.coin-' + type.trim() + '-identifier') === null;
   }
 
   toggleCustomCoinModal($event) {

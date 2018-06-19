@@ -8,6 +8,8 @@ import * as bitcoin from 'bitcoinjs-lib';
 
 @Injectable()
 export class ShapeShiftHelperService {
+  // tslint:disable-next-line:max-line-length
+  SS_API_KEY: String = '7484d44af8a70175708bf99b57f60eb3b3e47429989fcaeca50b91f94c725d488ed7bdcf7b896aa17b7e19cb09d0d4201a3468032eca3b512f97ba5544352cbb';
 
   constructor(private ch: CryptoHelperService) { }
 
@@ -65,7 +67,8 @@ export class ShapeShiftHelperService {
         }
       }
       const options = {
-        returnAddress: backupAddress
+        returnAddress: backupAddress,
+        apiKey: this.SS_API_KEY
       };
       shapeshift.shift(withdrawalAddress, pair, options, (err, returnData) => {
         if (!err) {
@@ -123,7 +126,8 @@ export class ShapeShiftHelperService {
       }
       const options = {
         returnAddress: backupAddress,
-        amount: amount
+        amount: amount,
+        apiKey: this.SS_API_KEY
       };
       shapeshift.shift(withdrawalAddress, pair, options, (err, returnData) => {
         if (!err) {

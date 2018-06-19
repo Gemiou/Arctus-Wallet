@@ -56,12 +56,12 @@
             <div class="form-group">
               <input type="text" class="form-control" id="coinaddress" placeholder="Amount of {{depositCoin}} you want to transfer to {{receiveCoin}}" (input)="filterAmount($event)">
             </div>
-            <div class="form-group transaction-button" [ngClass]="{ 'unavailable' : !(userBalance < amount || amount == '' || amount < depositMin || amount > depositMax) }" (click)="executeTransaction()"><span>{{amount == ''?'No Amount Specified':(amount > userBalance?'Insufficient Funds for Conversion':(amount > depositMax?'Amount is above ShapeShift allowed maximum deposit':(amount < depositMin?'Amount is below ShapeShift allowed minimum deposit':'Convert ' + depositCoin + ' to ' + receiveCoin)))}}</span></div>
+            <!-- <div class="form-group transaction-button" [ngClass]="{ 'unavailable' : (userBalance < amount || amount == '' || amount < depositMin || amount > depositMax) }" (click)="executeTransaction()"> --><div class="form-group transaction-button" [ngClass]="{ 'unavailable' : true }" (click)="executeTransaction()"><span><!-- {{amount == ''?'No Amount Specified':(amount > userBalance?'Insufficient Funds for Conversion':(amount > depositMax?'Amount is above ShapeShift allowed maximum deposit':(amount < depositMin?'Amount is below ShapeShift allowed minimum deposit':'Convert ' + depositCoin + ' to ' + receiveCoin)))}} -->Coming Soon 🙃</span></div>
           </form>
         </div>
       </ng-container>
-      <ng-container *ngIf="startedTransaction">
-        <div class="row justify-content-center transaction-status">
+      <!-- <ng-container *ngIf="startedTransaction"> -->
+        <!-- <div class="row justify-content-center transaction-status">
           <div class="col-sm-4">
             {{transactionStatus}}
           </div>
@@ -71,8 +71,24 @@
           <div class="col-sm-8">
             {{transactionStatusDescription}}
           </div>
+        </div> -->
+        <!-- <div class="row justify-content-center text-center">
+            <div class="col-sm-12 h2">
+                <h2>{{transactionStatus}}</h2>
+             </div>
         </div>
-      </ng-container>
+        <div class="row justify-content-center coins-selection">
+          <div class="col-sm-3">
+            <img class="img-icon first-coin" src="../../../assets/img/sp/{{depositCoin}}.png" alt="">
+          </div>
+          <div class="col-sm-3">
+            <img class="shapeshift-filter" src="../../../assets/img/shapeshift.png" alt="">
+          </div>
+          <div class="col-sm-3">
+            <img class="img-icon second-coin" src="../../../assets/img/sp/{{receiveCoin}}.png" alt="">
+          </div>
+        </div>
+      </ng-container> -->
     </div>
   </div>
 </div>

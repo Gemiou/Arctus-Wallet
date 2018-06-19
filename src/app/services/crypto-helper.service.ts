@@ -226,7 +226,7 @@ export class CryptoHelperService {
     return new Promise((resolve, reject) => {
       this.http.get('https://blockchain.info/el/q/addressbalance/' + address).subscribe(
         coinBalance => {
-          resolve((<any>coinBalance)._body / 10 ** 8);
+          resolve((<any>coinBalance)._body);
         },
         err => {
           console.log(err);

@@ -24,7 +24,7 @@
       font-weight: 300;
     }
     form input:hover {
-        background-color: #047bf8D0;
+        background-color: rgba(4, 123, 248, 0.816);
     }
     form input:focus {
       width: 300px;
@@ -61,7 +61,7 @@
 }
 
 .custom-coin:hover {
-    background-color: #047bf8D0;
+    background-color: rgba(4, 123, 248, 0.816);
     cursor: pointer;
 }
 
@@ -201,8 +201,8 @@
 	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
 }
 .button--winona:hover {
-	border-color: #047bf8CC;
-	background-color: #047bf8CC;
+	border-color: rgba(4, 123, 248, 0.8);
+	background-color: rgba(4, 123, 248, 0.8);
 }
 .button--winona:hover::after {
 	opacity: 1;

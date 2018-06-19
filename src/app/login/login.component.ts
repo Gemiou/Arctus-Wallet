@@ -138,7 +138,9 @@ export class LoginComponent implements OnInit {
       this.privateKey = keccak_256(key);
     }
     this.ch.encryptKey('0x' + this.privateKey);
-    localStorage.setItem('pass', k_pass);
+    if (!this.pklogin) {
+      localStorage.setItem('pass-' + keccak_256(this.ch.decryptKey()), k_pass);
+    }
   }
 
   pkLoginToggle() {
@@ -176,7 +178,7 @@ export class LoginComponent implements OnInit {
     Wallet.fromEncryptedWallet(this.JSONFile, pass).then((wallet) => {
       this.loadingBar.complete();
       this.ch.encryptKey(wallet.privateKey);
-      if (preferences !== undefined) {
+      if (preferences !== undefined && preferences !== null) {
         localStorage.setItem( 'preferences-' + keccak_256( this.ch.decryptKey()) , JSON.stringify(preferences));
       }
       const el = <HTMLScriptElement>document.querySelector('.container');
