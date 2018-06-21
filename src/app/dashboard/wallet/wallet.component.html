@@ -1,5 +1,5 @@
 <div class="row" id="wallet">
-<div class="col-sm-3">
+  <div class="col-lg-3">
     <div class="element-wrapper">
       <div class="element-box rc-controller">
         <svg *ngIf="coins[selectedCoin].icon == ''" class="cc" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"
@@ -23,26 +23,26 @@
         </svg>
         <i class="cc {{coins[selectedCoin].icon == ''?'':coins[selectedCoin].icon}}"></i>
         <div class="row">
-          <div class="col-sm-12 text-center">
+          <div class="col-lg-12 text-center">
             <span class="coin-value" id="count-up" #cu>{{coins[selectedCoin].balance}}</span>
             <span class="coin-name">{{coins[selectedCoin].type}}</span>
           </div>
-          <div class="col-sm-6 text-center">
+          <div class="col-lg-6 col-6 text-center">
             <span class="coin-usd">$ {{coins[selectedCoin].value == 'N/A'?'N/A':coins[selectedCoin].value | number:'1.2-2'}}</span>
           </div>
-          <div class="col-sm-6 text-center">
+          <div class="col-lg-6 col-6 text-center">
             <span class="coin-euro">€ {{coins[selectedCoin].value == 'N/A'?'N/A':coins[selectedCoin].value * USDtoEUR | number:'1.2-2'}}</span>
           </div>
           <div class="eth-c"></div>
         </div>
         <div class="row sr-button">
-          <button [routerLink]="['/dashboard/send', coins[selectedCoin].type, coins[selectedCoin].address]" class="button--winona col-sm-12 col-md-6"
+          <button [routerLink]="['/dashboard/send', coins[selectedCoin].type, coins[selectedCoin].address]" class="button--winona col-lg-12 col-md-6 col-6"
             [attr.data-text]="'Send '+coins[selectedCoin].type">
             <span>Send
               <span class="font-weight-bold">{{coins[selectedCoin].type}}</span>
             </span>
           </button>
-          <button [routerLink]="['/dashboard/receive',coins[selectedCoin].type,coins[selectedCoin].address]" class="button--winona col-sm-12 col-md-6"
+          <button [routerLink]="['/dashboard/receive',coins[selectedCoin].type,coins[selectedCoin].address]" class="button--winona col-lg-12 col-md-6 col-6"
             [attr.data-text]="'Receive '+coins[selectedCoin].type">
             <span>Receive
               <span class="font-weight-bold">{{coins[selectedCoin].type}}</span>
@@ -52,28 +52,33 @@
       </div>
     </div>
     <div class="element-wrapper">
-      <button class="button--winona col-sm-12 shapeshift-button" data-text="Shift Now" [ngClass]="{ 'unavailable': !availableSSCoins.includes(coins[selectedCoin].type) }" (click)="toggleShapeshift()">
+      <button class="button--winona col-lg-12 shapeshift-button" data-text="Shift Now" [ngClass]="{ 'unavailable': !availableSSCoins.includes(coins[selectedCoin].type) }"
+        (click)="toggleShapeshift()">
         <span>
-          <img class="shapeshift-image" src="../../../assets/img/shapeshift.png" /> <span class="font-weight-bold">ShapeShift</span> {{coins[selectedCoin].type}}
+          <img class="shapeshift-image" src="../../../assets/img/shapeshift.png" />
+          <span class="font-weight-bold">ShapeShift</span> {{coins[selectedCoin].type}}
         </span>
       </button>
     </div>
     <div class="element-wrapper">
-      <div class="col-sm-12 coin-ticker"></div>
-      <div class="col-sm-12 coin-ticker"></div>
+      <div class="col-lg-12 coin-ticker"></div>
+      <div class="col-lg-12 coin-ticker"></div>
     </div>
   </div>
-  <div class="col-sm-9">
+  <div class="col-lg-9">
     <div class="element-wrapper">
-      <div class="element-box">
+      <div class="element-box nopadding">
         <div class="row">
-          <button class="button--winona col-sm-3 add-coin" data-text="Go to Coin Page" [routerLink]="['/dashboard/addCoin/']">
-            <span class="typlab"><i class="fa fa-plus-circle"></i>Add New Coin</span>
-          </button>
-          <div class="col-sm-3 offset-sm-6">
-              <form class="form">
-                <input type="text" [(ngModel)]="coinName.class" [(ngModel)]="coinAbbr.type" [ngModelOptions]="{standalone: true}" placeholder="Search Coin">
-              </form>
+          <div class="col-lg-3 col-6">
+            <button class="button--winona add-coin" data-text="Go to Coin Page" [routerLink]="['/dashboard/addCoin/']">
+              <span class="typlab">
+                <i class="fa fa-plus-circle"></i>Add New Coin</span>
+            </button>
+          </div>
+          <div class="col-lg-3 offset-lg-6 col-6">
+            <form class="form">
+              <input type="text" [(ngModel)]="coinName.class" [(ngModel)]="coinAbbr.type" [ngModelOptions]="{standalone: true}" placeholder="Search Coin">
+            </form>
           </div>
         </div>
         <div class="table-responsive">
@@ -84,7 +89,7 @@
                 <th>
                   Symbol
                 </th>
-                <th>
+                <th class="hide-mb">
                   Address
                 </th>
                 <th class="text-right">
@@ -96,9 +101,10 @@
               <tr class="crypto" *ngFor="let coin of coins | filterBy: coinName;let i = index" [ngStyle]="{'background': i == selectedCoin ? 'rgba(4, 123, 248, 0.15)' : 'rgba(0,0,0,0)' }"
                 (click)="makeActive(i)">
                 <td class="nowrap sc">
+                  <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image mr-1" alt="">
                   {{coin.type}}
                 </td>
-                <td>
+                <td class="hide-mb">
                   <div class="cell-image-list coin-{{coin.type.trim()}}-identifier">
                     {{coin.address}}
                   </div>

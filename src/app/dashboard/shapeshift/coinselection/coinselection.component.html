@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="coin-selection row">
-      <div class="col-sm-6" *ngFor="let coin of coins | filterBy: coinName;let i = index">
+      <div class="col-sm-6 col-6" *ngFor="let coin of coins | filterBy: coinName;let i = index">
         <a class="element-box el-tablo centered" (click)="selectCoin($event, coin)">
           <div class="value">
             <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image" alt="">
@@ -20,7 +20,7 @@
         </a>
       </div>
       <ng-container *ngFor="let coin of coins | filterBy: coinAbbr;let i = index">
-        <div class="col-sm-6" *ngIf="alreadyExists(coin.type)">
+        <div class="col-sm-6 col-6" *ngIf="alreadyExists(coin.type)">
           <a class="element-box el-tablo centered" (click)="selectCoin($event, coin)">
             <div class="value">
                 <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image" alt="">

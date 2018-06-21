@@ -3,32 +3,32 @@
 <div id="resCoins" class="element-wrapper">
   <div class="element-box">
     <div class="row">
-      <h3 class="col-sm-12 text-center margin-tb-1">Receive {{coinName}}</h3>
-      <div class="col-sm-6">
+      <h3 class="col-lg-12 text-center margin-tb-1">Receive {{coinName}}</h3>
+      <div class="col-lg-6">
         <div class="row">
-          <div class="col-sm-12">
+          <div class="col-lg-12">
             <div class="form-group row">
-              <label class="col-form-label col-sm-6" for=""> Amount You Want To receive: </label>
-              <div class="col-sm-6">
+              <label class="col-form-label col-lg-6" for=""> Amount You Want To receive: </label>
+              <div class="col-lg-6">
                 <input class="form-control" [(ngModel)]="amount" [ngModelOptions]="{standalone: true}" placeholder="Enter An Amount" type="text">
               </div>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-8">
-            <button class="button--winona col-sm-12" data-text="Generate QR" (click)="generateQrCode(addressFrom,amount)">
+          <div class="col-lg-8">
+            <button class="button--winona col-lg-12 mb-1" data-text="Generate QR" (click)="generateQrCode(addressFrom,amount)">
               <span>Generate QR</span>
             </button>
           </div>
-          <div class="col-sm-4">
-            <button [routerLink]="['/dashboard/wallet/']" class="button--winona col-sm-12" data-text="Cancel">
+          <div class="col-lg-4 mb-1">
+            <button [routerLink]="['/dashboard/wallet/']" class="button--winona col-lg-12" data-text="Cancel">
               <span>Cancel</span>
             </button>
           </div>
         </div>
       </div>
-      <div class="col-sm-6 qr-code">
+      <div class="col-lg-6 qr-code">
         <app-qrcode [address]="addressFrom" [amount]="amountFrom" [coin]="coinName"></app-qrcode>
       </div>
     </div>

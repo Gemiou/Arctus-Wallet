@@ -5,12 +5,13 @@
         max-height: 90%;
     }
     .crypto-image {
-        width: 5vmax;
+        width: 80%;
     }
     .label {
-        font-size: 1vmax;
+        font-size: 20px;
         text-overflow: ellipsis;
         overflow: hidden;
+        color: black;
     }
     form {
         text-align: center;
@@ -172,5 +173,11 @@
     .el-tablo:hover svg *,
     .active svg * {
         fill: #3b75e3;
+    }
+    @media (max-width: 768px) {
+        .label{
+            font-size: 15px;
+            color: black;
+        }
     }
 }

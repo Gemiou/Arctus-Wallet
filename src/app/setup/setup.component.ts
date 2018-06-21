@@ -17,6 +17,7 @@ export class SetupComponent implements OnInit {
   coinName: any = { class: '' };
   coinAbbr: any = { type: '' };
   shouldHaveJSON: Boolean = true;
+  searchActive: Boolean = false;
 
   constructor(private ch: CryptoHelperService, private router: Router, private loadingBar: LoadingBarService) { }
 
@@ -80,7 +81,8 @@ export class SetupComponent implements OnInit {
   }
 
   toggleCustomCoinModal($event) {
-    if ($event.target !== $event.currentTarget) {
+    this.searchActive = false;
+    if ($event.target !== $event.currentTarget && !this.isMobile()) {
       return;
     }
     document.querySelector('.overlay').classList.toggle('active');
@@ -119,5 +121,12 @@ export class SetupComponent implements OnInit {
     this.selectedCoins.unshift(token);
     this.coins[0].selected = true;
     this.toggleCustomCoinModal($event);
+  }
+
+  isMobile() {
+    return document.querySelectorAll('.mobile').length !== 0;
+  }
+  mobileSearch() {
+    this.searchActive = !this.searchActive;
   }
 }

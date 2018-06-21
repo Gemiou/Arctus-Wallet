@@ -1,10 +1,10 @@
-#setup{
-    padding: 2vmax 10vmax;
-    form {
-      padding: 20px 0;
-      position: relative;
-      z-index: 2;
-    }
+#addnew{
+    background-color: #f2f4f8;
+    background-image: url(../../../assets/img/bg-pattern.png);
+    background-repeat: no-repeat;
+    background-position: 20px 50px;
+    min-height: 100vh;
+    max-height: 100vh;
     form input {
       -webkit-appearance: none;
          -moz-appearance: none;
@@ -16,7 +16,6 @@
       width: 250px;
       border-radius: 0.3rem;
       padding: 10px 15px;
-      margin: 0 auto 10px auto;
       display: block;
       text-align: center;
       font-size: 18px;
@@ -24,7 +23,7 @@
       font-weight: 300;
     }
     form input:hover {
-        background-color: rgba(4, 123, 248, 0.816);
+        background-color: hsla(211, 97%, 49%, 0.816);
     }
     form input:focus {
       width: 300px;
@@ -32,11 +31,15 @@
       color: #047bf8;
     }
 }
+
+#addnew > div {
+    min-height: 50vh;
+}
 .crypto-image {
-    width: 5vmax;
+    width: 96px;
 }
 .label {
-    font-size: 1vmax;
+    font-size: 19.2px;
 }
 
 .custom-coin {
@@ -68,9 +71,10 @@
 
 #custom-coin-modal {
     position: absolute;
-    z-index: 2;
-    width: 1000px;
-    height: 500px;
+    border-radius: 12px;
+    z-index: 0;
+    width: 60%;
+    height: 70%;
     background: rgba(255, 255, 255, 1);
     transform: translate(-50%, -25%) scale(0.9);
     opacity: 0;
@@ -81,11 +85,12 @@
 #custom-coin-modal.active {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
+    z-index: 5;
 }
-.overlay-coin {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
+.overlaytwo {
+    position: absolute;
+    width: 100%;
+    height: 700px;
     pointer-events: none;
     left: 0;
     top: 0;
@@ -93,23 +98,23 @@
     background: transparent;
     transition: background 0.75s ease-out;
 }
-.overlay-coin.active {
+.overlaytwo.active {
     background: rgba(0,0,0,0.75);
     pointer-events: auto;
 }
 
 .modal-title {
     color: #3E4B5B;
-    font-size: 2vmax;
-    position: absolute;
-    left: 50%;
-    top: 1vmax;
-    transform: translateX(-50%);
+    font-size: 38.4px;
+}
+
+.adjust-coins {
+    margin-bottom: 20px;
 }
 
 .modal-row {
     input{
-        border: 1px solid rgba(85, 119, 159, 0.5);
+        border: 1px solid rgba(44, 137, 245, 0.5);
         background: #f8fafd;
         color: #486587;
         height: 40px;
@@ -129,9 +134,6 @@
         padding: 0.5em 2em;
       }
     }
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
 }
 
 .el-tablo.active {
@@ -152,23 +154,28 @@
 }
 
 .setup-buttons {
+    margin-top: 20px;
+}
+.setup-buttons > div:nth-child(2) {
     text-align: center;
+}
+.setup-buttons > div:last-child {
+    text-align: right;
 }
 
 
 /* Winona */
 .button--winona {
-    margin-top: 20px;
     display: inline-block;
 	overflow: hidden;
-	padding: 0;
 	-webkit-transition: border-color 0.3s, background-color 0.3s;
 	transition: border-color 0.3s, background-color 0.3s;
 	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
     transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
     text-align: center;
-    font-size: 1vmax;
+    font-size: 19.2px;
     border-radius: 0.3rem;
+    width: 100%;
     background: #047bf8;
     color: white;
     position: relative;
@@ -194,7 +201,7 @@
 }
 .button--winona::after,
 .button--winona > span {
-	padding: 0.5em 1em;
+    padding: 10px 15px;
 	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
 	transition: transform 0.3s, opacity 0.3s;
 	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
@@ -217,13 +224,14 @@
 
 .intro-row {
     color: #3E4B5B;
-    font-size: 2vmax;
+    font-size: 38.4px;
+    text-align: center;
 }
 
 .coin-selection {
     overflow: visible;
     overflow-y: auto;
-    height: 50vh;
+    max-height: 60vh;
     padding-top: 7.25px;
 }
 .coin-selection::-webkit-scrollbar-track {
@@ -247,21 +255,84 @@
 }
 
 svg {
-    height: 5vmax;
-    transform: translateY(25%);
+    height: 100px;
 }
-
+.modal-contents{
+    height: 500px;
+}
+.value {
+    margin: 15px 0;
+}
 svg * {
     fill:#3E4B5B;
     transition: all 0.25s ease;
 }
-
-.el-tablo:hover svg *,
-.active > div > svg * {
-    fill: #3b75e3;
+.svgtext {
+    fill: white!important;
 }
 
-.unavailable {
-  opacity: 0.5;
-  pointer-events: none;
+@media (max-width: 768px) {
+    #addnew {
+        padding: 0;
+    }
+    .intro-row {
+        font-size: 30px;
+        margin: 10px 0 0 0;
+    }
+    form input {
+        margin: auto;
+    }
+    .adjust-coins {
+        margin: 20px 0;
+    }
+    .label {
+        font-size: 20px;
+    }
+    .el-tablo .value {
+        font-size: 0px;
+    }
+    a.el-tablo:hover:not(.active) .label {
+        color: rgba(0, 0, 0, 0.4);
+        transform: translateY(0);
+    }
+    a.el-tablo:hover:not(.active) {
+        box-shadow: 0px 2px 4px rgba(126, 142, 177, 0.12);
+        transform: scale(1) translateY(0);
+    }
+    a.el-tablo:hover:not(.active) .value {
+      transform: translateY(0);
+    }
+    
+    a.el-tablo:hover.centered:not(.active) .value {
+        transform: scale(1) translateY(0);
+    }
+    .setupMenu-mobile {
+        margin: 0 3px;
+        font-size: 15px;
+        color: black;
+        padding: 10px 15px;
+        border-radius: 5px;
+        -webkit-box-shadow: 1px 1px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 0px 13px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.075);
+    }
+    .mobileMenu {
+        background: white;
+        padding: 20px 0;
+    }
+    #custom-coin-modal{
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+    }
+    .overlaytwo.active{
+        background: none;
+        pointer-events: auto;
+    }
+    svg {
+        height: 15vmax;
+    }
+    .overlaytwo{
+        top: -184px;
+    }
 }

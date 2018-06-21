@@ -62,6 +62,9 @@ export class WalletComponent implements OnInit {
     this.loadingBar.start();
     setTimeout(() => this.executeGetters(), 10);
   }
+  isMobile() {
+    return document.querySelectorAll('.mobile').length !== 0;
+  }
 
   toggleShapeshift() {
     this.shData.changeShapeShiftModalStatus(true);

@@ -1,7 +1,8 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CryptoHelperService } from '../../services/crypto-helper.service';
 import { Router } from '@angular/router';
 import { keccak_256 } from 'js-sha3';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 @Component({
   selector: 'app-addnewcoin',
@@ -9,14 +10,15 @@ import { keccak_256 } from 'js-sha3';
   styleUrls: ['./addnewcoin.component.scss']
 })
 export class AddnewcoinComponent implements OnInit {
-
   coins: Array<any>;
+  downloadedJSON: Boolean = false;
   selectedCoins: Array<any> = [];
   coinName: any = { class: '' };
   coinAbbr: any = { type: '' };
+  shouldHaveJSON: Boolean = true;
+  searchActive: Boolean = false;
 
-
-  constructor(private ch: CryptoHelperService, private router: Router) { }
+  constructor(private ch: CryptoHelperService, private router: Router, private loadingBar: LoadingBarService) { }
 
   ngOnInit() {
     this.coins = this.ch.coins;
@@ -53,18 +55,20 @@ export class AddnewcoinComponent implements OnInit {
     };
     this.coins.forEach(function(el) { el.selected = false; });
     localStorage.setItem('preferences-' + keccak_256( this.ch.decryptKey() ), JSON.stringify(obj));
-    this.router.navigate(['/dashboard/wallet/']);
+    this.router.navigate(['dashboard/wallet/']);
   }
+
 
   alreadyExists(type: string) {
     return document.querySelector('.coin-' + type.trim() + '-identifier') === null;
   }
 
   toggleCustomCoinModal($event) {
-    if ($event.target !== $event.currentTarget) {
+    this.searchActive = false;
+    if ($event.target !== $event.currentTarget && !this.isMobile()) {
       return;
     }
-    document.querySelector('.overlay-coin').classList.toggle('active');
+    document.querySelector('.overlaytwo').classList.toggle('active');
     document.querySelector('#custom-coin-modal').classList.toggle('active');
   }
 
@@ -102,8 +106,10 @@ export class AddnewcoinComponent implements OnInit {
     this.toggleCustomCoinModal($event);
   }
 
-  resetSettings() {
-    this.coins.forEach(function(el) { el.selected = false; });
-    this.router.navigate(['/dashboard/wallet/']);
+  isMobile() {
+    return document.querySelectorAll('.mobile').length !== 0;
+  }
+  mobileSearch() {
+    this.searchActive = !this.searchActive;
   }
 }

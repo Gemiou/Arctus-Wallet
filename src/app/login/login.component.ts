@@ -31,6 +31,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loginShow = this.isMobile();
+
     if (blockstack.isUserSignedIn()) {
       this.beginBSLoading();
       blockstack.getFile('key.json').then((data) => {
@@ -40,7 +42,7 @@ export class LoginComponent implements OnInit {
           const parsed = JSON.parse(data);
           this.ch.encryptKey('0x' + parsed.seed);
           localStorage.setItem('pass', '');
-          const el = <HTMLScriptElement>document.querySelector('.container');
+          const el = <HTMLScriptElement>document.querySelector('.container-fluid');
           el.style.opacity = '0';
           el.style.transform = 'scale(0.7)';
           el.style.pointerEvents = 'none';
@@ -60,7 +62,7 @@ export class LoginComponent implements OnInit {
           blockstack.putFile('key.json', JSON.stringify({'seed': keySeed})).then(() => {
             // Saved successfully
             console.log('Seed successfully saved');
-            const el = <HTMLScriptElement>document.querySelector('.container');
+            const el = <HTMLScriptElement>document.querySelector('.container-fluid');
             el.style.opacity = '0';
             el.style.transform = 'scale(0.7)';
             el.style.pointerEvents = 'none';
@@ -116,7 +118,7 @@ export class LoginComponent implements OnInit {
       alert('ERROR: Username / Password cannot be empty');
       return;
     }
-    const el = <HTMLScriptElement>document.querySelector('.container');
+    const el = <HTMLScriptElement>document.querySelector('.container-fluid');
     el.style.opacity = '0';
     el.style.transform = 'scale(0.7)';
     el.style.pointerEvents = 'none';
@@ -181,7 +183,7 @@ export class LoginComponent implements OnInit {
       if (preferences !== undefined && preferences !== null) {
         localStorage.setItem( 'preferences-' + keccak_256( this.ch.decryptKey()) , JSON.stringify(preferences));
       }
-      const el = <HTMLScriptElement>document.querySelector('.container');
+      const el = <HTMLScriptElement>document.querySelector('.container-fluid');
       el.style.opacity = '0';
       el.style.transform = 'scale(0.7)';
       el.style.pointerEvents = 'none';
@@ -218,11 +220,15 @@ export class LoginComponent implements OnInit {
   }
 
   toLogin() {
-    this.loginscreen = true;
-    this.loginShow = false;
+    this.loginscreen = !this.isMobile();
+    this.loginShow = this.isMobile();
     this.JSONLogin = false;
     this.pklogin = false;
     this.uploadInfo = 'Upload Keystore';
     this.password = '';
+  }
+
+  isMobile() {
+    return document.querySelectorAll('.mobile').length !== 0;
   }
 }

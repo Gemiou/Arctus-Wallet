@@ -55,4 +55,8 @@ export class SettingsComponent implements OnInit {
   redirectToFAQ() {
     window.location.href = 'https://www.arctus.io/FAQ';
   }
+  
+  isMobile() {
+    return document.querySelectorAll('.mobile').length !== 0;
+  }
 }

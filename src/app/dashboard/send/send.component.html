@@ -3,34 +3,34 @@
 <div id="sendCoins" class="element-wrapper">
   <div class="element-box">
     <div class="row">
-      <h3 class="col-sm-12 text-center margin-tb-1">Send {{coinName}}</h3>
+      <h3 class="col-lg-12 text-center margin-tb-1">Send {{coinName}}</h3>
     </div>
     <div class="row">
       <!-- Addresses For Transactions -->
-      <div class="col-sm-6" [ngClass]="{ 'offset-sm-3' : this.coinName == 'BTC'}">
+      <div class="col-lg-6" [ngClass]="{ 'offset-sm-3' : this.coinName == 'BTC'}">
         <div class="form-group row">
-          <div class="col-sm-2">
+          <div class="col-lg-2">
             <label for="">From: </label>
           </div>
-          <div class="col-sm-9">
+          <div class="col-lg-9">
             <input class="effect-1" type="text" placeholder="From" [(ngModel)]="addressFrom" disabled/>
             <span class="focus-border"></span>
           </div>
         </div>
         <div class="form-group row">
-          <div class="col-sm-2">
+          <div class="col-lg-2">
             <label for="">To: </label>
           </div>
-          <div class="col-sm-9">
+          <div class="col-lg-9">
             <input class="effect-1" type="text" placeholder="Recipient Address" [(ngModel)]="recipientAddress" (input)="filterAddress($event)">
             <span class="focus-border"></span>
           </div>
         </div>
         <div class="form-group row">
-          <div class="col-sm-3">
+          <div class="col-lg-3">
             <label for=""> {{coinName}} Amount: </label>
           </div>
-          <div class="col-sm-8">
+          <div class="col-lg-8">
             <input class="effect-1" [(ngModel)]="coinAmount" (input)="filterEther($event)" [ngModelOptions]="{standalone: true}" placeholder="{{coinAmount}}"
               type="text" />
             <span class="focus-border"></span>
@@ -39,32 +39,32 @@
       </div>
       <!-- End Addresses For Transactions -->
       <!-- Settings for transaction -->
-      <div class="col-sm-6" *ngIf="this.coinName != 'BTC'">
+      <div class="col-lg-6" *ngIf="this.coinName != 'BTC'">
         <div class="form-group row">
-          <div class="col-sm-4">
+          <div class="col-lg-4">
             <label for="">Gas Price: </label>
           </div>
-          <div class="col-sm-5">
+          <div class="col-lg-5">
             <input id="gasPrice" class="effect-1 gas-price" type="text" [(ngModel)]="gasPrice" (input)="filterPrice($event)" [ngModelOptions]="{standalone: true}"
               placeholder="{{gasPrice}}" type="text" />
             <span class="focus-border"></span>
           </div>
         </div>
         <div class="form-group row">
-          <div class="col-sm-4">
+          <div class="col-lg-4">
             <label for=""> Gas Amount: </label>
           </div>
-          <div class="col-sm-5">
+          <div class="col-lg-5">
             <input class="effect-1" [(ngModel)]="gasAmount" (input)="filterAmount($event)" [ngModelOptions]="{standalone: true}" placeholder="{{gasAmount}}"
               type="text" />
             <span class="focus-border"></span>
           </div>
         </div>
         <div class="form-group row" *ngIf="this.coinName == 'ETH'">
-          <div class="col-sm-4">
+          <div class="col-lg-4">
             <label for=""> Data: </label>
           </div>
-          <div class="col-sm-5">
+          <div class="col-lg-5">
             <input class="effect-1" [(ngModel)]="callData" (input)="filterCallcode($event)" [ngModelOptions]="{standalone: true}" placeholder="{{callData}}"
               disabled="true" type="text" />
             <i class="typcn typcn-lock-closed locked" (click)="toggleLock()"></i>
@@ -77,14 +77,14 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-3 col-offset-6">
-      <button [routerLink]="['/dashboard/wallet']" class="button--winona col-sm-12" data-text="Cancel Transaction">
+    <div class="col-lg-3 col-12 mb-1">
+      <button [routerLink]="['/dashboard/wallet']" class="button--winona col-lg-12" data-text="Cancel Transaction">
         <span>Cancel Transaction</span>
       </button>
     </div>
-    <div class="col-sm-3">
+    <div class="col-lg-3 col-12 margin-tb-1">
       <button
-       [ngClass]="{ 'unavailable' : coinAmount == 0 || coinAmount > userBalance || recipientAddress == '' }" class="button--winona col-sm-12" data-text="Start Transaction" (click)="startTransaction()">
+       [ngClass]="{ 'unavailable' : coinAmount == 0 || coinAmount > userBalance || recipientAddress == '' }" class="button--winona col-lg-12" data-text="Start Transaction" (click)="startTransaction()">
         <span>{{coinAmount == 0?'No Amount Specified':(coinAmount > userBalance?'Insufficient Funds for Transaction':(recipientAddress == ''?'No Recipient Specified':'Start Transaction'))}}</span>
       </button>
     </div>
