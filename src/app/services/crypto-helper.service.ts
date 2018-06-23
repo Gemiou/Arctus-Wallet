@@ -140,14 +140,14 @@ export class CryptoHelperService {
 
   public decryptKey() {
     try {
-      return localStorage.getItem('seed');
+      return CryptoJS.AES.decrypt(localStorage.getItem('seed'), this.key).toString(CryptoJS.enc.Utf8);
     } catch (e) {
       return null;
     }
   }
 
   public encryptKey(seed) {
-    localStorage.setItem('seed', seed);
+    localStorage.setItem('seed', CryptoJS.AES.encrypt(seed, this.key));
   }
 
   // KEY HANDLING SECTION END
