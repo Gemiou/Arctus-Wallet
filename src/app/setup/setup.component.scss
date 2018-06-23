@@ -74,8 +74,8 @@
     position: absolute;
     border-radius: 12px;
     z-index: 2;
-    width: 1000px;
-    height: 500px;
+    width: 500px;
+    height: auto;
     background: rgba(255, 255, 255, 1);
     transform: translate(-50%, -25%) scale(0.9);
     opacity: 0;
@@ -239,7 +239,11 @@
     border-radius: 12px;
     background-color: transparent;
 }
-
+.cpright {
+    font-size: 30px;
+    color: black;
+    font-weight: 600;
+}
 .coin-selection::-webkit-scrollbar {
     width: 2px;
 }
@@ -256,9 +260,6 @@
 
 svg {
     height: 100px;
-}
-.modal-contents{
-    height: 500px;
 }
 .value {
     margin: 15px 0;

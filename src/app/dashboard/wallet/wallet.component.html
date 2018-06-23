@@ -106,7 +106,7 @@
                 </td>
                 <td class="hide-mb">
                   <div class="cell-image-list coin-{{coin.type.trim()}}-identifier">
-                    {{coin.address}}
+                    {{coin.address}} <span class="copyAddress"  ngxClipboard [cbContent]="coin.address">Copy</span>
                   </div>
                 </td>
                 <td class="text-right">

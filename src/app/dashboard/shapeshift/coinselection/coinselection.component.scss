@@ -174,6 +174,26 @@
     .active svg * {
         fill: #3b75e3;
     }
+    .close-modal {
+        position: absolute;
+        top: 2%;
+        right: 4%;
+        color: #55779f;
+        font-size: 27px !important;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        z-index: 10;
+    }
+    .close-modal:hover {
+        z-index: 10;
+        color: #ffffff;
+        background: #55779f;
+    }
+    .coinse{
+        cursor: pointer;
+    }
     @media (max-width: 768px) {
         .label{
             font-size: 15px;

@@ -11,6 +11,7 @@ export class SharedDataService {
   // ShapeShift Pair (As Array of 2 values)
   public shapeShiftPair = new BehaviorSubject<any>(['BTC', 'ETH']);
   public coinBalance = new BehaviorSubject<any>(0);
+  public currentCoin = new BehaviorSubject<any>(undefined);
   // Observable string streams
   modalStatus$ = this.shapeshiftModalStatus.asObservable();
   shapeShiftPair$ = this.shapeShiftPair.asObservable();
@@ -28,6 +29,9 @@ export class SharedDataService {
   }
   changeSelectStatus(change: any) {
     this.isSelectingCoin.next(change);
+  }
+  changeCurrentCoin(change: any) {
+    this.currentCoin.next(change);
   }
   constructor() { }
 

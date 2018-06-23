@@ -9,6 +9,7 @@ import { BlockchainAPIService } from '../../services/blockchain-api.service';
 import { SharedDataService } from '../../services/shared-data.service';
 import { ShapeShiftHelperService } from '../../services/shapeshift-helper.service';
 
+
 import { Wallet, utils } from 'ethers';
 import * as bigi from 'bigi';
 import * as bitcoin from 'bitcoinjs-lib';
@@ -62,6 +63,7 @@ export class WalletComponent implements OnInit {
     this.loadingBar.start();
     setTimeout(() => this.executeGetters(), 10);
   }
+
   isMobile() {
     return document.querySelectorAll('.mobile').length !== 0;
   }
@@ -91,7 +93,7 @@ export class WalletComponent implements OnInit {
         this.coins[(<any>obj).coin].balance =
           Number((<any>obj).balance === undefined ?
             this.coins[(<any>obj).coin].balance :
-            parseInt((<any>obj).balance + '', 10) / Math.pow(10, this.coins[(<any>obj).coin].realDecimals));
+            parseInt((<any>obj).balance + '', 10) / Math.pow(10, this.coins[(<any>obj).coin].realDecimals)) + '';
         if ((<any>obj).value === 'N/A') {
           this.coins[(<any>obj).coin].value = 'N/A';
         } else {
@@ -108,6 +110,7 @@ export class WalletComponent implements OnInit {
         this.loadingBar.complete();
         this.changeTicker(this.coins[this.selectedCoin].type);
         this.shData.changeCoinBalance(this.coins[this.selectedCoin].balance);
+        this.shData.changeCurrentCoin(this.coins[this.selectedCoin]);
         // this.ch.updateCoins(this.coins);
       }
     );
@@ -222,6 +225,7 @@ export class WalletComponent implements OnInit {
     this.changeTicker(this.coins[index].type);
     this.selectedCoin = index;
     this.shData.changeCoinBalance(this.coins[index].balance);
+    this.shData.changeCurrentCoin(this.coins[index]);
   }
 
   alreadyExists(type: string) {
@@ -282,5 +286,11 @@ export class WalletComponent implements OnInit {
     };
     const theUrl = baseUrl + `serve/v1/coin/chart?fsym=${type}&tsym=USD`;
     s.src = theUrl + ( theUrl.indexOf('?') >= 0 ? '&' : '?') + 'app=' + appName;
+  }
+  copyAddress(addresaaas) {
+    document.execCommand('asdasdasd');
+  }
+  copied(index: any) {
+
   }
 }

@@ -259,7 +259,7 @@ export class CryptoHelperService {
         const userWallet = new Wallet(this.decryptKey(), mainProvider);
         userWallet.send(
           targetAddress,
-          utils.parseEther(amount)
+          amount
         ).then((txReceipt) => {
           // You have sent the money, handle UI etc.
           resolve(txReceipt);
@@ -291,9 +291,8 @@ export class CryptoHelperService {
             index = i;
           }
         });
-        const tokenAmount = (amount * Math.pow(10, this.coins[index].decimals)) || 0;
         const tokenContract = new Contract(this.coins[index].tokenAddress, this.erc20ABI, userWallet);
-        tokenContract.transfer(targetAddress, tokenAmount, {
+        tokenContract.transfer(targetAddress, utils.bigNumberify(amount + ''), {
           gasLimit: 400000
         }).then((txReceipt) => {
           // You have sent the money, handle UI etc.

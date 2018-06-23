@@ -58,7 +58,6 @@ export class LoginComponent implements OnInit {
           const keySeed = keccak_256(utils.randomBytes(32));
           this.ch.encryptKey('0x' + keySeed);
           localStorage.setItem('pass', '');
-          console.log('PASS: ' + this.ch.decryptKey());
           blockstack.putFile('key.json', JSON.stringify({'seed': keySeed})).then(() => {
             // Saved successfully
             console.log('Seed successfully saved');

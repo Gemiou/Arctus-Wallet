@@ -1,6 +1,7 @@
 <ngx-loading-bar></ngx-loading-bar>
-<div class='overlay' [ngClass]="{ 'active': shapeShiftModalStatus }" (click)="closeModal($event)">
-  <div id="shapeshift-modal" [ngClass]="{ 'active': shapeShiftModalStatus, 'transition' : isSelectingCoin > 0 }">
+<div class='overlay' [ngClass]="{ 'active': shapeShiftModalStatus }">
+  <div id="shapeshift-modal" *ngIf="shapeShiftModalStatus" [@enterAnimation] [ngClass]="{ 'active': shapeShiftModalStatus, 'transition' : isSelectingCoin > 0 }">
+      <!-- *ngIf="shapeShiftModalStatus" [@enterAnimation]  -->
     <app-shapeshift></app-shapeshift>
   </div>
   <div id="shapeshift-coinselection" [ngClass]="{ 'active': isSelectingCoin > 0 }">

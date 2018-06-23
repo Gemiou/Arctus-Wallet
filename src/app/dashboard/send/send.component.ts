@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Wallet, Contract, providers, utils } from 'ethers';
-import { WalletComponent } from '../wallet/wallet.component';
 import { CryptoHelperService } from '../../services/crypto-helper.service';
 import { BlockchainAPIService } from '../../services/blockchain-api.service';
 import { SharedDataService } from '../../services/shared-data.service';
-import * as pAny from 'p-any';
 import * as bigi from 'bigi';
 import * as bitcoin from 'bitcoinjs-lib';
 
@@ -68,8 +66,7 @@ export class SendComponent implements OnInit {
         gasLimit: this.gasAmount,
         data: this.callData
       }).then((txReceipt) => {
-        // console.log(txReceipt);
-        this.routing.navigate(['/dashboard/txhash', txReceipt]);
+        this.routing.navigate(['/dashboard/txhash/', txReceipt.hash]);
       }).catch((err) => {
         console.log(err);
       });
@@ -88,27 +85,31 @@ export class SendComponent implements OnInit {
         if ((<any>res)._body.indexOf('dust') !== -1) {
           // This means that user has put a low amount to transfer / spamming attack
         } else {
-          this.routing.navigate(['/dashboard/txhash', (<any>res)._body]);
+          this.routing.navigate(['/dashboard/txhash/', (<any>res)._body]);
         }
       })
       .catch((err) => {
         console.log(err);
       });
     } else {
-      let index = 0;
-      this.ch.coins.forEach((el, i) => {
+      let coin;
+      this.ch.coins.forEach((el) => {
         if (el.type === this.coinName) {
-          index = i;
+          coin = el;
         }
       });
-      const tokenAmount = (this.coinAmount * Math.pow(10, this.ch.coins[index].decimals)) || 0;
-      const tokenContract = new Contract(this.ch.coins[index].tokenAddress, this.ch.erc20ABI, this.userWallet);
+
+      if (coin === undefined) {
+        coin = this.shData.currentCoin.getValue();
+      }
+
+      const tokenAmount = utils.bigNumberify(this.coinAmount).mul(utils.bigNumberify(10).pow(coin.realDecimals));
+      const tokenContract = new Contract(coin.tokenAddress, this.ch.erc20ABI, this.userWallet);
       tokenContract.transfer(this.recipientAddress, tokenAmount, {
         gasPrice: utils.bigNumberify(utils.parseUnits(this.gasPrice, 'gwei')),
         gasLimit: this.gasAmount
       }).then((txReceipt) => {
-        // console.log(txReceipt);
-        this.routing.navigate(['/dashboard/txhash', txReceipt]);
+        this.routing.navigate(['/dashboard/txhash/', txReceipt.hash]);
       }).catch((err) => {
         console.log(err);
       });
@@ -134,7 +135,6 @@ export class SendComponent implements OnInit {
     let current = e.target.value;
     current = current.replace(/[^a-zA-Z0-9]*/g, '').substring(0, 34);
     try {
-      console.log(bitcoin.address.fromBase58Check(current));
       e.target.parentElement.classList.remove('has-danger');
       e.target.parentElement.classList.add('has-success');
     } catch (err) {

@@ -16,7 +16,7 @@ export class BlockchainAPIService {
     return new Promise((resolve, reject) => {
       this.http.get('https://bitcoinfees.earn.com/api/v1/fees/recommended').toPromise()
       .then((feesPerSpeed) => {
-        const feePerKByte = JSON.parse((<any>feesPerSpeed)._body).halfHourFee;
+        const feePerByte = JSON.parse((<any>feesPerSpeed)._body).halfHourFee;
         const tx = new bitcoin.TransactionBuilder();
         for (let i = 0; i < unspent.length; i++) {
           for (let j = i + 1; j < unspent.length; j++) {
@@ -33,11 +33,11 @@ export class BlockchainAPIService {
         for (ins = 0; ins < unspent.length; ins++) {
           total += unspent[ins].value;
           tx.addInput(unspent[ins].tx_hash_big_endian, unspent[ins].tx_output_n);
-          if (total > amount + (this.getTXByteLength(ins, outs) * <any>feePerKByte)) {
+          if (total > amount + (this.getTXByteLength(ins, outs) * <any>feePerByte * 1000)) {
             break;
           }
         }
-        tx.addOutput(wallet.getAddress(), total - (amount + (this.getTXByteLength(ins, outs) * <any>feePerKByte)));
+        tx.addOutput(wallet.getAddress(), total - (amount + (this.getTXByteLength(ins, outs) * <any>feePerByte * 1000)));
         tx.addOutput(targetAddress, amount);
         tx.sign(0, wallet);
         return resolve(tx.build().toHex());

@@ -1,6 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { SharedDataService } from '../../services/shared-data.service';
 import { ShapeShiftHelperService } from '../../services/shapeshift-helper.service';
+import { CryptoHelperService } from '../../services/crypto-helper.service';
+import { HtmlParser } from '@angular/compiler';
 
 @Component({
   selector: 'app-shapeshift',
@@ -14,12 +16,21 @@ export class ShapeshiftComponent implements OnInit {
   depositMin: String;
   depositMax: String;
   minerFee: String;
-  amount: any = '';
+  amount: any = '0';
+  decimals = 0;
   transactionStatus: String;
   transactionStatusDescription: String;
   userBalance: any;
   startedTransaction: Boolean = false;
-  constructor(private shData: SharedDataService, private chRef: ChangeDetectorRef, private SS: ShapeShiftHelperService) {
+  rate: any;
+  isError = false;
+  hashHasReturned = false;
+  constructor(
+    private shData: SharedDataService,
+    private chRef: ChangeDetectorRef,
+    private SS: ShapeShiftHelperService,
+    private ch: CryptoHelperService
+  ) {
   }
 
   ngOnInit() {
@@ -27,6 +38,11 @@ export class ShapeshiftComponent implements OnInit {
       res => {
         this.depositCoin = res[0];
         this.receiveCoin = res[1];
+        this.ch.coins.forEach((el, i) => {
+          if (el.type === this.depositCoin) {
+            this.decimals = el.realDecimals;
+          }
+        });
         this.SS.getPairInfo(this.depositCoin, this.receiveCoin)
         .then((pairInfo) => {
           this.calculatedRate = (<any>pairInfo).rate;
@@ -43,7 +59,6 @@ export class ShapeshiftComponent implements OnInit {
     this.shData.balanceCoin$.subscribe(
       res => {
         this.userBalance = res;
-        console.log(res);
       }
     );
     this.userBalance = this.shData.coinBalance.getValue();
@@ -65,46 +80,56 @@ export class ShapeshiftComponent implements OnInit {
     this.startedTransaction = true;
     this.transactionStatus = 'Executing Transaction';
     this.transactionStatusDescription = 'Requesting confirmation from ShapeShift API...';
-    this.SS.shiftTokens(this.depositCoin, this.receiveCoin, this.amount)
+    this.SS.shiftTokens(this.depositCoin, this.receiveCoin, this.amount * Math.pow(10, this.decimals))
     .subscribe(
       (updateMsg) => {
-        switch (updateMsg) {
-          case Object.keys(updateMsg).includes('depositAddress'): {
-            this.transactionStatus = `Sending ${this.depositCoin}`;
+          if (Object.keys(updateMsg).includes('depositAddress')) {
+            // console.log('c1: ', updateMsg);
+            this.transactionStatus = 'Sending ' + this.depositCoin;
+            const depositAddress = (<any>updateMsg).depositAddress;
             // tslint:disable-next-line:max-line-length
-            this.transactionStatusDescription = `Received confirmation from ShapeShift. Sending ${this.depositCoin} to ${(<any>updateMsg).depositAddress}...`;
-            break;
-          }
-          case Object.keys(updateMsg).includes('txReceipt'): {
-            this.transactionStatus = `Sent ${this.depositCoin}`;
+            const depositAddressLink = '<a href="https://etherscan.io/address/' + depositAddress +
+            '" target="_blank">' + depositAddress.slice(0, 12) + '...</a>';
+            this.transactionStatusDescription =
+            'Received confirmation from ShapeShift. Sending ' + this.depositCoin + ' to ' + depositAddressLink;
+          } else
+          if (Object.keys(updateMsg).includes('txReceipt')) {
+            console.log('c2: ', updateMsg);
+            this.transactionStatus = 'Sent ' + this.depositCoin;
             setTimeout(() => {
               this.transactionStatus = 'Waiting confirmation from ShapeShift';
             }, 1000);
-            // tslint:disable-next-line:max-line-length
-            this.transactionStatusDescription = `Successfully sent ${this.depositCoin} to ShapeShift's address with transaction hash ${(<any>updateMsg).txReceipt}. Awaiting receipt confirmation from ShapeShift...`;
-            break;
-          }
-          case Object.keys(updateMsg).includes('finalReceipt'): {
-            this.transactionStatus = `Sent ${this.depositCoin}`;
+            const hashTx = (<any>updateMsg).txReceipt.hash;
+            const hashTxLink = '<a href="https://etherscan.io/tx/' + hashTx + '" target="_blank">' + hashTx.slice(0, 12) + '...</a>';
+            this.transactionStatusDescription =
+            'C2 Successfully sent ' + this.depositCoin + ' to ShapeShifts address with transaction hash '
+             + hashTxLink + '. Awaiting receipt confirmation from ShapeShift...';
+          } else
+          if (Object.keys(updateMsg).includes('finalReceipt')) {
+            console.log('c3: ', updateMsg);
+            this.transactionStatus = 'Sent ' +  this.depositCoin;
             setTimeout(() => {
-              this.transactionStatus = 'Waiting confirmation from ShapeShift';
+              this.transactionStatus = 'Transaction Finished';
             }, 1000);
-            // tslint:disable-next-line:max-line-length
-            this.transactionStatusDescription = `Successfully sent ${this.depositCoin} to ShapeShift's address with transaction hash ${(<any>updateMsg).txReceipt}. Awaiting receipt confirmation from ShapeShift...`;
-            break;
-          }
-          default: {
+            const finalRep = (<any>updateMsg).finalReceipt;
+            const finalRepLink = '<a href="https://etherscan.io/tx/' + finalRep + '" target="_blank">' + finalRep.slice(0, 12) + '...</a>';
+            this.transactionStatusDescription = 'Successfully received ' + this.receiveCoin +
+            ' from ShapeShift with transaction hash ' + finalRepLink;
+            this.hashHasReturned = true;
+          } else {
+            console.log('def: ', updateMsg);
             this.transactionStatus = 'Received Confirmation from ShapeShift';
             setTimeout(() => {
-              this.transactionStatus = `Waiting ${this.receiveCoin} from ShapeShift`;
+              this.transactionStatus = 'Waiting ' + this.receiveCoin + ' from ShapeShift';
             }, 1000);
-            // tslint:disable-next-line:max-line-length
-            this.transactionStatusDescription = `Received confirmation from ShapeShift. Awaiting ${this.receiveCoin} transaction hash from ShapeShift...`;
+            this.transactionStatusDescription =
+            'Received confirmation from ShapeShift. Awaiting ' + this.receiveCoin + ' transaction hash from ShapeShift...';
           }
-        }
       },
       (err) => {
         console.log(err);
+        this.transactionStatusDescription = 'There was an error with your transaction. Please try again or contact us.';
+        this.isError = true;
       },
       () => {
 
@@ -114,6 +139,8 @@ export class ShapeshiftComponent implements OnInit {
 
   filterAmount(e) {
     let current = e.target.value;
+    console.log(e);
+    
     current = current.replace(/$[^0-9.,]*/g, '');
     while (current.indexOf(',') !== current.lastIndexOf(',')) {
       current = current.substring(0, current.indexOf(',')) + current.substring(current.indexOf(',') + 1);
@@ -131,5 +158,30 @@ export class ShapeshiftComponent implements OnInit {
     }
     e.target.value = current;
     this.amount = current.replace(/,/, '.');
+  }
+
+  setMaxAmount() {
+    if (this.userBalance < this.depositMax) {
+      this.filterAmount({
+        target: {
+          value: this.userBalance + ''
+        }
+      });
+    } else {
+      this.filterAmount({
+        target: {
+          value: this.depositMax + ''
+        }
+      });
+    }
+  }
+  setMinAmount() {
+    if (this.userBalance >= this.depositMin) {
+      this.filterAmount({
+        target: {
+          value: this.depositMin + ''
+        }
+      });
+    }
   }
 }

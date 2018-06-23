@@ -7,6 +7,8 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 import { QRCodeModule } from 'angularx-qrcode';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { AppRoutingModule } from './/app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ClipboardModule } from 'ngx-clipboard';
 
 import { CryptoHelperService } from './services/crypto-helper.service';
 import { ShapeShiftHelperService } from './services/shapeshift-helper.service';
@@ -54,6 +56,8 @@ import { CoinSelectionComponent } from './dashboard/shapeshift/coinselection/coi
     AppRoutingModule,
     FilterPipeModule,
     QRCodeModule,
+    BrowserAnimationsModule,
+    ClipboardModule,
     LoadingBarModule.forRoot()
   ],
   providers: [

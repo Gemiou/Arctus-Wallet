@@ -57,6 +57,7 @@
         top: 50%;
         transform: translate(-50%,-50%);
         z-index: 2;
+        filter: hue-rotate(26deg);
     }
     
     
@@ -144,16 +145,64 @@
     .transaction-status {
         color: black;
         text-align: center;
-        height: 100%;
         div:first-child {
-            font-size: 2vmax;
+            font-size: 20px;
         }
-        div:nth-child(2) {
-            height: 45%;
-        }
+
         div:last-child {
-            font-size: 1vmax;
+            font-size: 15px;
         }
+        .trans-desc{
+            font-size: 18px;
+        }
+        .checkmark__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: #7ac142;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+          }
+          
+          .checkmark {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 2;
+            stroke: #fff;
+            stroke-miterlimit: 10;
+            margin: 10% auto;
+            box-shadow: inset 0px 0px 0px #7ac142;
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+          }
+          
+          .checkmark__check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+          }
+          
+          @keyframes stroke {
+            100% {
+              stroke-dashoffset: 0;
+            }
+          }
+          @keyframes scale {
+            0%, 100% {
+              transform: none;
+            }
+            50% {
+              transform: scale3d(1.1, 1.1, 1);
+            }
+          }
+          @keyframes fill {
+            100% {
+              box-shadow: inset 0px 0px 0px 30px #7ac142;
+            }
+          }          
     }
     @media (max-width: 768px) {
         .left-side {
@@ -179,6 +228,60 @@
             color: white;
         }
     }
+    .converter {
+        font-size: 18px;
+        background: #efeff0;
+        padding: 12px 0;
+        border: 1px solid #e6e2e2;
+        color: #64758d;
+    }
+    .min {
+        font-size: 18px;
+        background: #f6f6f8;
+        padding: 12px 0;
+        border: 1px solid #e6e2e2;
+        border-top-left-radius: 8px;
+        color: #64758d;
+        font-weight: 600;
+        border: 1px solid #fffdfd;
+        box-shadow: 1px 1px 8px #cbc7c7;
+        z-index: 1;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+    .max{
+        font-size: 18px;
+        background: #f6f6f8;
+        padding: 12px 0;
+        border: 1px solid #fffdfd;
+        box-shadow: -1px 1px 8px #cbc7c7;
+        border-bottom-right-radius: 8px;
+        color: #64758d;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+    .min:hover, .max:hover {
+        box-shadow: 0px 2px 28px #CBC7C4;
+    }
+    .min:active, .max:active {
+        border: 1px solid #ccc7c7;
+    }
+    .convert-amount{
+        font-weight: 600;
+    }
+    .tryagain{
+        background: #55779f;
+        padding: 5px 10px;
+        border-radius: 5px;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+    }
+    .tryagain:hover{
+        background: #6b84a1;
+    }
    
 }
 input[type=number]::-webkit-inner-spin-button, 
@@ -189,42 +292,70 @@ input[type=number]::-webkit-outer-spin-button {
 // coin animations
 
 .first-coin{
-    opacity: 1;
+    opacity: 0;
     transform: translateX(0);
     animation-name: first-coin-animation;
-    animation-duration:2s;
-    animation-delay: -2s;
+    animation-duration:6s;
     animation-iteration-count: infinite;
 
 }
 
 .second-coin{
-    opacity: 0;
-    transform: translateX(-100%);
+    opacity: 1;
+    transform: translateX(-115%);
     animation-name: second-coin-animation;
-    animation-duration:2s;
-    animation-delay: 2s;
+    animation-duration:6s;
     animation-iteration-count: infinite;
 }
 
 @keyframes first-coin-animation {
-    0%,{
-        opacity: 1;
-    }
-    from {
-        opacity: 1;
-    }
-    to {
+    0%{
         opacity: 0;
-        transform: translateX(100%);
+        transform: translateX(0%);
+    }
+    10%{
+        opacity: 1;
+        transform: translateX(0%);
+    }
+    40%{
+        opacity: 1;
+        transform: translateX(110%);
+    }
+    50% {
+        opacity: 0;
+        transform: translateX(110%);
+    }
+    80% {
+        opacity: 0;
+        transform: translateX(110%);
+    }
+    90%{
+        opacity: 0;
+        transform: translateX(110%);
+    }
+    100%{
+        opacity: 0;
+        transform: translateX(0%);
     }
 }
 @keyframes second-coin-animation {
-    from {
-        opacity: 1;
-        transform: translateX(-100%);
+    0%{
+        opacity: 0;
+        transform: translateX(-115%);
     }
-    to {
+    22% {
+        opacity: 0;
+        transform: translateX(-115%);
+    }
+    45%{
+        opacity: 1;
+        transform: translateX(-115%);
+    }
+    82% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    100% {
         opacity: 0;
         transform: translateX(0);
     }

@@ -2,7 +2,7 @@
 <div class="overlay" (click)="toggleCustomCoinModal($event)">
   <div id="custom-coin-modal" class="container-fluid">
     <div class="row align-items-center modal-contents">
-      <div class="col-lg-12">
+      <div class="col-lg-12 p-4">
         <div class="row justify-content-center">
           <div class="modal-title">
             ERC-20 Token
@@ -11,26 +11,27 @@
         <div class="row justify-content-center">
             <div class="value col-lg-12 text-center">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                  viewBox="-693.2 331.5 500 500" style="enable-background:new -693.2 331.5 500 500;" xml:space="preserve">
-                  <style type="text/css">
-                    .st0 {
-                      fill: #FFFFFF;
-                    }
-    
-                    .st1 {
-                      font-family: 'SourceSansPro-Regular';
-                    }
-    
-                    .st2 {
-                      font-size: 124.5044px;
-                    }
-                  </style>
-                  <circle cx="-442.5" cy="582.3" r="246.7" />
-                  <text transform="matrix(1 0 0 1 -550.25 554.8506)">
-                    <tspan x="0" y="0" class="svgtext st1 st2">ERC </tspan>
-                    <tspan x="41.9" y="149.4" class="svgtext st1 st2">20</tspan>
-                  </text>
-                </svg>
+                viewBox="-542 530 282 224" style="enable-background:new -542 530 282 224;" xml:space="preserve">
+                <style type="text/css">
+                  .st0 {
+                    font-family: 'MyriadPro-Regular';
+                  }
+  
+                  .st1 {
+                    font-size: 18px;
+                  }
+                </style>
+                <g transform="translate(0.000000,321.000000) scale(0.100000,-0.100000)">
+                  <path d="M-4495-2136c-397-66-739-371-850-758c-39-138-54-126,154-126h178l23,63c102,285,374,477,674,477c125,0,214-21,326-76
+                 c81-40,108-60,185-138c93-94,138-164,175-272c11-32,20-59,20-61c0-1-88-3-195-3c-112,0-195,4-195,9c0,26-104,120-162,147
+                 c-55,26-74,29-153,28c-68,0-101-5-135-21c-230-105-290-392-121-575c127-138,341-152,487-32c25,20,55,52,67,70l22,34h193
+                 c105,0,192-2,192-5s-14-41-30-84c-113-291-409-480-721-458c-181,13-320,78-455,212c-76,75-99,105-138,184c-25,51-46,101-46,111
+                 c0,11-4,22-10,25c-5,3-88,7-185,8c-204,2-191,14-150-127c63-216,201-417,384-554c273-206,623-270,950-176c369,107,655,405,745,776
+                 l21,88h140h140l170,170l169,170l-308,2l-309,3l-24,95c-47,186-164,385-306,517C-3821-2182-4161-2079-4495-2136z"
+                  />
+                </g>
+                <text transform="matrix(1 0 0 1 -345 552)" class="cpright">©</text>
+              </svg>
     
               </div>
         </div>
@@ -45,7 +46,7 @@
             <div class="form-group">
               <input type="number" class="form-control col-10 col-lg-12 token-decimals" placeholder="Token Decimals">
             </div>
-            <div class="row justify-content-center">
+            <div class="form-group text-center">
             <button class="button--winona col-10 col-lg-12" data-text="Add Token" (click)="addCustomToken($event)">
               <span>Add Token</span>
             </button>
