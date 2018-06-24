@@ -113,12 +113,12 @@ export class ChatComponent implements OnInit {
       } else if (this.status == 1 || this.currentMsg.match(new RegExp(".*help.*", 'i'))) {
         if (this.currentMsg.match(new RegExp(".*shapeshift.*", 'i'))) {
           this.showMessage("I can show you a video for ShapeShift, would you like me to open it for you?", false);
-          this.video = 'http://www.youtube.com/embed/rhaz3HI_Vb4?autoplay=1';
+          this.video = 'https://www.youtube.com/embed/SWQiLqrqdA8?autoplay=1';
           this.FAQ = 'https://arctus.io/faq/#create';
           this.status = -1;
         } else if (this.currentMsg.match(new RegExp(".*login.*", 'i'))) {
           this.showMessage("I can show you a video on how to login to our wallet, would you like me to open it for you?", false);
-          this.video = 'http://www.youtube.com/embed/rhaz3HI_Vb4?autoplay=1';
+          this.video = 'https://www.youtube.com/embed/rhaz3HI_Vb4?autoplay=1';
           this.FAQ = 'https://arctus.io/faq/#create';
           this.status = -1;
         } else if (this.currentMsg.match(new RegExp(".*exchange.*", 'i'))) {
