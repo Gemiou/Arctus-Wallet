@@ -42,12 +42,20 @@ import { Observable } from 'rxjs/Observable';
         ]),
         transition(':leave', [
           style({
-            transform: 'translate(-50%, -50%) scale(1)',
-            opacity: 1}),
+            transform: 'translateX(0%)',
+            opacity: 1,
+            background: 'rgba(40, 41, 43, 0.95)'}),
           animate('750ms cubic-bezier(.175,.885,.32,1)',
           style({
-            transform: 'scale(0.9) translate(-50%, -25%)',
-            opacity: 0}))
+            position: 'fixed',
+            width: '450px',
+            height: '100vh',
+            top: '0',
+            right: '0',
+            opacity: 0.5,
+            background: 'rgba(40, 41, 43, 0.85)',
+            transform: 'translateX(100%)'
+          }))
         ])
       ]
     )
@@ -330,7 +338,10 @@ export class WalletComponent implements OnInit {
   send() {
 
   }
-  receive() {
-
+  closeSrModal() {
+    this.srOverlay = false;
+  }
+  receiveSendModal($event) {
+    this.srOverlay = $event;
   }
 }
