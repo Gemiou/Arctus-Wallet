@@ -29,6 +29,7 @@ import { WalletComponent } from './dashboard/wallet/wallet.component';
 import { TxhashComponent } from './dashboard/send/txhash/txhash.component';
 import { ShapeshiftComponent } from './dashboard/shapeshift/shapeshift.component';
 import { CoinSelectionComponent } from './dashboard/shapeshift/coinselection/coinselection.component';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { CoinSelectionComponent } from './dashboard/shapeshift/coinselection/coi
     WalletComponent,
     TxhashComponent,
     ShapeshiftComponent,
-    CoinSelectionComponent
+    CoinSelectionComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
