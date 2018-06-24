@@ -53,6 +53,10 @@ export class SettingsComponent implements OnInit {
     });
   }
 
+  exportPrivateKey() {
+    alert(`Your hex-encoded master key: ${this.ch.decryptKey().substring(2)}`);
+  }
+
   redirectToFAQ() {
     window.location.href = 'https://www.arctus.io/FAQ';
   }
