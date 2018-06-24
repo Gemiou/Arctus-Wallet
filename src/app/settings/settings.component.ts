@@ -52,11 +52,16 @@ export class SettingsComponent implements OnInit {
       a.click();
     });
   }
+
   redirectToFAQ() {
     window.location.href = 'https://www.arctus.io/FAQ';
   }
-  
+
   isMobile() {
     return document.querySelectorAll('.mobile').length !== 0;
+  }
+
+  toggleNightmode() {
+    document.body.classList.toggle("night-mode");
   }
 }

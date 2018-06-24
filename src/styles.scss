@@ -38,7 +38,7 @@
     color: white;
     font-weight: 300;
   }
-  
+
   .fix-of {
     white-space: nowrap;
   }
@@ -57,7 +57,17 @@
       padding: 0;
       margin: 0;
       overflow: hidden;
+      transition: filter 1s ease-in-out;
   }
+
+  body.night-mode {
+    filter: contrast(0.4) sepia(1) hue-rotate(5deg) invert(1);
+  }
+
+  body.night-mode * {
+    font-weight: 800!important;
+  }
+
   ol, ul, dl{
     margin: 0!important;
   }
