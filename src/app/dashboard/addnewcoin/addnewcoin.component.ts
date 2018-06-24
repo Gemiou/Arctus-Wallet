@@ -58,9 +58,8 @@ export class AddnewcoinComponent implements OnInit {
     this.router.navigate(['dashboard/wallet/']);
   }
 
-
-  alreadyExists(type: string) {
-    return document.querySelector('.coin-' + type.trim() + '-identifier') === null;
+  alreadyExists(coin: any, coinArray: any) {
+    return coinArray.some((el) => el.type == coin.type);
   }
 
   toggleCustomCoinModal($event) {

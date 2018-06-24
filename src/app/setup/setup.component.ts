@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CryptoHelperService } from '../services/crypto-helper.service';
 import { Router } from '@angular/router';
 import { keccak_256 } from 'js-sha3';
@@ -19,27 +19,32 @@ export class SetupComponent implements OnInit {
   shouldHaveJSON: Boolean = true;
   searchActive: Boolean = false;
 
-  constructor(private ch: CryptoHelperService, private router: Router, private loadingBar: LoadingBarService) { }
-
-  ngOnInit() {
+  constructor(private ch: CryptoHelperService, private router: Router, private loadingBar: LoadingBarService, private chRef: ChangeDetectorRef) {
     this.coins = this.ch.coins;
     if (!localStorage.getItem('pass-' + keccak_256(this.ch.decryptKey()))) {
       this.shouldHaveJSON = false;
     }
   }
 
+  ngOnInit() {
+      this.chRef.detectChanges();
+  }
+
+  ngAfterContentInit() {
+  }
+
   selectCoin(e, coin: any, index: any) {
     e.preventDefault();
-    if (this.coins[index].selected === undefined) {
-      this.selectedCoins.push(coin);
-      this.coins[index].selected = true;
-    } else if (this.coins[index].selected) {
-      this.selectedCoins = this.selectedCoins.filter(item => item.class !== coin.class);
-      this.coins[index].selected = false;
-    } else {
-      this.selectedCoins.push(coin);
-      this.coins[index].selected = true;
-    }
+    this.coins.forEach((el) => {
+      if (el.type == coin.type) {
+        if (el.selected) {
+          this.selectedCoins = this.selectedCoins.filter(item => item.type !== coin.type);
+        } else {
+          this.selectedCoins.push(coin);
+        }
+        el.selected = !el.selected;
+      }
+    });
   }
 
   saveSettings() {
@@ -76,8 +81,8 @@ export class SetupComponent implements OnInit {
     });
   }
 
-  alreadyExists(type: string) {
-    return document.querySelector('.coin-' + type.trim() + '-identifier') === null;
+  alreadyExists(coin: any, coinArray: any) {
+    return coinArray.some((el) => el.type == coin.type);
   }
 
   toggleCustomCoinModal($event) {

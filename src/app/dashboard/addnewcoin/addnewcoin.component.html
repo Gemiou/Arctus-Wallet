@@ -105,7 +105,7 @@
           </a>
         </div>
         <ng-container *ngFor="let coin of coins | filterBy: coinAbbr;let i = index">
-          <div class="col-lg-2 col-5" *ngIf="alreadyExists(coin.type)">
+          <div class="col-lg-2 col-5" *ngIf="!alreadyExists(coin, (coins | filterBy: coinName))">
             <a class="element-box el-tablo centered" href="#" (click)="selectCoin($event, coin, i)" [ngClass]="{
                     'active':coin.selected
                   }">

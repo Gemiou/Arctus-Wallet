@@ -16,7 +16,7 @@
                   .st0 {
                     font-family: 'MyriadPro-Regular';
                   }
-  
+
                   .st1 {
                     font-size: 18px;
                   }
@@ -32,7 +32,7 @@
                 </g>
                 <text transform="matrix(1 0 0 1 -345 552)" class="cpright">©</text>
               </svg>
-    
+
               </div>
         </div>
         <div class="row justify-content-center active">
@@ -47,10 +47,10 @@
               <input type="number" class="form-control col-10 col-lg-12 token-decimals" placeholder="Token Decimals">
             </div>
             <div class="form-group text-center">
-            <button class="button--winona col-10 col-lg-12" data-text="Add Token" (click)="addCustomToken($event)">
-              <span>Add Token</span>
-            </button>
-          </div>
+              <button class="button--winona col-10 col-lg-12" data-text="Add Token" (click)="addCustomToken($event)">
+                <span>Add Token</span>
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -105,13 +105,13 @@
             <div class="value">
               <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image" alt="">
             </div>
-            <div class="label coin-{{coin.type.trim()}}-identifier">
+            <div class="label">
               {{coin.class | uppercase}}
             </div>
           </a>
         </div>
         <ng-container *ngFor="let coin of coins | filterBy: coinAbbr;let i = index">
-          <div class="col-lg-2 col-5" *ngIf="alreadyExists(coin.type)">
+          <div class="col-lg-2 col-5" *ngIf="!alreadyExists(coin, (coins | filterBy: coinName))">
             <a class="element-box el-tablo centered" href="#" (click)="selectCoin($event, coin, i)" [ngClass]="{
                     'active':coin.selected
                   }">
