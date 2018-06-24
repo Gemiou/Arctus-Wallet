@@ -60,12 +60,30 @@
       transition: filter 1s ease-in-out;
   }
 
+  .nighty-button {
+    position: fixed;
+    bottom: 1vmax;
+    left: 1vmax;
+    cursor: pointer;
+    font-size: 24px;
+    transition: color 1s ease-in-out;
+  }
+
+  .nighty-button:hover {
+    color: black;
+  }
+
   body.night-mode {
     filter: contrast(0.4) sepia(1) hue-rotate(5deg) invert(1);
   }
 
   body.night-mode * {
     font-weight: 800!important;
+  }
+
+  body.night-mode .overlay,
+  body.night-mode .overlaytwo {
+     filter: invert(1);
   }
 
   ol, ul, dl{

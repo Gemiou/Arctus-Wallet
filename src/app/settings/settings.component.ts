@@ -60,8 +60,4 @@ export class SettingsComponent implements OnInit {
   isMobile() {
     return document.querySelectorAll('.mobile').length !== 0;
   }
-
-  toggleNightmode() {
-    document.body.classList.toggle("night-mode");
-  }
 }
