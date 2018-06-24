@@ -1,73 +1,151 @@
-#resCoins{
-    .margin-tb-1{
-        margin-bottom:1.5vmax;
-    }
-    /* Winona */
-.button--winona {
-    display: inline-block;
-	overflow: hidden;
-	padding: 0;
-	-webkit-transition: border-color 0.3s, background-color 0.3s;
-	transition: border-color 0.3s, background-color 0.3s;
-	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
-    transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
-    text-align: center;
-    font-size: 18px;
-    border-radius: 0.3rem;
-    background: #047bf8;
-    color: white;
-    position: relative;
-    border: 1px #047bf8 solid;
-    cursor: pointer;
-}
-.button--winona::after {
-    font-weight: 300;
-    content: attr(data-text);
-    white-space: nowrap;
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	opacity: 0;
+#receive{
 	color: white;
-	-webkit-transform: translate3d(0, 25%, 0);
-	transform: translate3d(0, 25%, 0);
-}
-.button--winona > span {
-	display: block;
-}
-.button--winona::after,
-.button--winona > span {
-	padding: 0.5em 1em;
-	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
-	transition: transform 0.3s, opacity 0.3s;
-	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
-	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
-}
-.button--winona:hover {
-	border-color: rgba(4, 123, 248, 0.8);
-	background-color: rgba(4, 123, 248, 0.8);
-}
-.button--winona:hover::after {
-	opacity: 1;
-	-webkit-transform: translate3d(0, 0, 0);
-	transform: translate3d(0, 0, 0);
-}
-.button--winona:hover > span {
-	opacity: 0;
-	-webkit-transform: translate3d(0, -25%, 0);
-	transform: translate3d(0, -25%, 0);
-}
-.qr-code {
-    text-align: center;
-}
-app-qrcode {
-    display: inline-block;
-}
-}
-@media (max-width: 768px) {
-	.button--winona{
+	.close{
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		width: 50px;
+		color: #75777b;
+		font-size: 30px;
+		font-weight: 100;
+		cursor: pointer;
+		transition: all 0.3s ease-in-out;
+		z-index: 10;
+	}
+	.stroked {
+		stroke: white;
+	}
+	.close:hover{
+		color: #94969b;
+	}
+	.send-button{
+		position: absolute;
+		bottom: 0;
+		background: #515e70;
+		cursor: pointer;
+		font-size: 20px;
+		transition: all 0.3s ease-in-out;
+	}
+	.send-button:hover{
+		background: #6b7b91;
+	}
+	.header{
+		font-size: 40px;
+		font-weight: 800;
+		color: #bdb5b5;
+	}
+	.coin-img{
+		opacity: 0.2;
+    	filter: sepia(1) saturate(0);
+	}
+	.gas{
+		padding: 5px 10px;
+		background: #f7fbff0f;
+		color: #ffffff;
+		margin-bottom: 5px;
+		text-align: center;
+	}
+	.gasbold{
+		font-weight: 800;
+	}
+
+	input{
+		font: 15px/24px Courier, sans-serif; 
+		color: rgb(252, 250, 250); 
+		background: transparent;
+		width: 100%; 
+		box-sizing: border-box; 
+		letter-spacing: 1px;
+	}
+	input::placeholder {
+		color: rgb(167, 164, 164);
+	}
+	.effect-1{border: 0; padding: 7px 0; border-bottom: 1px solid rgb(177, 177, 177);}
+	
+	.effect-1 ~ .focus-border{position: absolute; bottom: 0; left: 15px; width: 0; height: 2px; background-color: rgb(255, 255, 255); transition: 0.4s;}
+	.effect-1:focus ~ .focus-border{width: 90%; transition: 0.4s;}
+	a{
+		padding: 5px 10px;
+		background: rgba(255, 255, 255, 0.1);
+		color: white;
+	}
+	.info{
 		font-size: 15px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 }
+// #resCoins{
+//     .margin-tb-1{
+//         margin-bottom:1.5vmax;
+//     }
+//     /* Winona */
+// .button--winona {
+//     display: inline-block;
+// 	overflow: hidden;
+// 	padding: 0;
+// 	-webkit-transition: border-color 0.3s, background-color 0.3s;
+// 	transition: border-color 0.3s, background-color 0.3s;
+// 	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+//     transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+//     text-align: center;
+//     font-size: 18px;
+//     border-radius: 0.3rem;
+//     background: #047bf8;
+//     color: white;
+//     position: relative;
+//     border: 1px #047bf8 solid;
+//     cursor: pointer;
+// }
+// .button--winona::after {
+//     font-weight: 300;
+//     content: attr(data-text);
+//     white-space: nowrap;
+// 	position: absolute;
+// 	width: 100%;
+// 	height: 100%;
+// 	top: 0;
+// 	left: 0;
+// 	opacity: 0;
+// 	color: white;
+// 	-webkit-transform: translate3d(0, 25%, 0);
+// 	transform: translate3d(0, 25%, 0);
+// }
+// .button--winona > span {
+// 	display: block;
+// }
+// .button--winona::after,
+// .button--winona > span {
+// 	padding: 0.5em 1em;
+// 	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+// 	transition: transform 0.3s, opacity 0.3s;
+// 	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+// 	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+// }
+// .button--winona:hover {
+// 	border-color: rgba(4, 123, 248, 0.8);
+// 	background-color: rgba(4, 123, 248, 0.8);
+// }
+// .button--winona:hover::after {
+// 	opacity: 1;
+// 	-webkit-transform: translate3d(0, 0, 0);
+// 	transform: translate3d(0, 0, 0);
+// }
+// .button--winona:hover > span {
+// 	opacity: 0;
+// 	-webkit-transform: translate3d(0, -25%, 0);
+// 	transform: translate3d(0, -25%, 0);
+// }
+// .qr-code {
+//     text-align: center;
+// }
+// app-qrcode {
+//     display: inline-block;
+// }
+// }
+// @media (max-width: 768px) {
+// 	.button--winona{
+// 		font-size: 15px;
+// 	}
+// }

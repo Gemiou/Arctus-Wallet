@@ -82,6 +82,8 @@ export class WalletComponent implements OnInit {
   coinsLoaded = 0;
   shapeShiftModalStatus: Boolean = false;
   srOverlay = false;
+  sendIsOpen = false;
+  receiveIsOpen = false;
 
   constructor(
     private ch: CryptoHelperService,
@@ -336,12 +338,22 @@ export class WalletComponent implements OnInit {
 
   }
   send() {
-
+    this.receiveIsOpen = false;
+    this.srOverlay = true;
+    this.sendIsOpen = true;
+  }
+  receive() {
+    this.sendIsOpen = false;
+    this.srOverlay = true;
+    this.receiveIsOpen = true;
   }
   closeSrModal() {
     this.srOverlay = false;
   }
   receiveSendModal($event) {
+    this.srOverlay = $event;
+  }
+  receiveRecModal($event) {
     this.srOverlay = $event;
   }
 }

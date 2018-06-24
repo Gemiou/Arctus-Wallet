@@ -1,5 +1,5 @@
-import { Component, OnInit} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+
 @Component({
   selector: 'app-receive',
   templateUrl: './receive.component.html',
@@ -11,17 +11,21 @@ export class ReceiveComponent implements OnInit {
   coinName = '';
   amount = 0;
   amountFrom = 0;
-  constructor(private route: ActivatedRoute) {
-    this.route.params.subscribe((params) => {
-      this.addressFrom = params.address;
-      this.coinName = params.coinName;
-    });
-  }
+  @Input() coinReceive: string;
+  @Input() addressReceive: string;
+  @Output() sendModal = new EventEmitter<boolean>();
+  constructor() {}
 
   ngOnInit() {
+    this.addressFrom = this.addressReceive;
+    this.coinName =  this.coinReceive;
   }
 
   generateQrCode(address: string, amount: number) {
     this.amountFrom = amount;
+  }
+  close() {
+    // close the modal
+    this.sendModal.emit(false);
   }
 }

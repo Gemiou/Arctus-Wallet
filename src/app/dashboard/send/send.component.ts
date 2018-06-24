@@ -25,8 +25,8 @@ export class SendComponent implements OnInit {
   userBalance = 0;
   txHash  = false;
   txHashString = '';
-  @Input() coin: string;
-  @Input() address: string;
+  @Input() coinSend: string;
+  @Input() addressSend: string;
   @Output() sendModal = new EventEmitter<boolean>();
 
   constructor(
@@ -38,8 +38,8 @@ export class SendComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.addressFrom = this.address;
-      this.coinName = this.coin;
+    this.addressFrom = this.addressSend;
+      this.coinName = this.coinSend;
       if (this.coinName !== 'ETH') {
         this.gasAmount = 200000;
       }

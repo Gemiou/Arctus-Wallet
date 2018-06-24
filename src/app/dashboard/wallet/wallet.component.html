@@ -1,6 +1,7 @@
 <!-- Send Receive Modals -->
   <div *ngIf="srOverlay" class="sr-sidebar" [@srsideanimation] [ngClass]="{'active': srOverlay}">
-    <app-send [coin]="coins[selectedCoin].type" [address]="coins[selectedCoin].address" (sendModal)="receiveSendModal($event)"></app-send>
+    <app-send *ngIf ="sendIsOpen"[coinSend]="coins[selectedCoin].type" [addressSend]="coins[selectedCoin].address" (sendModal)="receiveSendModal($event)"></app-send>
+    <app-receive *ngIf="receiveIsOpen" [coinReceive]="coins[selectedCoin].type" [addressReceive]="coins[selectedCoin].address" (sendModal)="receiveRecModal($event)"></app-receive>
   </div>
 <!-- END Send Receive Modals -->
 <div class="row" id="wallet">
@@ -41,15 +42,14 @@
           <div class="eth-c"></div>
         </div>
         <div class="row sr-button">
-          <!-- [routerLink]="['/dashboard/send', coins[selectedCoin].type, coins[selectedCoin].address]" -->
           <button class="button--winona col-lg-12 col-md-6 col-6"
-            [attr.data-text]="'Send '+coins[selectedCoin].type" (click)="srOverlay=!srOverlay">
+            [attr.data-text]="'Send '+coins[selectedCoin].type" (click)="send()">
             <span>Send
               <span class="font-weight-bold">{{coins[selectedCoin].type}}</span>
             </span>
           </button>
-          <button [routerLink]="['/dashboard/receive',coins[selectedCoin].type,coins[selectedCoin].address]" class="button--winona col-lg-12 col-md-6 col-6"
-            [attr.data-text]="'Receive '+coins[selectedCoin].type" (click)="closeSrModal()">
+          <button class="button--winona col-lg-12 col-md-6 col-6"
+            [attr.data-text]="'Receive '+coins[selectedCoin].type" (click)="receive()">
             <span>Receive
               <span class="font-weight-bold">{{coins[selectedCoin].type}}</span>
             </span>
