@@ -1,3 +1,31 @@
+#send{
+	color: white;
+	.fa-close{
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		color: #75777b;
+		font-size: 30px;
+		font-weight: 100;
+		cursor: pointer;
+		transition: all 0.3s ease-in-out;
+		z-index: 10;
+	}
+	.fa-close:hover{
+		color: #94969b;
+	}
+	.send-button{
+		position: absolute;
+		bottom: 0;
+		background: #515e70;
+		cursor: pointer;
+		font-size: 20px;
+		transition: all 0.3s ease-in-out;
+	}
+	.send-button:hover{
+		background: #6b7b91;
+	}
+}
 #sendCoins{
 	font-size: 19px;
     .margin-tb-1{

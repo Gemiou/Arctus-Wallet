@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Http, RequestOptions } from '@angular/http';
+import { trigger, style, animate, transition } from '@angular/animations';
+import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { keccak_256 } from 'js-sha3';
@@ -19,6 +20,38 @@ import { Observable } from 'rxjs/Observable';
 // import * as Chartjs from 'chart.js';
 @Component({
   selector: 'app-wallet',
+  animations: [
+    trigger(
+      'srsideanimation', [
+        transition(':enter', [
+          style({
+            position: 'fixed',
+            width: '450px',
+            height: '100vh',
+            top: '0',
+            right: '0',
+            opacity: 0.5,
+            background: 'rgba(40, 41, 43, 0.85)',
+            transform: 'translateX(100%)'
+          }),
+          animate('750ms cubic-bezier(.175,.885,.32,1)', style({
+            background: 'rgba(40, 41, 43, 0.95)',
+            opacity: 1,
+            transform: 'translateX(0%)'
+          }))
+        ]),
+        transition(':leave', [
+          style({
+            transform: 'translate(-50%, -50%) scale(1)',
+            opacity: 1}),
+          animate('750ms cubic-bezier(.175,.885,.32,1)',
+          style({
+            transform: 'scale(0.9) translate(-50%, -25%)',
+            opacity: 0}))
+        ])
+      ]
+    )
+  ],
   templateUrl: './wallet.component.html',
   styleUrls: ['./wallet.component.scss']
 })
@@ -40,6 +73,7 @@ export class WalletComponent implements OnInit {
   showLoading = true;
   coinsLoaded = 0;
   shapeShiftModalStatus: Boolean = false;
+  srOverlay = false;
 
   constructor(
     private ch: CryptoHelperService,
@@ -291,6 +325,12 @@ export class WalletComponent implements OnInit {
     document.execCommand('asdasdasd');
   }
   copied(index: any) {
+
+  }
+  send() {
+
+  }
+  receive() {
 
   }
 }

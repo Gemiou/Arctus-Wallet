@@ -1,13 +1,14 @@
 <ngx-loading-bar></ngx-loading-bar>
+<!-- shapeshift -->
 <div class='overlay' [ngClass]="{ 'active': shapeShiftModalStatus }">
   <div id="shapeshift-modal" *ngIf="shapeShiftModalStatus" [@enterAnimation] [ngClass]="{ 'active': shapeShiftModalStatus, 'transition' : isSelectingCoin > 0 }">
-      <!-- *ngIf="shapeShiftModalStatus" [@enterAnimation]  -->
     <app-shapeshift></app-shapeshift>
   </div>
   <div id="shapeshift-coinselection" [ngClass]="{ 'active': isSelectingCoin > 0 }">
     <app-coinselection></app-coinselection>
   </div>
 </div>
+<!-- Send -->
 <div class="all-wrapper menu-side with-side-panel">
   <div class="layout-w">
     <div class="content-w">

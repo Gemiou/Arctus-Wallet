@@ -1,3 +1,8 @@
+<!-- Send Receive Modals -->
+  <div *ngIf="srOverlay" class="sr-sidebar" [@srsideanimation] [ngClass]="{'active': srOverlay}">
+    <app-send></app-send>
+  </div>
+<!-- END Send Receive Modals -->
 <div class="row" id="wallet">
   <div class="col-lg-3">
     <div class="element-wrapper">
@@ -36,8 +41,9 @@
           <div class="eth-c"></div>
         </div>
         <div class="row sr-button">
-          <button [routerLink]="['/dashboard/send', coins[selectedCoin].type, coins[selectedCoin].address]" class="button--winona col-lg-12 col-md-6 col-6"
-            [attr.data-text]="'Send '+coins[selectedCoin].type">
+          <!-- [routerLink]="['/dashboard/send', coins[selectedCoin].type, coins[selectedCoin].address]" -->
+          <button class="button--winona col-lg-12 col-md-6 col-6"
+            [attr.data-text]="'Send '+coins[selectedCoin].type" (click)="srOverlay=!srOverlay">
             <span>Send
               <span class="font-weight-bold">{{coins[selectedCoin].type}}</span>
             </span>

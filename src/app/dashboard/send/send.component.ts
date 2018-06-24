@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Wallet, Contract, providers, utils } from 'ethers';
 import { CryptoHelperService } from '../../services/crypto-helper.service';
@@ -23,7 +23,7 @@ export class SendComponent implements OnInit {
   userWallet: Wallet;
   gasAmount = 21000;
   userBalance = 0;
-
+  sidebar: EventEmitter<boolean> = new EventEmitter();
   constructor(
     private route: ActivatedRoute,
     private routing: Router,
@@ -214,5 +214,9 @@ export class SendComponent implements OnInit {
       e.target.parentElement.classList.add('has-danger');
       e.target.parentElement.classList.remove('has-success');
     }
+  }
+
+  closeSideBar() {
+    this.sidebar.emit(false);
   }
 }
