@@ -52,27 +52,34 @@
               <div class="col-lg-3 text-center min" (click)="setMinAmount()">MIN</div>
               <div class="col-lg-6 text-center converter">
                 <span class="convert-amount" title="{{amount}}">{{amount | slice:0:8}}</span>&nbsp;{{depositCoin}} = &nbsp;
-                <span class="convert-amount" title="{{amount*calculatedRate}}" >{{calculatedRate!=undefined?(amount*calculatedRate+'' | slice:0:8):'Loading...'}}</span>&nbsp;{{receiveCoin}}
+                <span class="convert-amount" title="{{amount*calculatedRate}}">{{calculatedRate!=undefined?(amount*calculatedRate+'' | slice:0:8):'Loading...'}}</span>&nbsp;{{receiveCoin}}
               </div>
               <div class="col-lg-3 text-center max" (click)="setMaxAmount()">MAX</div>
             </div>
           </div>
+        </div>
+        <div class="row justify-content-center coins-selection">
+          <form class="col-lg-8">
+            <div class="form-group m-0">
+              <input type="text" class="form-control" id="coinaddress" [(ngModel)]="amount" value="{{amount}}" [ngModelOptions]="{standalone: true}"
+                placeholder="Amount of {{depositCoin}} you want to transfer to {{receiveCoin}}" (input)="filterAmount($event)">
+            </div>
+          </form>
+          <div class="col-lg-8 mt-3 mb-3">
+            <span class="advanced" *ngIf="!advanced" (click)="advanced=!advanced"><i class="fa fa-caret-right"></i> Advanced</span>
+            <span class="advanced" *ngIf="advanced" (click)="advanced=!advanced"><i class="fa fa-caret-down"></i> Advanced</span>
+            <input type="text" class="form-control" id="coinaddress" [(ngModel)]="shiftAddress" [ngModelOptions]="{standalone: true}"
+                placeholder="Sender Address" *ngIf="advanced">
           </div>
-          <div class="row justify-content-center coins-selection">
-            <form class="col-lg-8">
-              <div class="form-group">
-                <input type="text" class="form-control" id="coinaddress" [(ngModel)]="amount" value="{{amount}}" [ngModelOptions]="{standalone: true}" placeholder="Amount of {{depositCoin}} you want to transfer to {{receiveCoin}}"
-                  (input)="filterAmount($event)">
-              </div>
-              <div class="form-group transaction-button" [ngClass]="{ 'unavailable' : (userBalance < amount || amount == '' || amount < depositMin || amount > depositMax) }"
-                (click)="executeTransaction()">
-                <span>{{amount == ''?'No Amount Specified':(amount > userBalance?'Insufficient Funds for Conversion':(amount >
-                  depositMax?'Amount is above ShapeShift allowed maximum deposit':(amount
-                  < depositMin?
-                    'Amount is below ShapeShift allowed minimum deposit': 'Convert ' + depositCoin + ' to ' + receiveCoin)))}}</span>
-              </div>
-            </form>
+          <div class="col-lg-8">
+            <div class="form-group transaction-button" [ngClass]="{ 'unavailable' : (userBalance < amount || amount == '' || amount < depositMin || amount > depositMax) }"
+              (click)="executeTransaction()">
+              <span>{{amount == ''?'No Amount Specified':(amount > userBalance?'Insufficient Funds for Conversion':(amount > depositMax?'Amount
+                is above ShapeShift allowed maximum deposit':(amount
+                < depositMin? 'Amount is below ShapeShift allowed minimum deposit': 'Convert ' + depositCoin + ' to ' + receiveCoin)))}}</span>
+            </div>
           </div>
+        </div>
       </ng-container>
       <ng-container *ngIf="startedTransaction">
         <div class="row justify-content-center transaction-status">
@@ -107,6 +114,6 @@
           </div>
         </div>
       </ng-container>
-      </div>
     </div>
   </div>
+</div>
