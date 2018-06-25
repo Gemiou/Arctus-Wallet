@@ -98,6 +98,16 @@ export class WalletComponent implements OnInit {
     private shData: SharedDataService,
     private SS: ShapeShiftHelperService
   ) {
+    // this.http.get('https://blockexplorer.com/api/addr/1FesTEZR3b7D25C23JmdmdifNRYBeg97FE/balance').subscribe(
+    //   coinBalance => {
+    //     console.log(coinBalance);
+    //     // resolve(JSON.parse((<any>coinBalance)._body).ask);
+    //   },
+    //   err => {
+    //     console.log(err);
+    //     // reject(err);
+    //   }
+    // );
   }
 
   ngOnInit() {
@@ -138,6 +148,7 @@ export class WalletComponent implements OnInit {
     this.getShapeShiftCoins();
     this.refreshUI(this.coins).subscribe(
       (obj) => {
+        console.log(obj);
         this.coins[(<any>obj).coin].balance =
           Number((<any>obj).balance === undefined ?
             this.coins[(<any>obj).coin].balance :
@@ -269,16 +280,23 @@ export class WalletComponent implements OnInit {
     }
   }
 
-  makeActive(index: any) {
+  makeActive(coin: any) {
+    let index;
+    this.coins.forEach((el, i) => {
+      if (coin.type == el.type) {
+        index = i;
+      }
+    })
+    if (this.selectedCoin == index) return;
     this.createCountUp(index);
-    this.changeTicker(this.coins[index].type);
+    this.changeTicker(coin.type);
     this.selectedCoin = index;
     this.shData.changeCoinBalance(this.coins[index].balance);
     this.shData.changeCurrentCoin(this.coins[index]);
   }
 
-  alreadyExists(type: string) {
-    return document.querySelectorAll('.coin-' + type.trim() + '-identifier').length === 0;
+  alreadyExists(coin: any, coinArray: any) {
+    return coinArray.some((el) => el.type == coin.type);
   }
 
   changeTicker(type: any) {
@@ -339,25 +357,31 @@ export class WalletComponent implements OnInit {
   copyAddress(addresaaas) {
     document.execCommand('asdasdasd');
   }
+
   copied(index: any) {
 
   }
+
   send() {
     this.receiveIsOpen = false;
     this.srOverlay = true;
     this.sendIsOpen = true;
   }
+
   receive() {
     this.sendIsOpen = false;
     this.srOverlay = true;
     this.receiveIsOpen = true;
   }
+
   closeSrModal() {
     this.srOverlay = false;
   }
+
   receiveSendModal($event) {
     this.srOverlay = $event;
   }
+
   receiveRecModal($event) {
     this.srOverlay = $event;
   }

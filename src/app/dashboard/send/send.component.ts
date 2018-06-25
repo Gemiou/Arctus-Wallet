@@ -59,12 +59,9 @@ export class SendComponent implements OnInit {
   startTransaction() {
     this.gasAmount = parseInt(this.gasAmount + '', 10);
     if (this.coinName === 'ETH') {
-      const weiAmount = utils.parseEther(this.coinAmount);
-      this.userWallet.send(this.recipientAddress, weiAmount, {
-        gasPrice: utils.bigNumberify(utils.parseUnits(this.gasPrice, 'gwei')),
-        gasLimit: this.gasAmount,
-        data: this.callData
-      }).then((txReceipt) => {
+      const weiAmount = utils.parseEther(this.coinAmount + '');
+      this.userWallet.send(this.recipientAddress.trim(), weiAmount)
+      .then((txReceipt) => {
         this.txHash = true;
         this.txHashString =txReceipt.hash;
       }).catch((err) => {
@@ -73,8 +70,7 @@ export class SendComponent implements OnInit {
     } else if (this.coinName === 'BTC') {
       this.recipientAddress = this.recipientAddress.trim();
       this.bc.getTXInfo(this.userWallet.getAddress())
-      .then((res) => {
-        const txArray = JSON.parse((<any>res)._body).unspent_outputs;
+      .then((txArray) => {
         return this.bc.calculateTransaction(txArray, this.userWallet, this.recipientAddress, this.coinAmount * Math.pow(10, 8));
       })
       .then((tx) => {
@@ -136,6 +132,7 @@ export class SendComponent implements OnInit {
       e.target.parentElement.classList.remove('has-success');
     }
     e.target.value = current;
+    this.recipientAddress = current;
   }
 
   filterETHAddress(e) {
@@ -150,65 +147,9 @@ export class SendComponent implements OnInit {
       e.target.parentElement.classList.add('has-danger');
       e.target.parentElement.classList.remove('has-success');
     }
+    this.recipientAddress = current;
   }
 
-  filterPrice(e) {
-    let current = e.target.value + '';
-    current = current.replace(/[^0-9.]*/g, '');
-    while (current.indexOf('.') !== current.lastIndexOf('.')) {
-      current = current.substring(0, current.indexOf('.')) + current.substring(current.indexOf('.') + 1);
-    }
-    e.target.value = current + ' Gwei';
-    e.target.setSelectionRange(e.target.value.length, e.target.value.length - ' Gwei'.length);
-    e.target.parentElement.classList.add('has-success');
-  }
-
-  filterAmount(e) {
-    let current = e.target.value + '';
-    current = current.replace(/[^0-9]*/g, '');
-    e.target.value = Number(current);
-    if (Number(current) >= 2100) {
-      e.target.parentElement.classList.remove('has-danger');
-      e.target.parentElement.classList.add('has-success');
-    } else {
-      e.target.parentElement.classList.add('has-danger');
-      e.target.parentElement.classList.remove('has-success');
-    }
-  }
-
-  filterCallcode(e) {
-    let current = e.target.value;
-    current = current.replace(/^0x/, '').replace(/[^a-fA-F0-9]*/g, '');
-    e.target.value = '0x' + current;
-  }
-
-  filterEther(e) {
-    let current = e.target.value;
-    current = current.replace(/$[^0-9.,]*/g, '');
-    while (current.indexOf(',') !== current.lastIndexOf(',')) {
-      current = current.substring(0, current.indexOf(',')) + current.substring(current.indexOf(',') + 1);
-    }
-    while (current.indexOf('.') !== current.lastIndexOf('.')) {
-      current = current.substring(0, current.indexOf('.')) + current.substring(current.indexOf('.') + 1);
-    }
-    if (current.indexOf(',') > current.indexOf('.')) {
-      current = current.substring(0, current.indexOf('.')) + current.substring(current.indexOf('.') + 1);
-    } else {
-      current = current.substring(0, current.indexOf(',')) + current.substring(current.indexOf(',') + 1);
-    }
-    if (current.indexOf('0') === 0 && current.length > 1) {
-      current = current.substring(1);
-    }
-    e.target.value = current;
-    current = current.replace(/,/, '.');
-    if (Number(current) > 0) {
-      e.target.parentElement.classList.remove('has-danger');
-      e.target.parentElement.classList.add('has-success');
-    } else {
-      e.target.parentElement.classList.add('has-danger');
-      e.target.parentElement.classList.remove('has-success');
-    }
-  }
   close() {
     // close the modal
     this.sendModal.emit(false);

@@ -103,30 +103,30 @@
               </tr>
             </thead>
             <tbody *ngIf="!showLoading">
-              <tr class="crypto" *ngFor="let coin of coins | filterBy: coinName;let i = index" [ngStyle]="{'background': i == selectedCoin ? 'rgba(4, 123, 248, 0.15)' : 'rgba(0,0,0,0)' }"
-                (click)="makeActive(i)">
+              <tr *ngFor="let coin of coins | filterBy: coinName;let i = index" class="crypto coin-{{coin.type.trim()}}-identifier" [ngStyle]="{'background': coins[selectedCoin].type == coin.type ? 'rgba(4, 123, 248, 0.15)' : 'rgba(0,0,0,0)' }"
+                (click)="makeActive(coin)">
                 <td class="nowrap sc">
                   <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image mr-1" alt=""> {{coin.type}}
                 </td>
                 <td class="hide-mb">
-                  <div class="cell-image-list coin-{{coin.type.trim()}}-identifier">
-                    {{coin.address}}
-                    <span class="copyAddress" ngxClipboard [cbContent]="coin.address">Copy</span>
+                  <div class="cell-image-list">
+                    {{coin.address}} <span class="copyAddress"  ngxClipboard [cbContent]="coin.address">Copy</span>
                   </div>
                 </td>
                 <td class="text-right">
                   {{coin.balance | number:coin.pipe}}
                 </td>
               </tr>
-              <tr class="crypto" *ngFor="let coin of coins | filterBy: coinAbbr;let i = index" [ngStyle]="{'background': i == selectedCoin ? 'rgba(4, 123, 248, 0.15)' : 'rgba(0,0,0,0)' }"
-                (click)="makeActive(i)">
-                <ng-container *ngIf="alreadyExists(coin.type)">
+              <tr *ngFor="let coin of coins | filterBy: coinAbbr;let i = index" class="crypto coin-{{coin.type.trim()}}-identifier" [ngStyle]="{'background': coins[selectedCoin].type == coin.type ? 'rgba(4, 123, 248, 0.15)' : 'rgba(0,0,0,0)' }"
+                (click)="makeActive(coin)">
+                <ng-container *ngIf="!alreadyExists(coin, (coins | filterBy: coinName))">
                   <td class="nowrap sc">
+                    <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image mr-1" alt="">
                     {{coin.type}}
                   </td>
-                  <td>
+                  <td class="hide-mb">
                     <div class="cell-image-list">
-                      {{coin.address}}
+                      {{coin.address}} <span class="copyAddress"  ngxClipboard [cbContent]="coin.address">Copy</span>
                     </div>
                   </td>
                   <td class="text-right">
@@ -134,7 +134,7 @@
                   </td>
                 </ng-container>
               </tr>
-              <tr *ngIf="(coins | filterBy: coinName).length === 0 && (coins | filterBy: coinAbbr).length === 0">
+              <tr *ngIf="(coins | filterBy: coinName) === undefined && (coins | filterBy: coinAbbr) === undefined">
                 <td class="nowrap">
                   <i class="typcn typcn-times"></i>
                 </td>

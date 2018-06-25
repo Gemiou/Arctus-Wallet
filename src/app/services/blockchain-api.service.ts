@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions } from '@angular/http';
 import * as bitcoin from 'bitcoinjs-lib';
+import * as pAny from 'p-any';
 
 @Injectable()
 export class BlockchainAPIService {
@@ -9,7 +10,28 @@ export class BlockchainAPIService {
 
   getTXInfo(address) {
     const options = new RequestOptions({ headers: null, withCredentials: false });
-    return this.http.get(`https://blockchain.info/el/unspent?cors=true&active=${address}`, options).toPromise();
+    return pAny([
+      new Promise((resolve, reject) => {
+        this.http.get(`https://blockchain.info/el/unspent?cors=true&active=${address}`, options).subscribe(
+          (result) => {
+            resolve(JSON.parse((<any>result)._body).unspent_outputs);
+          },
+          (err) => {
+            reject(err);
+          }
+        )
+      }),
+      new Promise((resolve, reject) => {
+        this.http.get(`https://chain.api.btc.com/v3/address/${address}/unspent`).subscribe(
+          (result) => {
+            resolve(JSON.parse((<any>result)._body).data.list);
+          },
+          (err) => {
+            reject(err);
+          }
+        )
+      })
+    ]);
   }
 
   calculateTransaction(unspent, wallet, targetAddress, amount) {
@@ -32,7 +54,7 @@ export class BlockchainAPIService {
         let ins;
         for (ins = 0; ins < unspent.length; ins++) {
           total += unspent[ins].value;
-          tx.addInput(unspent[ins].tx_hash_big_endian, unspent[ins].tx_output_n);
+          tx.addInput(unspent[ins].tx_hash_big_endian === undefined?unspent[ins].tx_hash:unspent[ins].tx_hash_big_endian, unspent[ins].tx_output_n);
           if (total > amount + (this.getTXByteLength(ins, outs) * <any>feePerByte * 1000)) {
             break;
           }

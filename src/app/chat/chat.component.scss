@@ -181,6 +181,7 @@ Chat Styles
     position: relative;
     overflow-x: hidden;
     overflow-y: scroll;
+    word-wrap: break-word;
   }
 
   .floated-chat-w .chat-messages::-webkit-scrollbar-track {

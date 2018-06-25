@@ -1,4 +1,7 @@
 #qrcode{
+    qrcode {
+      box-shadow: 0 5px 30px black;
+    }
     text-align: center;
     * {
         display: inline-block;

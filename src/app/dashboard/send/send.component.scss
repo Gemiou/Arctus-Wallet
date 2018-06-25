@@ -1,4 +1,12 @@
 #send{
+	input[type=number]::-webkit-inner-spin-button,
+	input[type=number]::-webkit-outer-spin-button {
+	  -webkit-appearance: none;
+	  margin: 0;
+	}
+	.broadcast {
+      font-size: 24px;
+	}
 	color: white;
 	.close{
 		position: absolute;
@@ -50,24 +58,30 @@
 	}
 
 	input{
-		font: 15px/24px Courier, sans-serif; 
-		color: rgb(252, 250, 250); 
+		font: 15px/24px Courier, sans-serif;
+		color: rgb(252, 250, 250);
 		background: transparent;
-		width: 100%; 
-		box-sizing: border-box; 
+		width: 100%;
+		box-sizing: border-box;
 		letter-spacing: 1px;
+	}
+	.mine-image {
+    filter: invert(1);
+    width: 100%;
+    margin: 30px;
 	}
 	input::placeholder {
 		color: rgb(167, 164, 164);
 	}
 	.effect-1{border: 0; padding: 7px 0; border-bottom: 1px solid rgb(177, 177, 177);}
-	
+
 	.effect-1 ~ .focus-border{position: absolute; bottom: 0; left: 15px; width: 0; height: 2px; background-color: rgb(255, 255, 255); transition: 0.4s;}
 	.effect-1:focus ~ .focus-border{width: 90%; transition: 0.4s;}
 	a{
 		padding: 5px 10px;
 		background: rgba(255, 255, 255, 0.1);
 		color: white;
+     font-size: 24px;
 	}
 	.unavailable{
 		pointer-events: none;

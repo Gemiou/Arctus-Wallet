@@ -11,12 +11,12 @@
       <img class="coin-img" src="../../../assets/img/sp/{{coinName}}.png" alt="">
     </div>
     <div class="col-lg-8 mt-4 text-center" *ngIf="!txHash">
-      <input class="effect-1" type="text" placeholder="Recipient Address" [(ngModel)]="recipientAddress" (input)="filterAddress($event)">
+      <input class="effect-1" spellcheck='false' type="text" placeholder="Recipient Address" [(ngModel)]="recipientAddress" (input)="filterAddress($event)">
       <span class="focus-border"></span>
     </div>
     <div class="col-lg-8 mt-2 text-center" *ngIf="!txHash">
-      <input class="effect-1" [(ngModel)]="coinAmount" (input)="filterEther($event)" [ngModelOptions]="{standalone: true}" placeholder="{{coinAmount}}"
-        type="text" />
+      <input class="effect-1" [(ngModel)]="coinAmount" [ngModelOptions]="{standalone: true}" placeholder="{{coinAmount}}"
+        type="number" min="0" step="any" oninput="(validity.valid||(value=''));"/>
       <span class="focus-border"></span>
     </div>
     <div class="col-lg-8 mt-4" *ngIf="this.coinName != 'BTC' && !txHash">
@@ -27,15 +27,16 @@
         <span class="gasbold">{{gasAmount}}</span>
       </div>
     </div>
-    <div class="col-lg-8 mt-2 text-center" *ngIf="txHash">
-      Success.
+    <div class="col-lg-8 mt-2 text-center broadcast" *ngIf="txHash">
+      Successfully Broadcasted Transaction
     </div>
     <div class="col-lg-8 mt-2 text-center" *ngIf="txHash">
+        <img src="../../../assets/img/mine.png" class="mine-image"/>
         <a href="https://etherscan.io/tx/{{txHashString}}" target="blank" *ngIf="this.coinName != 'BTC'">Transaction Hash</a>
         <a href="https://blockchain.info/tx/{{txHashString}}" target="blank" *ngIf="this.coinName == 'BTC'">Transaction Hash</a>
     </div>
 
-  <div class="col-lg-12 p-4 send-button text-center"  [ngClass]="{ 'unavailable' : coinAmount == 0 || coinAmount > userBalance || recipientAddress == '' }" 
+  <div class="col-lg-12 p-4 send-button text-center"  [ngClass]="{ 'unavailable' : coinAmount == 0 || coinAmount > userBalance || recipientAddress == '' }"
     *ngIf="!txHash" (click)="startTransaction()">
     <span>{{coinAmount == 0?'No Amount Specified':(coinAmount > userBalance?'Insufficient Funds for Transaction':(recipientAddress == ''?'No Recipient Specified':'Start Transaction'))}}</span>
   </div>
