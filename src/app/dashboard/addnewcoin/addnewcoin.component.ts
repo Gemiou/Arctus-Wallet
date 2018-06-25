@@ -37,16 +37,16 @@ export class AddnewcoinComponent implements OnInit {
 
   selectCoin(e, coin: any, index: any) {
     e.preventDefault();
-    if (this.coins[index].selected === undefined) {
-      this.selectedCoins.push(coin);
-      this.coins[index].selected = true;
-    } else if (this.coins[index].selected) {
-      this.selectedCoins = this.selectedCoins.filter(item => item.class !== coin.class);
-      this.coins[index].selected = false;
-    } else {
-      this.selectedCoins.push(coin);
-      this.coins[index].selected = true;
-    }
+    this.coins.forEach((el) => {
+      if (el.type == coin.type) {
+        if (el.selected) {
+          this.selectedCoins = this.selectedCoins.filter(item => item.type !== coin.type);
+        } else {
+          this.selectedCoins.push(coin);
+        }
+        el.selected = !el.selected;
+      }
+    });
   }
 
   saveSettings() {

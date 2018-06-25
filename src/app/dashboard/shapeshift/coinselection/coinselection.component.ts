@@ -48,6 +48,7 @@ export class CoinSelectionComponent implements OnInit {
     this.shData.changeShapeShiftPair(pair);
     this.shData.changeSelectStatus(0);
   }
+
   toggleSideBar() {
     this.shData.changeSelectStatus(0);
   }
