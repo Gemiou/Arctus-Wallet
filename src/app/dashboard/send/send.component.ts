@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Wallet, Contract, providers, utils } from 'ethers';
 import { CryptoHelperService } from '../../services/crypto-helper.service';
@@ -23,6 +23,11 @@ export class SendComponent implements OnInit {
   userWallet: Wallet;
   gasAmount = 21000;
   userBalance = 0;
+  txHash  = false;
+  txHashString = '';
+  @Input() coinSend: string;
+  @Input() addressSend: string;
+  @Output() sendModal = new EventEmitter<boolean>();
 
   constructor(
     private route: ActivatedRoute,
@@ -30,27 +35,21 @@ export class SendComponent implements OnInit {
     private ch: CryptoHelperService,
     private bc: BlockchainAPIService,
     private shData: SharedDataService
-  ) {
-    this.route.params.subscribe((params) => {
-      this.addressFrom = params.address;
-      this.coinName = params.coinName;
+  ) { }
+
+  ngOnInit() {
+    this.addressFrom = this.addressSend;
+      this.coinName = this.coinSend;
       if (this.coinName !== 'ETH') {
         this.gasAmount = 200000;
       }
-    });
     this.userBalance = this.shData.coinBalance.getValue();
-   }
-
-  ngOnInit() {
-    // console.log(this.ch.decryptKey());
     if (this.coinName === 'BTC') {
       this.userWallet = new bitcoin.ECPair(bigi.fromHex(this.ch.decryptKey().substring(2)));
     } else {
       const mainProvider = new providers.InfuraProvider('homestead', 'Mohcm5md9NBp71v7gHjv');
       mainProvider.getGasPrice().then((res) => {
         this.gasPrice = utils.formatUnits(res, 'gwei');
-        (<HTMLInputElement>document.getElementById('gasPrice')).value = this.gasPrice + '';
-        document.getElementById('gasPrice').dispatchEvent(new Event('input'));
       });
       this.userWallet = new Wallet(this.ch.decryptKey(), mainProvider);
     }
@@ -66,7 +65,8 @@ export class SendComponent implements OnInit {
         gasLimit: this.gasAmount,
         data: this.callData
       }).then((txReceipt) => {
-        this.routing.navigate(['/dashboard/txhash/', txReceipt.hash]);
+        this.txHash = true;
+        this.txHashString =txReceipt.hash;
       }).catch((err) => {
         console.log(err);
       });
@@ -85,7 +85,8 @@ export class SendComponent implements OnInit {
         if ((<any>res)._body.indexOf('dust') !== -1) {
           // This means that user has put a low amount to transfer / spamming attack
         } else {
-          this.routing.navigate(['/dashboard/txhash/', (<any>res)._body]);
+          this.txHash = true;
+          this.txHashString = (<any>res)._body;
         }
       })
       .catch((err) => {
@@ -114,13 +115,6 @@ export class SendComponent implements OnInit {
         console.log(err);
       });
     }
-  }
-
-  toggleLock() {
-    const el = document.querySelector('.locked');
-    el.classList.toggle('typcn-lock-open');
-    el.classList.toggle('typcn-lock-closed');
-    (<HTMLInputElement>el.parentElement.firstElementChild).disabled = !(<HTMLInputElement>el.parentElement.firstElementChild).disabled;
   }
 
   filterAddress(e) {
@@ -214,5 +208,9 @@ export class SendComponent implements OnInit {
       e.target.parentElement.classList.add('has-danger');
       e.target.parentElement.classList.remove('has-success');
     }
+  }
+  close() {
+    // close the modal
+    this.sendModal.emit(false);
   }
 }

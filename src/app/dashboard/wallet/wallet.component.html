@@ -1,3 +1,9 @@
+<!-- Send Receive Modals -->
+  <div *ngIf="srOverlay" class="sr-sidebar" [@srsideanimation] [ngClass]="{'active': srOverlay}">
+    <app-send *ngIf ="sendIsOpen"[coinSend]="coins[selectedCoin].type" [addressSend]="coins[selectedCoin].address" (sendModal)="receiveSendModal($event)"></app-send>
+    <app-receive *ngIf="receiveIsOpen" [coinReceive]="coins[selectedCoin].type" [addressReceive]="coins[selectedCoin].address" (sendModal)="receiveRecModal($event)"></app-receive>
+  </div>
+<!-- END Send Receive Modals -->
 <div class="row" id="wallet">
   <div class="col-lg-3">
     <div class="element-wrapper">
@@ -36,14 +42,14 @@
           <div class="eth-c"></div>
         </div>
         <div class="row sr-button">
-          <button [routerLink]="['/dashboard/send', coins[selectedCoin].type, coins[selectedCoin].address]" class="button--winona col-lg-12 col-md-6 col-6"
-            [attr.data-text]="'Send '+coins[selectedCoin].type">
+          <button class="button--winona col-lg-12 col-md-6 col-6"
+            [attr.data-text]="'Send '+coins[selectedCoin].type" (click)="send()">
             <span>Send
               <span class="font-weight-bold">{{coins[selectedCoin].type}}</span>
             </span>
           </button>
-          <button [routerLink]="['/dashboard/receive',coins[selectedCoin].type,coins[selectedCoin].address]" class="button--winona col-lg-12 col-md-6 col-6"
-            [attr.data-text]="'Receive '+coins[selectedCoin].type">
+          <button class="button--winona col-lg-12 col-md-6 col-6"
+            [attr.data-text]="'Receive '+coins[selectedCoin].type" (click)="receive()">
             <span>Receive
               <span class="font-weight-bold">{{coins[selectedCoin].type}}</span>
             </span>
@@ -53,7 +59,7 @@
     </div>
     <div class="element-wrapper">
       <button class="button--winona col-lg-12 shapeshift-button" data-text="Shift Now" [ngClass]="{ 'unavailable': !availableSSCoins.includes(coins[selectedCoin].type) }"
-        (click)="toggleShapeshift()">
+        (click)="toggleShapeshift();closeSrModal()">
         <span>
           <img class="shapeshift-image" src="../../../assets/img/shapeshift.png" />
           <span class="font-weight-bold">ShapeShift</span> {{coins[selectedCoin].type}}
@@ -70,7 +76,7 @@
       <div class="element-box nopadding">
         <div class="row">
           <div class="col-lg-3 col-6">
-            <button class="button--winona add-coin" data-text="Go to Coin Page" [routerLink]="['/dashboard/addCoin/']">
+            <button (click)="closeSrModal()" class="button--winona add-coin" data-text="Go to Coin Page" [routerLink]="['/dashboard/addCoin/']">
               <span class="typlab">
                 <i class="fa fa-plus-circle"></i>Add New Coin</span>
             </button>

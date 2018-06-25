@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Http, RequestOptions } from '@angular/http';
+import { trigger, style, animate, transition } from '@angular/animations';
+import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { keccak_256 } from 'js-sha3';
@@ -19,6 +20,46 @@ import { Observable } from 'rxjs/Observable';
 // import * as Chartjs from 'chart.js';
 @Component({
   selector: 'app-wallet',
+  animations: [
+    trigger(
+      'srsideanimation', [
+        transition(':enter', [
+          style({
+            position: 'fixed',
+            width: '450px',
+            height: '100vh',
+            top: '0',
+            right: '0',
+            opacity: 0.5,
+            background: 'rgba(40, 41, 43, 0.85)',
+            transform: 'translateX(100%)'
+          }),
+          animate('750ms cubic-bezier(.175,.885,.32,1)', style({
+            background: 'rgba(40, 41, 43, 0.95)',
+            opacity: 1,
+            transform: 'translateX(0%)'
+          }))
+        ]),
+        transition(':leave', [
+          style({
+            transform: 'translateX(0%)',
+            opacity: 1,
+            background: 'rgba(40, 41, 43, 0.95)'}),
+          animate('750ms cubic-bezier(.175,.885,.32,1)',
+          style({
+            position: 'fixed',
+            width: '450px',
+            height: '100vh',
+            top: '0',
+            right: '0',
+            opacity: 0.5,
+            background: 'rgba(40, 41, 43, 0.85)',
+            transform: 'translateX(100%)'
+          }))
+        ])
+      ]
+    )
+  ],
   templateUrl: './wallet.component.html',
   styleUrls: ['./wallet.component.scss']
 })
@@ -40,6 +81,9 @@ export class WalletComponent implements OnInit {
   showLoading = true;
   coinsLoaded = 0;
   shapeShiftModalStatus: Boolean = false;
+  srOverlay = false;
+  sendIsOpen = false;
+  receiveIsOpen = false;
 
   constructor(
     private ch: CryptoHelperService,
@@ -292,5 +336,24 @@ export class WalletComponent implements OnInit {
   }
   copied(index: any) {
 
+  }
+  send() {
+    this.receiveIsOpen = false;
+    this.srOverlay = true;
+    this.sendIsOpen = true;
+  }
+  receive() {
+    this.sendIsOpen = false;
+    this.srOverlay = true;
+    this.receiveIsOpen = true;
+  }
+  closeSrModal() {
+    this.srOverlay = false;
+  }
+  receiveSendModal($event) {
+    this.srOverlay = $event;
+  }
+  receiveRecModal($event) {
+    this.srOverlay = $event;
   }
 }

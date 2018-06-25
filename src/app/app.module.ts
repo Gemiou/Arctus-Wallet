@@ -26,7 +26,6 @@ import { AddnewcoinComponent } from './dashboard/addnewcoin/addnewcoin.component
 import { LoadingComponent } from './loading/loading.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WalletComponent } from './dashboard/wallet/wallet.component';
-import { TxhashComponent } from './dashboard/send/txhash/txhash.component';
 import { ShapeshiftComponent } from './dashboard/shapeshift/shapeshift.component';
 import { CoinSelectionComponent } from './dashboard/shapeshift/coinselection/coinselection.component';
 import { ChatComponent } from './chat/chat.component';
@@ -45,7 +44,6 @@ import { ChatComponent } from './chat/chat.component';
     LoadingComponent,
     SettingsComponent,
     WalletComponent,
-    TxhashComponent,
     ShapeshiftComponent,
     CoinSelectionComponent,
     ChatComponent
