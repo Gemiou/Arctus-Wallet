@@ -31,7 +31,7 @@
       <img class="image-shift" src="../../../assets/img/shapeshiftc.png" alt="">
     </div>
     <!-- Right Side -->
-    <div class="col-lg-8 col-12 right-side">
+    <div class="col-lg-8 col-12 right-side" [ngClass]="{ 'border' : advanced }">
       <ng-container *ngIf="!startedTransaction">
         <div class="row justify-content-center coins-selection">
           <div class="col-lg-3 col-4 hover-fade" (click)="selectCoin(1)">
@@ -66,9 +66,8 @@
             </div>
           </form>
           <div class="col-lg-8 mt-3 mb-3">
-            <span class="advanced" *ngIf="!advanced" (click)="advanced=!advanced"><i class="fa fa-caret-right"></i> Advanced</span>
-            <span class="advanced" *ngIf="advanced" (click)="advanced=!advanced"><i class="fa fa-caret-down"></i> Advanced</span>
-            <input type="text" class="form-control" id="coinaddress" [(ngModel)]="shiftAddress" [ngModelOptions]="{standalone: true}"
+            <span class="advanced" (click)="advanced=!advanced"><i class="fa" [ngClass]="{ 'fa-caret-right' : !advanced, 'fa-caret-down' : advanced }"></i> Advanced</span>
+            <input type="text" class="mt-2 form-control" id="coinaddress" [(ngModel)]="shiftAddress" (input)="filterAddress($event)" [ngModelOptions]="{standalone: true}"
                 placeholder="Sender Address" *ngIf="advanced">
           </div>
           <div class="col-lg-8">

@@ -39,10 +39,10 @@ export class SendComponent implements OnInit {
 
   ngOnInit() {
     this.addressFrom = this.addressSend;
-      this.coinName = this.coinSend;
-      if (this.coinName !== 'ETH') {
-        this.gasAmount = 200000;
-      }
+    this.coinName = this.coinSend;
+    if (this.coinName !== 'ETH') {
+      this.gasAmount = 200000;
+    }
     this.userBalance = this.shData.coinBalance.getValue();
     if (this.coinName === 'BTC') {
       this.userWallet = new bitcoin.ECPair(bigi.fromHex(this.ch.decryptKey().substring(2)));
@@ -60,10 +60,13 @@ export class SendComponent implements OnInit {
     this.gasAmount = parseInt(this.gasAmount + '', 10);
     if (this.coinName === 'ETH') {
       const weiAmount = utils.parseEther(this.coinAmount + '');
-      this.userWallet.send(this.recipientAddress.trim(), weiAmount)
+      this.userWallet.send(this.recipientAddress.trim(), weiAmount, {
+        gasLimit: this.gasAmount,
+        gasPrice: utils.bigNumberify(utils.parseUnits(this.gasPrice, 'gwei'))
+      })
       .then((txReceipt) => {
         this.txHash = true;
-        this.txHashString =txReceipt.hash;
+        this.txHashString = txReceipt.hash;
       }).catch((err) => {
         console.log(err);
       });

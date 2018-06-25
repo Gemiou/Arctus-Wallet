@@ -82,7 +82,14 @@ export class ShapeshiftComponent implements OnInit {
     this.startedTransaction = true;
     this.transactionStatus = 'Executing Transaction';
     this.transactionStatusDescription = 'Requesting confirmation from ShapeShift API...';
-    this.SS.shiftTokens(this.depositCoin, this.receiveCoin, this.amount * Math.pow(10, this.decimals))
+    console.log(this.amount);
+    console.log(this.amount * Math.pow(10, this.decimals));
+    this.SS.shiftTokens(
+      this.depositCoin,
+      this.receiveCoin,
+      this.amount * Math.pow(10, this.decimals),
+      !/^0x[a-fA-F0-9]{40}$/.test(this.shiftAddress) ? undefined : this.shiftAddress
+    )
     .subscribe(
       (updateMsg) => {
           if (Object.keys(updateMsg).includes('depositAddress')) {
@@ -104,7 +111,7 @@ export class ShapeshiftComponent implements OnInit {
             const hashTx = (<any>updateMsg).txReceipt.hash;
             const hashTxLink = '<a href="https://etherscan.io/tx/' + hashTx + '" target="_blank">' + hashTx.slice(0, 12) + '...</a>';
             this.transactionStatusDescription =
-            'C2 Successfully sent ' + this.depositCoin + ' to ShapeShifts address with transaction hash '
+            'Successfully sent ' + this.depositCoin + ' to ShapeShifts address with transaction hash '
              + hashTxLink + '. Awaiting receipt confirmation from ShapeShift...';
           } else
           if (Object.keys(updateMsg).includes('finalReceipt')) {
@@ -137,68 +144,6 @@ export class ShapeshiftComponent implements OnInit {
 
       }
     );
-  }
-
-  advancedExecuteTransaction() {
-    this.startedTransaction = true;
-    this.transactionStatus = 'Executing Transaction';
-    this.transactionStatusDescription = 'Requesting confirmation from ShapeShift API...';
-    this.SS.requestPreciseQuote(this.shiftAddress, this.depositCoin, this.receiveCoin, this.amount * Math.pow(10, this.decimals))
-    .then((dataPack) => {
-      // console.log('c1: ', updateMsg);
-      this.transactionStatus = 'Sending ' + this.depositCoin;
-      const depositAddress = (<any>dataPack).depositAddress;
-      // tslint:disable-next-line:max-line-length
-      const depositAddressLink = '<a href="https://etherscan.io/address/' + depositAddress +
-      '" target="_blank">' + depositAddress.slice(0, 12) + '...</a>';
-      this.transactionStatusDescription =
-      'Received confirmation from ShapeShift. Sending ' + this.depositCoin + ' to ' + depositAddressLink;
-      this.SS.honorPreciseQuote(dataPack).subscribe(
-        (updateMsg) => {
-            if (Object.keys(updateMsg).includes('txReceipt')) {
-              console.log('c2: ', updateMsg);
-              this.transactionStatus = 'Sent ' + this.depositCoin;
-              setTimeout(() => {
-                this.transactionStatus = 'Waiting confirmation from ShapeShift';
-              }, 1000);
-              const hashTx = (<any>updateMsg).txReceipt.hash;
-              const hashTxLink = '<a href="https://etherscan.io/tx/' + hashTx + '" target="_blank">' + hashTx.slice(0, 12) + '...</a>';
-              this.transactionStatusDescription =
-              'C2 Successfully sent ' + this.depositCoin + ' to ShapeShifts address with transaction hash '
-               + hashTxLink + '. Awaiting receipt confirmation from ShapeShift...';
-            } else
-            if (Object.keys(updateMsg).includes('finalReceipt')) {
-              console.log('c3: ', updateMsg);
-              this.transactionStatus = 'Sent ' +  this.depositCoin;
-              setTimeout(() => {
-                this.transactionStatus = 'Transaction Finished';
-              }, 1000);
-              const finalRep = (<any>updateMsg).finalReceipt;
-              // tslint:disable-next-line:max-line-length
-              const finalRepLink = '<a href="https://etherscan.io/tx/' + finalRep + '" target="_blank">' + finalRep.slice(0, 12) + '...</a>';
-              this.transactionStatusDescription = 'Successfully received ' + this.receiveCoin +
-              ' from ShapeShift with transaction hash ' + finalRepLink;
-              this.hashHasReturned = true;
-            } else {
-              console.log('def: ', updateMsg);
-              this.transactionStatus = 'Received Confirmation from ShapeShift';
-              setTimeout(() => {
-                this.transactionStatus = 'Waiting ' + this.receiveCoin + ' from ShapeShift';
-              }, 1000);
-              this.transactionStatusDescription =
-              'Received confirmation from ShapeShift. Awaiting ' + this.receiveCoin + ' transaction hash from ShapeShift...';
-            }
-        },
-        (err) => {
-          console.log(err);
-          this.transactionStatusDescription = 'There was an error with your transaction. Please try again or contact us.';
-          this.isError = true;
-        },
-        () => {
-  
-        }
-      );
-    });
   }
 
   filterAmount(e) {
@@ -247,5 +192,41 @@ export class ShapeshiftComponent implements OnInit {
         }
       });
     }
+  }
+  filterAddress(e) {
+    if (this.receiveCoin === 'BTC') {
+      this.filterBTCAddress(e);
+    } else {
+      this.filterETHAddress(e);
+    }
+  }
+
+  filterBTCAddress(e) {
+    let current = e.target.value;
+    current = current.replace(/[^a-zA-Z0-9]*/g, '').substring(0, 34);
+    try {
+      e.target.parentElement.classList.remove('has-danger');
+      e.target.parentElement.classList.add('has-success');
+    } catch (err) {
+      e.target.parentElement.classList.add('has-danger');
+      e.target.parentElement.classList.remove('has-success');
+    }
+    e.target.value = current;
+    this.shiftAddress = current;
+  }
+
+  filterETHAddress(e) {
+    let current = e.target.value.replace(/^0x/, '');
+    current = current.replace(/[^a-fA-F0-9]*/g, '').substring(0, 40);
+    e.target.value = '0x' + current;
+    current = e.target.value;
+    if (/^0x[a-fA-F0-9]{40}$/.test(current)) {
+      e.target.parentElement.classList.remove('has-danger');
+      e.target.parentElement.classList.add('has-success');
+    } else {
+      e.target.parentElement.classList.add('has-danger');
+      e.target.parentElement.classList.remove('has-success');
+    }
+    this.shiftAddress = current;
   }
 }

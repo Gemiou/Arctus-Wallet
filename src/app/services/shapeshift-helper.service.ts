@@ -43,7 +43,7 @@ export class ShapeShiftHelperService {
     });
   }
 
-  shiftTokens(deposit, receive, amount) {
+  shiftTokens(deposit, receive, amount, receiveAddress ?: any) {
     return new Observable((observer) => {
       const pair = `${deposit}_${receive}`;
       let backupAddress;
@@ -68,9 +68,11 @@ export class ShapeShiftHelperService {
       }
       const options = {
         returnAddress: backupAddress,
-        amount: amount,
         apiKey: this.SS_API_KEY
       };
+      if (receiveAddress !== undefined) {
+        withdrawalAddress = receiveAddress;
+      }
       shapeshift.shift(withdrawalAddress, pair, options, (err, returnData) => {
         if (!err) {
           const depositAddress = returnData.deposit;
