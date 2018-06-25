@@ -131,6 +131,7 @@ export class SetupComponent implements OnInit {
   isMobile() {
     return document.querySelectorAll('.mobile').length !== 0;
   }
+
   mobileSearch() {
     this.searchActive = !this.searchActive;
   }

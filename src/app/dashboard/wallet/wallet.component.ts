@@ -17,6 +17,8 @@ import * as bigi from 'bigi';
 import * as bitcoin from 'bitcoinjs-lib';
 import * as countUp from 'countup.js';
 import * as Chart from 'chart.js';
+import * as Vibrant from 'node-vibrant';
+
 
 // import * as Chartjs from 'chart.js';
 @Component({
@@ -144,6 +146,19 @@ export class WalletComponent implements OnInit {
       preferences.coins[i].address = address;
     }
     this.coins = preferences.coins;
+    for (let i = 0; i < this.coins.length; i++) {
+      Vibrant.from(`../../../../assets/img/sp/${this.coins[i].type.trim()}.png`)
+      .getPalette()
+      .then((palette) => {
+        console.log(palette);
+        let keyArray = Object.keys(palette);
+        for (let j = keyArray.length - 1; j >= 0; j--) {
+          if (palette[keyArray[j]] !== null) {
+            this.coins[i].color = "rgb(" + (<any>palette[keyArray[j]])._rgb.toString() + ")";
+          }
+        }
+      });
+    }
     this.getUSDPrice();
     this.getShapeShiftCoins();
     this.refreshUI(this.coins).subscribe(
@@ -385,6 +400,7 @@ export class WalletComponent implements OnInit {
   receiveRecModal($event) {
     this.srOverlay = $event;
   }
+
   portfolioChartData(selectedCoins) {
     this.chartLoading = false;
     const ctx = document.getElementById('myChart');
@@ -395,13 +411,13 @@ export class WalletComponent implements OnInit {
     let totalPortfolioValue = 0;
     // create Legend Set and get value in USD for each one
     // generate random colors for coins
-    // sould be add 1 more property on coin list "color" 
+    // sould be add 1 more property on coin list "color"
     // that descibe every crypto like btc is gold/yellow
     for(let i = 0; i < coins.length; i++){
       labels.push(coins[i].type);
       values.push(coins[i].value.toFixed(2));
       totalPortfolioValue = totalPortfolioValue + coins[i].value;
-      colorArray.push(getRandomColor());
+      colorArray.push(coins[i].color);
     }
     this.totalPortfolioValue = totalPortfolioValue.toFixed(2);
     console.log(this.totalPortfolioValue);
@@ -431,15 +447,6 @@ export class WalletComponent implements OnInit {
       }
     });
     document.getElementById('js-legend').innerHTML = myDoughnutChart.generateLegend();
-    function getRandomColor() {
-      const letters = '0123456789ABCDEF';
-      let color = '#';
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      // 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')';
-      return color;
-    }
   }
- 
+
 }
