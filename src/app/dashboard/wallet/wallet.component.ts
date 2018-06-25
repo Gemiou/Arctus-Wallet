@@ -17,7 +17,7 @@ import * as bigi from 'bigi';
 import * as bitcoin from 'bitcoinjs-lib';
 import * as countUp from 'countup.js';
 import * as Chart from 'chart.js';
-import * as Vibrant from 'node-vibrant';
+const Vibrant = require('node-vibrant');
 
 
 // import * as Chartjs from 'chart.js';
