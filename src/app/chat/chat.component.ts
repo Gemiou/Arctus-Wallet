@@ -144,13 +144,26 @@ export class ChatComponent implements OnInit {
           } else {
             throw new Error(`Coin ${type} not found in portfolio`);
           }
-        }).then((status) => {
+        }).then(async (status) => {
+          await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 1000));
+          if ((<HTMLImageElement>document.querySelector('.hover-fade:nth-child(3) img')).src.endsWith(`${secondType}.png`)) {
+              return Promise.resolve(true);
+          }
           return this.queueAction('click', '.hover-fade:nth-child(3)');
         }).then((status) => {
+          if ((<HTMLImageElement>document.querySelector('.hover-fade:nth-child(3) img')).src.endsWith(`${secondType}.png`)) {
+              return Promise.resolve(true);
+          }
           return this.queueAction('click', '#shapeshift-coin-selection input');
         }).then((status) => {
+          if ((<HTMLImageElement>document.querySelector('.hover-fade:nth-child(3) img')).src.endsWith(`${secondType}.png`)) {
+              return Promise.resolve(true);
+          }
           return this.queueAction('input', '#shapeshift-coin-selection input', secondType);
         }).then((status) => {
+          if ((<HTMLImageElement>document.querySelector('.hover-fade:nth-child(3) img')).src.endsWith(`${secondType}.png`)) {
+              return Promise.resolve(true);
+          }
           return this.queueAction('click', `#shapeshift-coin-selection .coin-${secondType.toUpperCase()}-identifier`);
         }).then((status) => {
           if (status === true) {
