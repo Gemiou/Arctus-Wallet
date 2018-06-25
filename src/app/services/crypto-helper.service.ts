@@ -301,7 +301,7 @@ export class CryptoHelperService {
         this.http.get(`https://chain.so/api/v2/get_address_balance/BTC/${address}`).subscribe(
           coinBalance => {
             console.log(coinBalance);
-            resolve(JSON.parse((<any>coinBalance)._body).data.confirmed_balance.replace(/./g,'').replace(/$0*/g,''));
+            resolve(JSON.parse((<any>coinBalance)._body).data.confirmed_balance.replace(/\./g,'').replace(/^0+/,''));
           },
           err => {
             console.log(err);

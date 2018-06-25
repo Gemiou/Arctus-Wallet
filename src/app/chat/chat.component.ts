@@ -6,23 +6,33 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
-  currentDate: any;
+  currentDate: any = '';
   currentMsg: any;
   FAQ: any;
   video: any;
   status: any = 0;
+  timestamp: any = '';
   constructor() { }
 
   ngOnInit() {
-    let cD = new Date();
-    let dayArray = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    let hours = "0" + (cD.getHours() - (Math.floor(cD.getHours() / 13) * 12));
-    hours = hours.substring(hours.length - 2);
-    let minutes = "0" + cD.getMinutes();
-    minutes = minutes.substring(minutes.length - 2);
-    this.currentDate = dayArray[cD.getDay()] + " " + hours + ":" + minutes + " " + (cD.getHours() > 12?"pm":"am");
-    this.showMessage(this.timeAwareMessage(hours), false, 1);
-    this.showMessage(this.firstPrompt(), false, 2);
+    if (localStorage.getItem('first-time') == null) {
+      (<HTMLElement>document.querySelector('.floated-chat-btn')).click();
+      localStorage.setItem('first-time', 'no');
+    }
+  }
+
+  welcomeUser() {
+    if (this.currentDate == '') {
+      let cD = new Date();
+      let dayArray = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      let hours = "0" + (cD.getHours() - (Math.floor(cD.getHours() / 13) * 12));
+      hours = hours.substring(hours.length - 2);
+      let minutes = "0" + cD.getMinutes();
+      minutes = minutes.substring(minutes.length - 2);
+      this.currentDate = dayArray[cD.getDay()] + " " + hours + ":" + minutes + " " + (cD.getHours() > 12?"pm":"am");
+      this.showMessage(this.timeAwareMessage(hours), false, 1);
+      this.showMessage(this.firstPrompt(), false, 2);
+    }
   }
 
   showMessage(message: any, self: any, timeout: any) {
@@ -95,11 +105,64 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  processInput(e: any) {
+  async processInput(e: any) {
     if (e.keyCode == 13) {
       e.preventDefault();
       this.showMessage(this.currentMsg, true, 0);
-      if (this.status == -1) {
+      if (this.currentMsg.match(new RegExp("send [0-9.]+ ([A-Z]{1,5}|[a-z]{1,6}) (to )?[a-zA-Z0-9]{30,42}", 'g')) != null) {
+        let amount = this.currentMsg.match(new RegExp("[0-9.]+"))[0];
+        let type = this.currentMsg.match(new RegExp("[0-9.]+ ([A-Z]{1,5}|[a-z]{1,6})"))[0].split(" ")[1];
+        let address;
+        try {
+          if (type.toUpperCase() === 'BTC') {
+            address = this.currentMsg.match(new RegExp("(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}"))[0];
+          } else {
+            address = this.currentMsg.match(new RegExp("0x[0-9a-fA-F]{40}"))[0];
+          }
+        } catch (e) {
+          this.showMessage("It seems the address you are trying to send to is not valid, make sure it is a correct address", false, 1);
+          return;
+        }
+        this.currentMsg = "";
+        this.showMessage(`Okay, sending ${amount} ${type} to ${address}`, false, 1);
+        await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 2000));
+        this.queueAction('click', `.coin-${type.toUpperCase()}-identifier`).then((status) => {
+          if (status === true) {
+            return this.queueAction('click', 'button[data-text^="Send "]');
+          } else {
+            throw status;
+          }
+        }).then((status) => {
+          if (status === true) {
+            return this.queueAction('click', 'input[placeholder^="Recipient"]');
+          } else {
+            throw status;
+          }
+        }).then((status) => {
+          if (status === true) {
+            return this.queueAction('input', 'input[placeholder^="Recipient"]', address);
+          } else {
+            throw status;
+          }
+        }).then((status) => {
+          if (status === true) {
+            return this.queueAction('click', 'input[step^="a"]');
+          } else {
+            throw status;
+          }
+        }).then((status) => {
+          if (status === true) {
+            return this.queueAction('input', 'input[step^="a"]', amount);
+          } else {
+            throw status;
+          }
+        }).then(async (status) => {
+          await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 2000));
+          alert("SUCCESS");
+        }).catch((err) => {
+          console.log(err.message);
+        });
+      } else if (this.status == -1) {
         if (this.currentMsg.match(new RegExp(".*yes.*", 'i')) || this.currentMsg.match(new RegExp(".*yeah.*", 'i')) || this.currentMsg.match(new RegExp("y", 'i'))) {
           this.openVideoModal(this.video);
           this.showMessage("I hope it answered your question!", false, 1);
@@ -130,7 +193,7 @@ export class ChatComponent implements OnInit {
         this.video = 'http://www.youtube.com/embed/rhaz3HI_Vb4?autoplay=1';
         this.FAQ = 'https://arctus.io/faq/#transfer';
         this.status = -1;
-      } else if (this.currentMsg.match(new RegExp(".*yes.*", 'i')) || this.currentMsg.match(new RegExp(".*yeah.*", 'i')) || this.currentMsg.match(new RegExp("y", 'i')) || this.currentMsg.match(new RegExp(".*help.*", 'i'))) {
+      } else if (this.currentMsg.match(new RegExp(".*yes.*", 'i')) || this.currentMsg.match(new RegExp(".*yeah.*", 'i')) || this.currentMsg.match(new RegExp("^y", 'i')) || this.currentMsg.match(new RegExp(".*help.*", 'i'))) {
         this.showMessage("What exactly do you need help with?", false, 1);
       } else if (this.currentMsg.match(new RegExp(".*no.*", 'i')) || this.currentMsg.match(new RegExp(".*nope.*", 'i'))) {
         this.showMessage("Okay, feel free to reach me if you change your mind by clicking the chat button below!", false, 1);
@@ -182,5 +245,43 @@ export class ChatComponent implements OnInit {
       overlay.style.opacity = '1';
       modalBox.style.transform = 'scale(1) translate(-50%, -50%)';
     });
+  }
+
+  async queueAction(actionType: any, selector: any, text?: any) {
+    await new Promise((resolve, reject) => setTimeout(() => {resolve()}, actionType == "click"?1000:500));
+    let element = document.querySelector(selector);
+    if (element !== null) {
+      if (actionType == 'input') {
+        // Simulate input event for filtering and Angular
+        const event = new Event('input', {
+            'bubbles': true,
+            'cancelable': true
+        });
+        await new Promise((resolve, reject) => setTimeout(() => {element.value = text.charAt(0);resolve();}, Math.random() * 100));
+        text = text.substring(1);
+        // We need to save the size because we edit the text directly
+        let loopLength = text.length;
+        for (let i = 1; i < loopLength; i++) {
+          await new Promise((resolve, reject) => setTimeout(() => {
+            if (text.charAt(0) == '.') {
+              element.value += text.substring(0,2);
+              text = text.substring(2);
+            } else {
+              element.value += text.charAt(0);
+              text = text.substring(1);
+            }
+            resolve();
+          }, Math.random() * 100));
+        }
+        element.dispatchEvent(event);
+        return Promise.resolve(true);
+      } else if (actionType == 'click') {
+        element.click();
+        element.focus();
+        return Promise.resolve(true);
+      }
+    } else {
+      return Promise.resolve(new Error('not-found'));
+    }
   }
 }

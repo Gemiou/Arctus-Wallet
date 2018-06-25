@@ -1,8 +1,8 @@
-<div onclick="document.querySelector('.floated-chat-w').classList.toggle('active')" class="floated-chat-btn">
+<div onclick="document.querySelector('.floated-chat-w').classList.toggle('active');" (click)="welcomeUser()" class="floated-chat-btn">
   <i class="os-icon os-icon-mail-07"></i>
   <span>Chat</span>
 </div>
-<div class="floated-chat-w active">
+<div class="floated-chat-w">
   <div class="floated-chat-i">
     <div class="chat-close" onclick="document.querySelector('.floated-chat-w').classList.toggle('active')">
       <i class="os-icon os-icon-close"></i>

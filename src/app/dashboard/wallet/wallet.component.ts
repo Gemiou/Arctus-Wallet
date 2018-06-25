@@ -275,10 +275,16 @@ export class WalletComponent implements OnInit {
     }
   }
 
-  makeActive(index: any) {
+  makeActive(coin: any) {
+    let index;
+    this.coins.forEach((el, i) => {
+      if (coin.type == el.type) {
+        index = i;
+      }
+    })
     if (this.selectedCoin == index) return;
     this.createCountUp(index);
-    this.changeTicker(this.coins[index].type);
+    this.changeTicker(coin.type);
     this.selectedCoin = index;
     this.shData.changeCoinBalance(this.coins[index].balance);
     this.shData.changeCurrentCoin(this.coins[index]);
