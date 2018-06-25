@@ -413,7 +413,10 @@ export class WalletComponent implements OnInit {
     // generate random colors for coins
     // sould be add 1 more property on coin list "color"
     // that descibe every crypto like btc is gold/yellow
-    for(let i = 0; i < coins.length; i++){
+    for (let i = 0; i < coins.length; i++) {
+      if (!this.ch.coins.some((el) => el.type.toUpperCase() === coins[i].type.toUpperCase())) {
+        continue;
+      }
       labels.push(coins[i].type);
       values.push(coins[i].value.toFixed(2));
       totalPortfolioValue = totalPortfolioValue + coins[i].value;

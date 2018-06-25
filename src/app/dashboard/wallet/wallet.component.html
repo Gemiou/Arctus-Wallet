@@ -10,7 +10,7 @@
     <div class="element-wrapper">
       <div class="element-box rc-controller">
         
-        <div class="imagecontainer" *ngIf="coins[selectedCoin].type !== null"><img class="img-label" src="../../../assets/img/sp/{{coins[selectedCoin].type}}.png" alt=""></div>
+        <div class="imagecontainer" *ngIf="coins[selectedCoin].type !== null"><img class="img-label" src="../../../assets/img/sp/{{coins[selectedCoin].isCustom === undefined?coins[selectedCoin].type.trim():'ERC'}}.png" alt=""></div>
         <div class="row">
           <div class="col-lg-12 text-center">
             <span class="coin-value" id="count-up" #cu>{{coins[selectedCoin].balance}}</span>
@@ -88,7 +88,7 @@
               <tr *ngFor="let coin of coins | filterBy: coinName;let i = index" class="crypto coin-{{coin.type.trim()}}-identifier" [ngStyle]="{'background': coins[selectedCoin].type == coin.type ? 'rgba(4, 123, 248, 0.15)' : 'rgba(0,0,0,0)' }"
                 (click)="makeActive(coin)">
                 <td class="nowrap sc">
-                  <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image mr-1" alt=""> {{coin.type}}
+                  <img src="../../../../assets/img/sp/{{coin.isCustom === undefined?coin.type.trim():'ERC'}}.png" class="crypto-image mr-1" alt=""> {{coin.type}}
                 </td>
                 <td class="hide-mb">
                   <div class="cell-image-list">
@@ -106,7 +106,7 @@
                 (click)="makeActive(coin)">
                 <ng-container *ngIf="!alreadyExists(coin, (coins | filterBy: coinName))">
                   <td class="nowrap sc">
-                    <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image mr-1" alt="">
+                    <img src="../../../../assets/img/sp/{{coin.isCustom === undefined?coin.type.trim():'ERC'}}.png" class="crypto-image mr-1" alt="">
                     {{coin.type}}
                   </td>
                   <td class="hide-mb">
