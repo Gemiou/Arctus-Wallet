@@ -223,7 +223,7 @@ export class ChatComponent implements OnInit {
           }
         }).then((status) => {
           if (status === true) {
-            return this.queueAction('input', 'input[placeholder^="Recipient"]', address);
+            return this.queueAction('input', 'input[placeholder^="Recipient"]', address.substring(2));
           } else {
             throw status;
           }
@@ -242,6 +242,12 @@ export class ChatComponent implements OnInit {
         }).then(async (status) => {
           if (status === true) {
             return this.queueAction('click', '.send-button');
+          } else {
+            throw status;
+          }
+        }).then(async (status) => {
+          if (status === true) {
+            this.showMessage(`Successfully sent ${amount} ${type} to ${address}`, false, 1);
           } else {
             throw status;
           }
