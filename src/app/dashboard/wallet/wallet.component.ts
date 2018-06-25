@@ -429,7 +429,8 @@ export class WalletComponent implements OnInit {
         labels: labels,
         datasets: [{
           data: values,
-          backgroundColor: colorArray
+          backgroundColor: colorArray,
+          labels: labels
         }]
       },
       options: {
@@ -440,7 +441,7 @@ export class WalletComponent implements OnInit {
           mode: 'label',
           callbacks: {
               label: function(tooltipItem, data) {
-                  return data['datasets'][0]['data'][tooltipItem['index']] + ' $';
+                  return '$' + data['datasets'][0]['data'][tooltipItem['index']];
               }
           }
       },
