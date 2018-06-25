@@ -67,6 +67,7 @@ export class SendComponent implements OnInit {
       .then((txReceipt) => {
         this.txHash = true;
         this.txHashString = txReceipt.hash;
+        this.sendModal.emit(true);
       }).catch((err) => {
         console.log(err);
       });
@@ -83,9 +84,11 @@ export class SendComponent implements OnInit {
       .then((res) => {
         if ((<any>res)._body.indexOf('dust') !== -1) {
           // This means that user has put a low amount to transfer / spamming attack
+          alert('ERROR: Amount is too low/considered spam by the network');
         } else {
           this.txHash = true;
-          this.txHashString = (<any>res)._body;
+          this.txHashString = this.userWallet.getAddress();
+          this.sendModal.emit(true);
         }
       })
       .catch((err) => {
@@ -102,14 +105,15 @@ export class SendComponent implements OnInit {
       if (coin === undefined) {
         coin = this.shData.currentCoin.getValue();
       }
-
-      const tokenAmount = utils.bigNumberify(this.coinAmount).mul(utils.bigNumberify(10).pow(coin.realDecimals));
+      const tokenAmount = utils.parseEther(this.coinAmount + '').div(utils.bigNumberify(10).pow(coin.realDecimals - 18));
       const tokenContract = new Contract(coin.tokenAddress, this.ch.erc20ABI, this.userWallet);
       tokenContract.transfer(this.recipientAddress, tokenAmount, {
         gasPrice: utils.bigNumberify(utils.parseUnits(this.gasPrice, 'gwei')),
         gasLimit: this.gasAmount
       }).then((txReceipt) => {
-        this.routing.navigate(['/dashboard/txhash/', txReceipt.hash]);
+        this.txHash = true;
+        this.txHashString = txReceipt.hash;
+        this.sendModal.emit(true);
       }).catch((err) => {
         console.log(err);
       });

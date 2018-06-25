@@ -85,7 +85,7 @@
   }
 
   body.night-mode {
-    filter: grayscale(100%) invert(1);
+    filter: grayscale(100%) invert(1) contrast(0.8);
   }
 
   body.night-mode * {

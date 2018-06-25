@@ -136,14 +136,13 @@
           </table>
         </div>
       </div>
-
     </div>
     <!-- End list of user coins -->
     <div class="element-wrapper">
       <div class="element-box nopadding">
         <div class="container">
           <app-loading *ngIf="chartLoading"></app-loading>
-          <div class="row align-items-center">
+          <div *ngIf="!chartLoading" class="row align-items-center">
             <div class="col-lg-3">
               <div class="total-portfolio-value text-center" *ngIf="!chartLoading">
                 <div>Total Value</div>
