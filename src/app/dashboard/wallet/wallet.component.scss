@@ -336,3 +336,14 @@
     transform: translateX(0%);
     background: rgba(40, 41, 43, 0.95);
 }
+.total-portfolio-value {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    display: block;
+    font-size: 18px;
+}
+.portfolio-title {
+    font-size: 18px;
+}

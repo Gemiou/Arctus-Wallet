@@ -4,6 +4,7 @@ import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { keccak_256 } from 'js-sha3';
+import { Observable } from 'rxjs/Observable';
 
 import { CryptoHelperService } from '../../services/crypto-helper.service';
 import { BlockchainAPIService } from '../../services/blockchain-api.service';
@@ -15,7 +16,7 @@ import { Wallet, utils } from 'ethers';
 import * as bigi from 'bigi';
 import * as bitcoin from 'bitcoinjs-lib';
 import * as countUp from 'countup.js';
-import { Observable } from 'rxjs/Observable';
+import * as Chart from 'chart.js';
 
 // import * as Chartjs from 'chart.js';
 @Component({
@@ -44,18 +45,19 @@ import { Observable } from 'rxjs/Observable';
           style({
             transform: 'translateX(0%)',
             opacity: 1,
-            background: 'rgba(40, 41, 43, 0.95)'}),
+            background: 'rgba(40, 41, 43, 0.95)'
+          }),
           animate('750ms cubic-bezier(.175,.885,.32,1)',
-          style({
-            position: 'fixed',
-            width: '450px',
-            height: '100vh',
-            top: '0',
-            right: '0',
-            opacity: 0.5,
-            background: 'rgba(40, 41, 43, 0.85)',
-            transform: 'translateX(100%)'
-          }))
+            style({
+              position: 'fixed',
+              width: '450px',
+              height: '100vh',
+              top: '0',
+              right: '0',
+              opacity: 0.5,
+              background: 'rgba(40, 41, 43, 0.85)',
+              transform: 'translateX(100%)'
+            }))
         ])
       ]
     )
@@ -84,6 +86,8 @@ export class WalletComponent implements OnInit {
   srOverlay = false;
   sendIsOpen = false;
   receiveIsOpen = false;
+  totalPortfolioValue: any;
+  chartLoading = true;
 
   constructor(
     private ch: CryptoHelperService,
@@ -118,13 +122,13 @@ export class WalletComponent implements OnInit {
       [
         this.coins[this.selectedCoin].type,
         this.availableSSCoins[0] === this.coins[this.selectedCoin].type ?
-        this.availableSSCoins[1] :
-        this.availableSSCoins[0]
+          this.availableSSCoins[1] :
+          this.availableSSCoins[0]
       ]
     );
   }
   async executeGetters() {
-    const preferences = JSON.parse( localStorage.getItem( 'preferences-' + keccak_256( this.ch.decryptKey() ) ) );
+    const preferences = JSON.parse(localStorage.getItem('preferences-' + keccak_256(this.ch.decryptKey())));
     for (let i = 0; i < preferences.coins.length; i++) {
       const address = this.generateAddress(preferences.coins[i].type);
       preferences.coins[i].address = address;
@@ -155,6 +159,7 @@ export class WalletComponent implements OnInit {
         this.changeTicker(this.coins[this.selectedCoin].type);
         this.shData.changeCoinBalance(this.coins[this.selectedCoin].balance);
         this.shData.changeCurrentCoin(this.coins[this.selectedCoin]);
+        this.portfolioChartData(this.coins);
         // this.ch.updateCoins(this.coins);
       }
     );
@@ -168,12 +173,12 @@ export class WalletComponent implements OnInit {
 
   getShapeShiftCoins() {
     this.SS.getAvailableCoins(this.coins)
-    .then((availableCoins) => {
-      this.availableSSCoins = <Array<any>>availableCoins;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((availableCoins) => {
+        this.availableSSCoins = <Array<any>>availableCoins;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   refreshUI(coins: Array<any>) {
@@ -316,9 +321,9 @@ export class WalletComponent implements OnInit {
             document.querySelector(
               '.ccc-widget > div > div:nth-child(2) > a > span:nth-child(2)'
             )
-            .innerHTML.replace(/[^0-9.,-]*/g, '')
+              .innerHTML.replace(/[^0-9.,-]*/g, '')
           ) > 0) {
-            (<HTMLElement>document.querySelector('.ccc-widget canvas')).style.filter = 'hue-rotate(287deg)';
+          (<HTMLElement>document.querySelector('.ccc-widget canvas')).style.filter = 'hue-rotate(287deg)';
         } else {
           (<HTMLElement>document.querySelector('.ccc-widget canvas')).style.filter = 'hue-rotate(120deg)';
         }
@@ -329,7 +334,7 @@ export class WalletComponent implements OnInit {
       }
     };
     const theUrl = baseUrl + `serve/v1/coin/chart?fsym=${type}&tsym=USD`;
-    s.src = theUrl + ( theUrl.indexOf('?') >= 0 ? '&' : '?') + 'app=' + appName;
+    s.src = theUrl + (theUrl.indexOf('?') >= 0 ? '&' : '?') + 'app=' + appName;
   }
   copyAddress(addresaaas) {
     document.execCommand('asdasdasd');
@@ -356,4 +361,61 @@ export class WalletComponent implements OnInit {
   receiveRecModal($event) {
     this.srOverlay = $event;
   }
+  portfolioChartData(selectedCoins) {
+    this.chartLoading = false;
+    const ctx = document.getElementById('myChart');
+    const colorArray = [];
+    const coins = selectedCoins;
+    const labels = [];
+    const values = [];
+    let totalPortfolioValue = 0;
+    // create Legend Set and get value in USD for each one
+    // generate random colors for coins
+    // sould be add 1 more property on coin list "color" 
+    // that descibe every crypto like btc is gold/yellow
+    for(let i = 0; i < coins.length; i++){
+      labels.push(coins[i].type);
+      values.push(coins[i].value.toFixed(2));
+      totalPortfolioValue = totalPortfolioValue + coins[i].value;
+      colorArray.push(getRandomColor());
+    }
+    this.totalPortfolioValue = totalPortfolioValue.toFixed(2);
+    console.log(this.totalPortfolioValue);
+
+    // chart dougnhut creation
+    const myDoughnutChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: values,
+          backgroundColor: colorArray
+        }]
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        tooltips: {
+          mode: 'label',
+          callbacks: {
+              label: function(tooltipItem, data) {
+                  return data['datasets'][0]['data'][tooltipItem['index']] + ' $';
+              }
+          }
+      },
+      }
+    });
+    document.getElementById('js-legend').innerHTML = myDoughnutChart.generateLegend();
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      // 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')';
+      return color;
+    }
+  }
+ 
 }
