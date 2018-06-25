@@ -109,9 +109,91 @@ export class ChatComponent implements OnInit {
     if (e.keyCode == 13) {
       e.preventDefault();
       this.showMessage(this.currentMsg, true, 0);
-      if (this.currentMsg.match(new RegExp("send [0-9.]+ ([A-Z]{1,5}|[a-z]{1,6}) (to )?[a-zA-Z0-9]{30,42}", 'g')) != null) {
-        let amount = this.currentMsg.match(new RegExp("[0-9.]+"))[0];
-        let type = this.currentMsg.match(new RegExp("[0-9.]+ ([A-Z]{1,5}|[a-z]{1,6})"))[0].split(" ")[1];
+      let isHelp = this.currentMsg.match(new RegExp("(help|how|where|assist|support)", 'gi')) !== null;
+      if (!isHelp && this.currentMsg.match(new RegExp("(change|shift|convert)", 'gi')) != null) {
+        let amount;
+        try {
+          amount = this.currentMsg.match(new RegExp("[0-9.]+"))[0];
+        } catch (e) {
+          this.showMessage("It seems you have not specified an amount, try again by writing the amount you wish to transfer", false, 1);
+          this.currentMsg = "";
+          return;
+        }
+        let type;
+        try {
+          type = this.currentMsg.match(new RegExp("[0-9.]+ ([A-Z]{1,5}|[a-z]{1,6})"))[0].split(" ")[1];
+        } catch (e) {
+          this.showMessage("It seems that you have not specified the currency, try again by writing the currency type right after the amount you wish to transfer", false, 1);
+          this.currentMsg = "";
+          return;
+        }
+        let secondType;
+        try {
+          secondType = this.currentMsg.match(new RegExp(`${type} (to )?([A-Z]{1,5}|[a-z]{1,6})`))[0].split(" ")[this.currentMsg.match(new RegExp(`${type} (to )?([A-Z]{1,5}|[a-z]{1,6})`))[0].split(" ").length - 1];
+        } catch (e) {
+          this.showMessage("It seems that you have not specified the currency, try again by writing the currency type right after the amount you wish to transfer", false, 1);
+          this.currentMsg = "";
+          return;
+        }
+        this.currentMsg = "";
+        this.showMessage(`Okay, converting ${amount} ${type} to ${secondType}`, false, 1);
+        await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 2000));
+        this.queueAction('click', `tbody .coin-${type.toUpperCase()}-identifier`).then((status) => {
+          if (status === true) {
+            return this.queueAction('click', '.shapeshift-button');
+          } else {
+            throw new Error(`Coin ${type} not found in portfolio`);
+          }
+        }).then((status) => {
+          return this.queueAction('click', '.hover-fade:nth-child(3)');
+        }).then((status) => {
+          return this.queueAction('click', '#shapeshift-coin-selection input');
+        }).then((status) => {
+          return this.queueAction('input', '#shapeshift-coin-selection input', secondType);
+        }).then((status) => {
+          return this.queueAction('click', `#shapeshift-coin-selection .coin-${secondType.toUpperCase()}-identifier`);
+        }).then((status) => {
+          if (status === true) {
+            return this.queueAction('click', '#coinaddress');
+          } else {
+            throw new Error(`Coin ${secondType} is not available on ShapeShift`);
+          }
+        }).then((status) => {
+          return this.queueAction('input', '#coinaddress', amount);
+        }).then(async (status) => {
+          await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 500));
+          if (status === true && document.querySelector('.transaction-button.unavailable') === null) {
+            return this.queueAction('click', '.transaction-button');
+          } else {
+            let msg = (amount < (<HTMLElement>document.querySelector('.left-side > div:nth-child(2) .nopadding:nth-child(2)')).innerText.split(" ")[0])?`Amount of ${type} (${amount}) below ShapeShift minimum`:((amount > (<HTMLElement>document.querySelector('.left-side > div:nth-child(3) .nopadding:nth-child(2)')).innerText.split(" ")[0])?`Amount of ${type} (${amount}) above ShapeShift maximum`:`Insufficient ${type} for shift`);
+            throw new Error(msg);
+          }
+        }).then((status) => {
+          this.showMessage(`Successfully converted ${amount} ${type} to ${secondType}`, false, 1);
+        }).catch((err) => {
+          this.showMessage(`Failed to convert ${type} tp ${secondType} with error: ${err.message}`, false, 1);
+          if (document.querySelector('.close-modal') !== null) {
+            (<HTMLElement>document.querySelector('.close-modal')).click();
+          }
+          console.log(err);
+        });
+      } else if (!isHelp && this.currentMsg.match(new RegExp("(send|transfer|transmit)", 'gi')) != null) {
+        let amount;
+        try {
+          amount = this.currentMsg.match(new RegExp("[0-9.]+"))[0];
+        } catch (e) {
+          this.showMessage("It seems you have not specified an amount, try again by writing the amount you wish to transfer", false, 1);
+          this.currentMsg = "";
+          return;
+        }
+        let type;
+        try {
+          type = this.currentMsg.match(new RegExp("[0-9.]+ ([A-Z]{1,5}|[a-z]{1,6})"))[0].split(" ")[1];
+        } catch (e) {
+          this.showMessage("It seems that you have not specified the currency, try again by writing the currency type right after the amount you wish to transfer", false, 1);
+          this.currentMsg = "";
+          return;
+        }
         let address;
         try {
           if (type.toUpperCase() === 'BTC') {
@@ -120,13 +202,14 @@ export class ChatComponent implements OnInit {
             address = this.currentMsg.match(new RegExp("0x[0-9a-fA-F]{40}"))[0];
           }
         } catch (e) {
-          this.showMessage("It seems the address you are trying to send to is not valid, make sure it is a correct address", false, 1);
+          this.showMessage(`It seems the address you are trying to send to is not valid (${address}), make sure it is a correct address`, false, 1);
+          this.currentMsg = "";
           return;
         }
         this.currentMsg = "";
         this.showMessage(`Okay, sending ${amount} ${type} to ${address}`, false, 1);
         await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 2000));
-        this.queueAction('click', `.coin-${type.toUpperCase()}-identifier`).then((status) => {
+        this.queueAction('click', `tbody .coin-${type.toUpperCase()}-identifier`).then((status) => {
           if (status === true) {
             return this.queueAction('click', 'button[data-text^="Send "]');
           } else {
@@ -157,10 +240,17 @@ export class ChatComponent implements OnInit {
             throw status;
           }
         }).then(async (status) => {
-          await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 2000));
-          alert("SUCCESS");
+          if (status === true) {
+            return this.queueAction('click', '.send-button');
+          } else {
+            throw status;
+          }
         }).catch((err) => {
-          console.log(err.message);
+          this.showMessage(`Failed to transfer ${type} to ${address} with error: ${err.message}`, false, 1);
+          if (document.querySelector('.close') !== null) {
+            (<HTMLElement>document.querySelector('.close')).click();
+          }
+          console.log(err);
         });
       } else if (this.status == -1) {
         if (this.currentMsg.match(new RegExp(".*yes.*", 'i')) || this.currentMsg.match(new RegExp(".*yeah.*", 'i')) || this.currentMsg.match(new RegExp("y", 'i'))) {
@@ -259,11 +349,11 @@ export class ChatComponent implements OnInit {
         });
         await new Promise((resolve, reject) => setTimeout(() => {element.value = text.charAt(0);resolve();}, Math.random() * 100));
         text = text.substring(1);
-        // We need to save the size because we edit the text directly
-        let loopLength = text.length;
+        // We need to save the size because we edit the text directly and offset it by 1
+        let loopLength = text.length + 1;
         for (let i = 1; i < loopLength; i++) {
           await new Promise((resolve, reject) => setTimeout(() => {
-            if (text.charAt(0) == '.') {
+            if (text.charAt(0) === '.') {
               element.value += text.substring(0,2);
               text = text.substring(2);
             } else {
@@ -281,7 +371,7 @@ export class ChatComponent implements OnInit {
         return Promise.resolve(true);
       }
     } else {
-      return Promise.resolve(new Error('not-found'));
+      return Promise.resolve(false);
     }
   }
 }

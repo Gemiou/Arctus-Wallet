@@ -124,7 +124,7 @@
             </a>
           </div>
         </ng-container>
-        <div class="col-lg-2 col-5" *ngIf="(coins | filterBy: coinName).length === 0 && (coins | filterBy: coinAbbr).length === 0">
+        <div class="col-lg-2 col-5" *ngIf="(coins | filterBy: coinName) === (coins | filterBy: coinAbbr)">
           <a class="element-box el-tablo centered" href="#">
             <div class="value">
               X

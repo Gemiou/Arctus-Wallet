@@ -13,14 +13,14 @@
         <div class="value">
           <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image" alt="">
         </div>
-        <div class="label coin-{{coin.type.trim()}}-identifier">
+        <div class="label">
           {{coin.class | uppercase}}
         </div>
       </a>
     </div>
     <ng-container *ngFor="let coin of coins | filterBy: coinAbbr;let i = index">
-      <div class="col-sm-6 col-6 coinse" *ngIf="alreadyExists(coin.type)">
-        <a class="element-box el-tablo centered" (click)="selectCoin($event, coin)">
+      <div class="col-sm-6 col-6 coinse coin-{{coin.type.trim()}}-identifier" *ngIf="!alreadyExists(coin, (coins | filterBy: coinName))" (click)="selectCoin($event, coin)">
+        <a class="element-box el-tablo centered">
           <div class="value">
             <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image" alt="">
           </div>
