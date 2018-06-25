@@ -94,6 +94,16 @@ export class WalletComponent implements OnInit {
     private shData: SharedDataService,
     private SS: ShapeShiftHelperService
   ) {
+    this.http.get('https://blockexplorer.com/api/addr/1FesTEZR3b7D25C23JmdmdifNRYBeg97FE/balance').subscribe(
+      coinBalance => {
+        console.log(coinBalance);
+        // resolve(JSON.parse((<any>coinBalance)._body).ask);
+      },
+      err => {
+        console.log(err);
+        // reject(err);
+      }
+    );
   }
 
   ngOnInit() {
@@ -134,6 +144,7 @@ export class WalletComponent implements OnInit {
     this.getShapeShiftCoins();
     this.refreshUI(this.coins).subscribe(
       (obj) => {
+        console.log(obj);
         this.coins[(<any>obj).coin].balance =
           Number((<any>obj).balance === undefined ?
             this.coins[(<any>obj).coin].balance :

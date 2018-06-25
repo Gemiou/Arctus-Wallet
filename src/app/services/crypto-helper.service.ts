@@ -186,17 +186,65 @@ export class CryptoHelperService {
   }
 
   getEthValue() {
-    return new Promise((resolve, reject) => {
-      this.http.get('https://api.etherscan.io/api?module=stats&action=ethprice&apikey=9Q36KI8UQ7MA9ZS5C9YS8HPW8M453DEK51').subscribe(
-        coinBalance => {
-          resolve(JSON.parse((<any>coinBalance)._body).result.ethusd);
-        },
-        err => {
-          console.log(err);
-          resolve(undefined);
-        }
-      );
-    });
+    return pAny([
+      new Promise((resolve, reject) => {
+        this.http.get('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD').subscribe(
+          coinBalance => {
+            resolve(JSON.parse((<any>coinBalance)._body).USD);
+          },
+          err => {
+            console.log(err);
+            reject(err);
+          }
+        );
+      }),
+      new Promise((resolve, reject) => {
+        this.http.get('https://api.etherscan.io/api?module=stats&action=ethprice&apikey=9Q36KI8UQ7MA9ZS5C9YS8HPW8M453DEK51').subscribe(
+          coinBalance => {
+            resolve(JSON.parse((<any>coinBalance)._body).result.ethusd);
+          },
+          err => {
+            console.log(err);
+            reject(err);
+          }
+        );
+      }),
+      new Promise((resolve, reject) => {
+        this.http.get('https://api.coinmarketcap.com/v2/ticker/1027/').subscribe(
+          coinBalance => {
+            resolve(JSON.parse((<any>coinBalance)._body).data.quotes.USD.price);
+          },
+          err => {
+            console.log(err);
+            reject(err);
+          }
+        );
+      }),
+      new Promise((resolve, reject) => {
+        this.http.get('https://apiv2.bitcoinaverage.com/indices/global/ticker/ETHUSD').subscribe(
+          coinBalance => {
+            // console.log(coinBalance);
+            resolve(JSON.parse((<any>coinBalance)._body).ask);
+          },
+          err => {
+            console.log(err);
+            reject(err);
+          }
+        );
+      }),
+      new Promise((resolve, reject) => {
+        this.http.get('https://www.bitstamp.net/api/v2/ticker/btcusd').subscribe(
+          coinBalance => {
+            // console.log(coinBalance);
+            resolve(JSON.parse((<any>coinBalance)._body).ask);
+          },
+          err => {
+            console.log(err);
+            reject(err);
+          }
+        );
+      })
+    ]);
   }
 
   getTokenBalance(address: String, tokenAddress: String) {
@@ -223,33 +271,106 @@ export class CryptoHelperService {
   }
 
   getBtc(address: String) {
-    return new Promise((resolve, reject) => {
-      this.http.get('https://blockchain.info/el/q/addressbalance/' + address).subscribe(
-        coinBalance => {
-          resolve((<any>coinBalance)._body);
-        },
-        err => {
-          console.log(err);
-          resolve(undefined);
-        }
-      );
-    });
-  }
-
-  getBtcValue() {
-    return new Promise(
-      (resolve, reject) => {
-        this.http.get('https://api.coindesk.com/v1/bpi/currentprice.json').subscribe(
+    return pAny([
+      new Promise((resolve, reject) => {
+        this.http.get(`https://blockchain.info/el/q/addressbalance/${address}`).subscribe(
           coinBalance => {
-            resolve(JSON.parse((<any>coinBalance)._body).bpi.USD.rate.replace(/,/g, ''));
+            resolve((<any>coinBalance)._body);
           },
           err => {
             console.log(err);
-            resolve(undefined);
+            reject(undefined);
           }
         );
-      }
-    );
+      }),
+      new Promise((resolve, reject) => {
+        this.http.get(`https://blockexplorer.com/api/addr/${address}/balance`).subscribe(
+          coinBalance => {
+            resolve((<any>coinBalance)._body);
+          },
+          err => {
+            console.log(err);
+            reject(err);
+          }
+        );
+      }),
+      new Promise((resolve, reject) => {
+        this.http.get(`https://chain.so/api/v2/get_address_balance/BTC/${address}`).subscribe(
+          coinBalance => {
+            resolve(JSON.parse((<any>coinBalance)._body).data.confirmed_balance.replace(/./g,'').replace(/$0*/g,''));
+          },
+          err => {
+            console.log(err);
+            reject(err);
+          }
+        );
+      }),
+      new Promise((resolve, reject) => {
+        this.http.get(`https://api.blockcypher.com/v1/btc/main/addrs/${address}/balance`).subscribe(
+          coinBalance => {
+            // console.log(coinBalance);
+            resolve(JSON.parse((<any>coinBalance)._body).balance);
+          },
+          err => {
+            console.log(err);
+            reject(err);
+          }
+        );
+      }),
+      new Promise((resolve, reject) => {
+        this.http.get(`https://chain.api.btc.com/v3/address/${address}`).subscribe(
+          coinBalance => {
+            // console.log(coinBalance);
+            resolve(JSON.parse((<any>coinBalance)._body).ask);
+          },
+          err => {
+            console.log(err);
+            reject(err);
+          }
+        );
+      })
+    ]);
+  }
+
+  getBtcValue() {
+    return pAny([
+      new Promise(
+        (resolve, reject) => {
+          this.http.get('https://api.coindesk.com/v1/bpi/currentprice.json').subscribe(
+            coinBalance => {
+              resolve(JSON.parse((<any>coinBalance)._body).bpi.USD.rate_float);
+            },
+            err => {
+              console.log(err);
+              reject(err);
+            }
+          );
+        }
+      ),
+      new Promise((resolve, reject) => {
+        this.http.get('https://blockchain.info/ticker').subscribe(
+          coinBalance => {
+            resolve(JSON.parse((<any>coinBalance)._body).USD.last);
+          },
+          err => {
+            console.log(err);
+            reject(err);
+          }
+        );
+      }),
+      new Promise((resolve, reject) => {
+        this.http.get('https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCUSD').subscribe(
+          coinBalance => {
+            // console.log(coinBalance);
+            resolve(JSON.parse((<any>coinBalance)._body).ask);
+          },
+          err => {
+            console.log(err);
+            reject(err);
+          }
+        );
+      })
+    ]);
   }
 
   sendTransaction(coinName, amount, targetAddress) {
@@ -268,8 +389,7 @@ export class CryptoHelperService {
         });
       } else if (coinName === 'BTC') {
         const userWallet = new bitcoin.ECPair(bigi.fromHex(this.decryptKey().substring(2)));
-        this.bc.getTXInfo(userWallet.getAddress()).then((res) => {
-          const txArray = JSON.parse((<any>res)._body).unspent_outputs;
+        this.bc.getTXInfo(userWallet.getAddress()).then((txArray) => {
           return this.bc.calculateTransaction(txArray, userWallet, targetAddress, amount);
         })
         .then((tx) => {

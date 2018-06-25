@@ -70,8 +70,7 @@ export class SendComponent implements OnInit {
     } else if (this.coinName === 'BTC') {
       this.recipientAddress = this.recipientAddress.trim();
       this.bc.getTXInfo(this.userWallet.getAddress())
-      .then((res) => {
-        const txArray = JSON.parse((<any>res)._body).unspent_outputs;
+      .then((txArray) => {
         return this.bc.calculateTransaction(txArray, this.userWallet, this.recipientAddress, this.coinAmount * Math.pow(10, 8));
       })
       .then((tx) => {
