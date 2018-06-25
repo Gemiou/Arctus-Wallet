@@ -64,13 +64,24 @@
     position: fixed;
     bottom: 1vmax;
     left: 1vmax;
+    border-radius: 12px;
+    padding: 0.25vmax;
+    font-weight: 800;
     cursor: pointer;
-    font-size: 24px;
-    transition: color 1s ease-in-out;
+    font-size: 30px;
+    background-color: white;
+    color: black;
+    transition: all 1s ease-in-out;
+    transform: translateX(-90%);
+    i {
+      padding: 0.25vmax;
+      transform: scale(1.25);
+    }
   }
 
   .nighty-button:hover {
-    color: black;
+    background-color: black;
+    color: white;
   }
 
   body.night-mode {
