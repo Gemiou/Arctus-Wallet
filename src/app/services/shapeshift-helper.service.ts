@@ -68,6 +68,7 @@ export class ShapeShiftHelperService {
       }
       const options = {
         returnAddress: backupAddress,
+        amount: amount,
         apiKey: this.SS_API_KEY
       };
       shapeshift.shift(withdrawalAddress, pair, options, (err, returnData) => {
