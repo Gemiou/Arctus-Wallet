@@ -94,16 +94,16 @@ export class WalletComponent implements OnInit {
     private shData: SharedDataService,
     private SS: ShapeShiftHelperService
   ) {
-    this.http.get('https://blockexplorer.com/api/addr/1FesTEZR3b7D25C23JmdmdifNRYBeg97FE/balance').subscribe(
-      coinBalance => {
-        console.log(coinBalance);
-        // resolve(JSON.parse((<any>coinBalance)._body).ask);
-      },
-      err => {
-        console.log(err);
-        // reject(err);
-      }
-    );
+    // this.http.get('https://blockexplorer.com/api/addr/1FesTEZR3b7D25C23JmdmdifNRYBeg97FE/balance').subscribe(
+    //   coinBalance => {
+    //     console.log(coinBalance);
+    //     // resolve(JSON.parse((<any>coinBalance)._body).ask);
+    //   },
+    //   err => {
+    //     console.log(err);
+    //     // reject(err);
+    //   }
+    // );
   }
 
   ngOnInit() {
@@ -276,6 +276,7 @@ export class WalletComponent implements OnInit {
   }
 
   makeActive(index: any) {
+    if (this.selectedCoin == index) return;
     this.createCountUp(index);
     this.changeTicker(this.coins[index].type);
     this.selectedCoin = index;
@@ -283,8 +284,8 @@ export class WalletComponent implements OnInit {
     this.shData.changeCurrentCoin(this.coins[index]);
   }
 
-  alreadyExists(type: string) {
-    return document.querySelectorAll('.coin-' + type.trim() + '-identifier').length === 0;
+  alreadyExists(coin: any, coinArray: any) {
+    return coinArray.some((el) => el.type == coin.type);
   }
 
   changeTicker(type: any) {
@@ -345,25 +346,31 @@ export class WalletComponent implements OnInit {
   copyAddress(addresaaas) {
     document.execCommand('asdasdasd');
   }
+
   copied(index: any) {
 
   }
+
   send() {
     this.receiveIsOpen = false;
     this.srOverlay = true;
     this.sendIsOpen = true;
   }
+
   receive() {
     this.sendIsOpen = false;
     this.srOverlay = true;
     this.receiveIsOpen = true;
   }
+
   closeSrModal() {
     this.srOverlay = false;
   }
+
   receiveSendModal($event) {
     this.srOverlay = $event;
   }
+
   receiveRecModal($event) {
     this.srOverlay = $event;
   }

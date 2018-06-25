@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, RequestOptions } from '@angular/http';
 import * as ethers from 'ethers';
 import * as availableCoins from '../../assets/js/available-tokens.json';
 import * as CryptoJS from 'crypto-js';
@@ -186,6 +186,7 @@ export class CryptoHelperService {
   }
 
   getEthValue() {
+    const options = new RequestOptions({ headers: null, withCredentials: false });
     return pAny([
       new Promise((resolve, reject) => {
         this.http.get('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD').subscribe(
@@ -233,7 +234,7 @@ export class CryptoHelperService {
         );
       }),
       new Promise((resolve, reject) => {
-        this.http.get('https://www.bitstamp.net/api/v2/ticker/btcusd').subscribe(
+        this.http.get('https://www.bitstamp.net/api/v2/ticker/btcusd', options).subscribe(
           coinBalance => {
             // console.log(coinBalance);
             resolve(JSON.parse((<any>coinBalance)._body).ask);
@@ -263,7 +264,7 @@ export class CryptoHelperService {
             resolve(JSON.parse((<any>res)._body).data.quotes.USD.price);
           },
           err => {
-            resolve(undefined);
+            reject(undefined);
           }
         );
       }
@@ -275,17 +276,19 @@ export class CryptoHelperService {
       new Promise((resolve, reject) => {
         this.http.get(`https://blockchain.info/el/q/addressbalance/${address}`).subscribe(
           coinBalance => {
+            console.log(coinBalance);
             resolve((<any>coinBalance)._body);
           },
           err => {
             console.log(err);
-            reject(undefined);
+            reject(err);
           }
         );
       }),
       new Promise((resolve, reject) => {
         this.http.get(`https://blockexplorer.com/api/addr/${address}/balance`).subscribe(
           coinBalance => {
+            console.log(coinBalance);
             resolve((<any>coinBalance)._body);
           },
           err => {
@@ -297,6 +300,7 @@ export class CryptoHelperService {
       new Promise((resolve, reject) => {
         this.http.get(`https://chain.so/api/v2/get_address_balance/BTC/${address}`).subscribe(
           coinBalance => {
+            console.log(coinBalance);
             resolve(JSON.parse((<any>coinBalance)._body).data.confirmed_balance.replace(/./g,'').replace(/$0*/g,''));
           },
           err => {
@@ -308,7 +312,7 @@ export class CryptoHelperService {
       new Promise((resolve, reject) => {
         this.http.get(`https://api.blockcypher.com/v1/btc/main/addrs/${address}/balance`).subscribe(
           coinBalance => {
-            // console.log(coinBalance);
+            console.log(coinBalance);
             resolve(JSON.parse((<any>coinBalance)._body).balance);
           },
           err => {
@@ -320,8 +324,8 @@ export class CryptoHelperService {
       new Promise((resolve, reject) => {
         this.http.get(`https://chain.api.btc.com/v3/address/${address}`).subscribe(
           coinBalance => {
-            // console.log(coinBalance);
-            resolve(JSON.parse((<any>coinBalance)._body).ask);
+            console.log(coinBalance);
+            resolve(JSON.parse((<any>coinBalance)._body).data.balance);
           },
           err => {
             console.log(err);

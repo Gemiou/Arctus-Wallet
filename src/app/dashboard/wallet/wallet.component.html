@@ -121,13 +121,15 @@
               </tr>
               <tr class="crypto" *ngFor="let coin of coins | filterBy: coinAbbr;let i = index" [ngStyle]="{'background': i == selectedCoin ? 'rgba(4, 123, 248, 0.15)' : 'rgba(0,0,0,0)' }"
                 (click)="makeActive(i)">
-                <ng-container *ngIf="alreadyExists(coin.type)">
+                <ng-container *ngIf="!alreadyExists(coin, (coins | filterBy: coinName))">
                   <td class="nowrap sc">
+                    <img src="../../../../assets/img/sp/{{coin.type.trim()}}.png" class="crypto-image mr-1" alt="">
                     {{coin.type}}
                   </td>
                   <td>
-                    <div class="cell-image-list">
-                      {{coin.address}}
+                  <td class="hide-mb">
+                    <div class="cell-image-list coin-{{coin.type.trim()}}-identifier">
+                      {{coin.address}} <span class="copyAddress"  ngxClipboard [cbContent]="coin.address">Copy</span>
                     </div>
                   </td>
                   <td class="text-right">
