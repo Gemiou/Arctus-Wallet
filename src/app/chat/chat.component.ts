@@ -216,10 +216,10 @@ export class ChatComponent implements OnInit {
           }
         } catch (e) {
           this.showMessage(`It seems the address you are trying to send to is not valid (${address}), make sure it is a correct address`, false, 1);
-          this.currentMsg = "";
+          this.currentMsg = '';
           return;
         }
-        this.currentMsg = "";
+        this.currentMsg = '';
         this.showMessage(`Okay, sending ${amount} ${type} to ${address}`, false, 1);
         await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 2000));
         this.queueAction('click', `tbody .coin-${type.toUpperCase()}-identifier`).then((status) => {
@@ -272,48 +272,54 @@ export class ChatComponent implements OnInit {
           console.log(err);
         });
       } else if (this.status == -1) {
-        if (this.currentMsg.match(new RegExp(".*yes.*", 'i')) || this.currentMsg.match(new RegExp(".*yeah.*", 'i')) || this.currentMsg.match(new RegExp("y", 'i'))) {
+        if (this.currentMsg.match(new RegExp('(yes)|(yea)|(^y+$)', 'gi'))) {
           this.openVideoModal(this.video);
-          this.showMessage("I hope it answered your question!", false, 1);
+          this.showMessage('I hope it answered your question!', false, 1);
           this.showMessage(this.randomPrompt(), false, 2);
         } else {
           this.showMessage(`Okay, you can find the relevant FAQ page on <a href='${this.FAQ}' style='text-decoration:none;color:blue;font-weight:800;' target='_blank'>this link</a> if you want`, false, 1);
           this.showMessage(this.randomPrompt(), false, 2);
         }
         this.status = 0;
-      } else if (this.currentMsg.match(new RegExp(".*shapeshift.*", 'i'))) {
-        this.showMessage("I can show you a video for ShapeShift, would you like me to open it for you?", false, 1);
+      } else if (this.currentMsg.match(new RegExp('shapeshift', 'ig'))) {
+        this.showMessage('I can show you a video for ShapeShift, would you like me to open it for you?', false, 1);
         this.video = 'https://www.youtube.com/embed/SWQiLqrqdA8?autoplay=1';
         this.FAQ = 'https://arctus.io/faq/#shapeshift';
         this.status = -1;
-      } else if (this.currentMsg.match(new RegExp(".*login.*", 'i'))) {
-        this.showMessage("I can show you a video on how to login to our wallet, would you like me to open it for you?", false, 1);
+      } else if (this.currentMsg.match(new RegExp('(login)|(register)', 'gi'))) {
+        this.showMessage('I can show you a video on how to login to our wallet, would you like me to open it for you?', false, 1);
         this.video = 'https://www.youtube.com/embed/rhaz3HI_Vb4?autoplay=1';
         this.FAQ = 'https://arctus.io/faq/#login';
         this.status = -1;
-      } else if (this.currentMsg.match(new RegExp(".*exchange.*", 'i'))) {
-        this.showMessage("We are planning to support our own exchange but for now feel free to use our ShapeShift service to exchange your assets!", false, 2);
+      } else if (this.currentMsg.match(new RegExp('exchange', 'i'))) {
+        this.showMessage('We are planning to support our own exchange but for now feel free to use our ShapeShift service to exchange your assets!', false, 2);
         this.showMessage(this.randomPrompt(), false, 2);
-      } else if ((this.currentMsg.match(new RegExp(".*coin.*")) || this.currentMsg.match(new RegExp(".*token.*")) || this.currentMsg.match(new RegExp(".*crypto.*")) || this.currentMsg.match(new RegExp(".*asset.*")) || this.currentMsg.match(new RegExp(" ([a-z]{1,4}|[A-Z]{1,4}) ?.*$"))) && (this.currentMsg.match(new RegExp(".*support.*")) || this.currentMsg.match(new RegExp(".*include.*")))) {
+      // tslint:disable-next-line:max-line-length
+      } else if ((this.currentMsg.match(new RegExp('(coin)|(token)|(crypto)|(asset)')) && this.currentMsg.match(new RegExp('(support)|(include)', 'gi'))) || this.currentMsg.match(new RegExp('support ([a-z]{1,4}|[A-Z]{1,4})', 'gi'))) {
         this.showMessage(`A list of all the tokens we support can be <a href='${this.FAQ}' style='text-decoration:none;color:blue;font-weight:800;' target='_blank'>found here</a> but you can also find them if you login to your wallet or register and try to add a new coin!`, false, 1);
         this.showMessage(this.randomPrompt(), false, 2);
-      } else if (this.currentMsg.match(new RegExp(".*transfer.*"))) {
-        this.showMessage("I can show you a video on how to transfer funds from and to our multi-currency wallet, would you like me to open it for you?", false, 1);
-        this.video = 'http://www.youtube.com/embed/rhaz3HI_Vb4?autoplay=1';
+      } else if (this.currentMsg.match(new RegExp('transfer', 'gi'))) {
+        this.showMessage('I can show you a video on how to transfer funds from and to our multi-currency wallet, would you like me to open it for you?', false, 1);
+        this.video = 'https://www.youtube.com/embed/rhaz3HI_Vb4?autoplay=1';
         this.FAQ = 'https://arctus.io/faq/#transfer';
         this.status = -1;
-      } else if (this.currentMsg.match(new RegExp(".*yes.*", 'i')) || this.currentMsg.match(new RegExp(".*yeah.*", 'i')) || this.currentMsg.match(new RegExp("^y", 'i')) || this.currentMsg.match(new RegExp(".*help.*", 'i'))) {
-        this.showMessage("What exactly do you need help with?", false, 1);
-      } else if (this.currentMsg.match(new RegExp(".*no.*", 'i')) || this.currentMsg.match(new RegExp(".*nope.*", 'i'))) {
-        this.showMessage("Okay, feel free to reach me if you change your mind by clicking the chat button below!", false, 1);
+      } else if (this.currentMsg.match(new RegExp('(yes)|(yea)|(^y+$)', 'gi')) || isHelp) {
+        this.showMessage('What exactly do you need help with?', false, 1);
+      } else if (this.currentMsg.match(new RegExp('(no)|(nah)', 'ig'))) {
+        this.showMessage('Okay, feel free to reach me if you change your mind by clicking the chat button below!', false, 1);
         setTimeout(() => {
           (<HTMLElement> document.querySelector('.floated-chat-btn')).click();
         }, 5000);
+      } else if (this.currentMsg.match(new RegExp('you are', 'gi'))) {
+        this.showMessage('I believe you describe yourself perfectly!', false, 1);
+      } else if (this.currentMsg.match(new RegExp('(hey)|(hi)|(hello)|(yo)', 'gi'))) {
+        this.showMessage('Good day to you too, sir/madam', false, 1);
+        this.showMessage('Let me know if you need my help, I can do more than just advise! 😊', false, 2);
       } else {
-        this.showMessage("I am sorry, I didn't quite get that. You can find our FAQ page on <a href='${this.FAQ}' style='text-decoration:none;color:blue;font-weight:800;' target='_blank'>this link</a> or contact us directly at <a href='mailto:info@arctus.io' style='text-decoration:none;color:blue;font-weight:800;' target='_blank'>info@arctus.io</a>", false, 1);
+        this.showMessage('I am sorry, I didn\'t quite get that. You can find our FAQ page on <a href=\'${this.FAQ}\' style=\'text-decoration:none;color:blue;font-weight:800;\' target=\'_blank\'>this link</a> or contact us directly at <a href=\'mailto:info@arctus.io\' style=\'text-decoration:none;color:blue;font-weight:800;\' target=\'_blank\'>info@arctus.io</a>', false, 1);
         this.showMessage(this.randomPrompt(), false, 2);
       }
-      this.currentMsg = "";
+      this.currentMsg = '';
     }
   }
 
@@ -357,7 +363,7 @@ export class ChatComponent implements OnInit {
   }
 
   async queueAction(actionType: any, selector: any, text?: any) {
-    await new Promise((resolve, reject) => setTimeout(() => {resolve()}, actionType == "click"?1000:500));
+    await new Promise((resolve, reject) => setTimeout(() => {resolve()}, actionType == 'click'?1000:500));
     let element = document.querySelector(selector);
     if (element !== null) {
       if (actionType == 'input') {

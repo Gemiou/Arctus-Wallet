@@ -113,6 +113,15 @@ export class WalletComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.shData.modalStatus$.subscribe(
+      res => {
+        if (res) {
+          setTimeout(() => {
+            this.resetUI();
+          }, 5000);
+        }
+      }
+    );
     this.shData.shapeShiftPair$.subscribe(
       res => {
         if (!this.showLoading) {
@@ -147,14 +156,16 @@ export class WalletComponent implements OnInit {
     }
     this.coins = preferences.coins;
     for (let i = 0; i < this.coins.length; i++) {
+      if (this.coins[i].isCustom !== undefined) {
+        continue;
+      }
       Vibrant.from(`../../../../assets/img/sp/${this.coins[i].type.trim()}.png`)
       .getPalette()
       .then((palette) => {
-        console.log(palette);
-        let keyArray = Object.keys(palette);
+        const keyArray = Object.keys(palette);
         for (let j = keyArray.length - 1; j >= 0; j--) {
           if (palette[keyArray[j]] !== null) {
-            this.coins[i].color = "rgb(" + (<any>palette[keyArray[j]])._rgb.toString() + ")";
+            this.coins[i].color = 'rgb(' + (<any>palette[keyArray[j]])._rgb.toString() + ')';
           }
         }
       });
@@ -163,7 +174,6 @@ export class WalletComponent implements OnInit {
     this.getShapeShiftCoins();
     this.refreshUI(this.coins).subscribe(
       (obj) => {
-        console.log(obj);
         this.coins[(<any>obj).coin].balance =
           Number((<any>obj).balance === undefined ?
             this.coins[(<any>obj).coin].balance :
@@ -298,11 +308,14 @@ export class WalletComponent implements OnInit {
   makeActive(coin: any) {
     let index;
     this.coins.forEach((el, i) => {
-      if (coin.type == el.type) {
+      if (coin.type === el.type) {
         index = i;
       }
-    })
-    if (this.selectedCoin == index) return;
+    });
+
+    if (this.selectedCoin === index) {
+      return;
+    }
     this.createCountUp(index);
     this.changeTicker(coin.type);
     this.selectedCoin = index;
@@ -311,7 +324,7 @@ export class WalletComponent implements OnInit {
   }
 
   alreadyExists(coin: any, coinArray: any) {
-    return coinArray.some((el) => el.type == coin.type);
+    return coinArray.some((el) => el.type === coin.type);
   }
 
   changeTicker(type: any) {
@@ -369,13 +382,6 @@ export class WalletComponent implements OnInit {
     const theUrl = baseUrl + `serve/v1/coin/chart?fsym=${type}&tsym=USD`;
     s.src = theUrl + (theUrl.indexOf('?') >= 0 ? '&' : '?') + 'app=' + appName;
   }
-  copyAddress(addresaaas) {
-    document.execCommand('asdasdasd');
-  }
-
-  copied(index: any) {
-
-  }
 
   send() {
     this.receiveIsOpen = false;
@@ -395,58 +401,70 @@ export class WalletComponent implements OnInit {
 
   receiveSendModal($event) {
     this.srOverlay = $event;
+    if ($event) {
+      setTimeout(() => {
+        this.resetUI();
+      }, 5000);
+    }
   }
 
-  receiveRecModal($event) {
-    this.srOverlay = $event;
+  resetUI() {
+    this.coinsLoaded = 0;
+    this.showLoading = true;
+    this.chartLoading = true;
+    this.loadingBar.start();
+    setTimeout(() => this.executeGetters(), 10);
   }
 
   portfolioChartData(selectedCoins) {
     this.chartLoading = false;
-    const ctx = document.getElementById('myChart');
-    const colorArray = [];
-    const coins = selectedCoins;
-    const labels = [];
-    const values = [];
-    let totalPortfolioValue = 0;
-    // create Legend Set and get value in USD for each one
-    // generate random colors for coins
-    // sould be add 1 more property on coin list "color"
-    // that descibe every crypto like btc is gold/yellow
-    for(let i = 0; i < coins.length; i++){
-      labels.push(coins[i].type);
-      values.push(coins[i].value.toFixed(2));
-      totalPortfolioValue = totalPortfolioValue + coins[i].value;
-      colorArray.push(coins[i].color);
-    }
-    this.totalPortfolioValue = totalPortfolioValue.toFixed(2);
-    console.log(this.totalPortfolioValue);
-
-    // chart dougnhut creation
-    const myDoughnutChart = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: labels,
-        datasets: [{
-          data: values,
-          backgroundColor: colorArray
-        }]
-      },
-      options: {
-        legend: {
-          display: false
-        },
-        tooltips: {
-          mode: 'label',
-          callbacks: {
-              label: function(tooltipItem, data) {
-                  return data['datasets'][0]['data'][tooltipItem['index']] + ' $';
-              }
-          }
-      },
+    setTimeout(() => {
+      const ctx = document.getElementById('myChart');
+      const colorArray = [];
+      const coins = selectedCoins;
+      const labels = [];
+      const values = [];
+      let totalPortfolioValue = 0;
+      // create Legend Set and get value in USD for each one
+      for (let i = 0; i < coins.length; i++) {
+        if (!this.ch.coins.some((el) => el.type.toUpperCase() === coins[i].type.toUpperCase())) {
+          continue;
+        }
+        labels.push(coins[i].type);
+        values.push(coins[i].value.toFixed(2));
+        totalPortfolioValue = totalPortfolioValue + coins[i].value;
+        colorArray.push(coins[i].color);
       }
-    });
-    document.getElementById('js-legend').innerHTML = myDoughnutChart.generateLegend();
+      this.totalPortfolioValue = totalPortfolioValue.toFixed(2);
+      console.log(this.totalPortfolioValue);
+
+      // chart dougnhut creation
+      const myDoughnutChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: colorArray,
+            labels: labels
+          }]
+        },
+        options: {
+          legend: {
+            display: false
+          },
+          tooltips: {
+            mode: 'label',
+            callbacks: {
+                label: function(tooltipItem, data) {
+                    return '$' + data['datasets'][0]['data'][tooltipItem['index']];
+                }
+            }
+        },
+        }
+      });
+      document.getElementById('js-legend').innerHTML = myDoughnutChart.generateLegend();
+    }, 500);
   }
 
 }

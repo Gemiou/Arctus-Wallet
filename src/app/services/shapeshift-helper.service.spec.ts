@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { ShapeshiftHelperService } from './shapeshift-helper.service';
+import { ShapeShiftHelperService } from './shapeshift-helper.service';
 
 describe('ShapeshiftHelperService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ShapeshiftHelperService]
+      providers: [ShapeShiftHelperService]
     });
   });
 
-  it('should be created', inject([ShapeshiftHelperService], (service: ShapeshiftHelperService) => {
+  it('should be created', inject([ShapeShiftHelperService], (service: ShapeShiftHelperService) => {
     expect(service).toBeTruthy();
   }));
 });

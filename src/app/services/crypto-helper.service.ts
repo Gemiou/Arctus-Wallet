@@ -301,7 +301,11 @@ export class CryptoHelperService {
         this.http.get(`https://chain.so/api/v2/get_address_balance/BTC/${address}`).subscribe(
           coinBalance => {
             console.log(coinBalance);
-            resolve(JSON.parse((<any>coinBalance)._body).data.confirmed_balance.replace(/\./g,'').replace(/^0+/,''));
+            let balance = JSON.parse((<any>coinBalance)._body).data.confirmed_balance.replace(/\./g, '');
+            if (balance.indexOf('.') !== -1) {
+              balance = balance.replace(/\./g, '').replace(/^0+/, '');
+            }
+            resolve(balance);
           },
           err => {
             console.log(err);
@@ -325,7 +329,11 @@ export class CryptoHelperService {
         this.http.get(`https://chain.api.btc.com/v3/address/${address}`).subscribe(
           coinBalance => {
             console.log(coinBalance);
-            resolve(JSON.parse((<any>coinBalance)._body).data.balance);
+            if (JSON.parse((<any>coinBalance)._body).data !== null) {
+              resolve(JSON.parse((<any>coinBalance)._body).data.balance);
+            } else {
+              reject(new Error('Not indexed by Chain API'));
+            }
           },
           err => {
             console.log(err);

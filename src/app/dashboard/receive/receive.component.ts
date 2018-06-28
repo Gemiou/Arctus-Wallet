@@ -13,7 +13,7 @@ export class ReceiveComponent implements OnInit {
   amountFrom = 0;
   @Input() coinReceive: string;
   @Input() addressReceive: string;
-  @Output() sendModal = new EventEmitter<boolean>();
+  @Output() recModal = new EventEmitter<boolean>();
   constructor() {}
 
   ngOnInit() {
@@ -26,6 +26,6 @@ export class ReceiveComponent implements OnInit {
   }
   close() {
     // close the modal
-    this.sendModal.emit(false);
+    this.recModal.emit(false);
   }
 }

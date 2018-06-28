@@ -350,3 +350,19 @@
 .copy-f{
     float:right;
 }
+.imagecontainer{
+    position: absolute;
+    top: 35%;
+    right: 50%;
+    -webkit-transform: translate(50%, -50%);
+    transform: translate(50%, -50%);
+    display: block;
+    font-size: 18px;
+    -webkit-filter: sepia(1) saturate(0);
+    filter: sepia(1) saturate(0);
+    opacity: 0.15;
+    width: 50%;
+}
+.img-label {
+    width: 100%;
+}

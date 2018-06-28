@@ -33,7 +33,7 @@
     <div class="col-lg-8 mt-2 text-center" *ngIf="txHash">
         <img src="../../../assets/img/mine.png" class="mine-image"/>
         <a href="https://etherscan.io/tx/{{txHashString}}" target="blank" *ngIf="this.coinName != 'BTC'">Transaction Hash</a>
-        <a href="https://blockchain.info/tx/{{txHashString}}" target="blank" *ngIf="this.coinName == 'BTC'">Transaction Hash</a>
+        <a href="https://blockchain.info/address/{{txHashString}}" target="blank" *ngIf="this.coinName == 'BTC'">Transaction Hash</a>
     </div>
 
   <div class="col-lg-12 p-4 send-button text-center"  [ngClass]="{ 'unavailable' : coinAmount == 0 || coinAmount > userBalance || recipientAddress == '' }"

@@ -92,6 +92,7 @@ export class AddnewcoinComponent implements OnInit {
     const token = {
        'class': tokenSymbol,
        'type': tokenSymbol,
+       'isCustom' : true,
        'icon': '',
        'urlIndex': 2,
        'decimals': parseInt(tokenDecimals, 10) > 4 ? 4 : tokenDecimals,

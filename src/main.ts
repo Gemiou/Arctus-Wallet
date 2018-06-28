@@ -7,7 +7,7 @@ import { environment } from './environments/environment';
 // if (environment.production) {
 //   enableProdMode();
 // }
-window.console.log = () => undefined;
+// window.console.log = () => undefined;
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.log(err));

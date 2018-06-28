@@ -116,6 +116,7 @@ export class SetupComponent implements OnInit {
        'class': tokenSymbol,
        'type': tokenSymbol,
        'icon': '',
+       'isCustom' : true,
        'urlIndex': 2,
        'decimals': parseInt(tokenDecimals, 10) > 4 ? 4 : tokenDecimals,
        'realDecimals': tokenDecimals,

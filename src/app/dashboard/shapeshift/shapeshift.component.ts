@@ -149,7 +149,7 @@ export class ShapeshiftComponent implements OnInit {
   filterAmount(e) {
     let current = e.target.value;
     console.log(e);
-    
+
     current = current.replace(/$[^0-9.,]*/g, '');
     while (current.indexOf(',') !== current.lastIndexOf(',')) {
       current = current.substring(0, current.indexOf(',')) + current.substring(current.indexOf(',') + 1);
