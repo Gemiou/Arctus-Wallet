@@ -10,7 +10,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "postinstall": "node node_modules_fixes.js",
+    "postinstall": "node fixes.js",
     "electron": "electron .",
     "electron-build": "ng build --prod && electron ."
   },
