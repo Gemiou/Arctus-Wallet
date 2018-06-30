@@ -66,11 +66,11 @@ export class LoginComponent implements OnInit {
             el.style.transform = 'scale(0.7)';
             el.style.pointerEvents = 'none';
             setTimeout(() => {
-              if ( localStorage.getItem( 'preferences-' + keccak_256( this.ch.decryptKey() ) ) !== null ) {
-                this.router.navigate(['/dashboard/wallet/']);
-              } else {
+              // if ( localStorage.getItem( 'preferences-' + keccak_256( this.ch.decryptKey() ) ) !== null ) {
+              //   this.router.navigate(['/dashboard/wallet/']);
+              // } else {
                 this.router.navigate(['/setup/']);
-              }
+              // }
             }, 1000);
           }).catch(() => {
             alert('An error occured while communicating with the Blockstack service.');
