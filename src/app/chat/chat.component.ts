@@ -15,13 +15,10 @@ export class ChatComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    if (localStorage.getItem('first-time') == null) {
-      (<HTMLElement>document.querySelector('.floated-chat-btn')).click();
-      localStorage.setItem('first-time', 'no');
-    }
+    (<HTMLElement>document.querySelector('.floated-chat-btn')).click();
   }
 
-  welcomeUser() {
+  async welcomeUser() {
     if (this.currentDate == '') {
       let cD = new Date();
       let dayArray = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -31,7 +28,250 @@ export class ChatComponent implements OnInit {
       minutes = minutes.substring(minutes.length - 2);
       this.currentDate = dayArray[cD.getDay()] + " " + hours + ":" + minutes + " " + (cD.getHours() > 12?"pm":"am");
       this.showMessage(this.timeAwareMessage(hours), false, 1);
-      this.showMessage(this.firstPrompt(), false, 2);
+      if (window.location.hash.indexOf("login-tutorial") !== -1) {
+        this.showMessage("It seems you would like to know how to log-in to our wallet.", false, 3);
+        this.showMessage("Let's try logging in like we do in other websites with a username and password.", false, 6);
+        await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 10000));
+        document.querySelector("button[data-text^=Login]").classList.add("pulse-element");
+        document.querySelector('.special-overlay').classList.toggle('hidden');
+        await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 1000));
+        document.querySelector("button[data-text^=Login]").classList.add("pulsed");
+        await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 250));
+        this.queueAction('click', 'button[data-text^=Login]').then(async (status) => {
+          if (status === true) {
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 500));
+            document.querySelector('input[placeholder^=Username]').classList.add("pulse-element");
+            return this.queueAction('click', 'input[placeholder^=Username]');
+          } else {
+            throw new Error(`Clicking login failed`);
+          }
+        }).then(async (status) => {
+          if (status) {
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            this.showMessage('As cryptocurrencies work a little differently than common applications, it does not really matter if you have registered before or not to use our wallet.', false, 1);
+            this.showMessage('For this tutorial, I will log you in with my account. My username is "arcty" so I will proceed to type it in.', false, 8);
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 13000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 1000));
+            document.querySelector("input[placeholder^=Username]").classList.add("pulsed");
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 1000));
+            document.querySelector('input[placeholder^=Password]').classList.add('pulse-element');
+            return this.queueAction('input', 'input[placeholder^=Username]', 'arcty');
+          } else {
+            throw new Error('Clicking Username failed');
+          }
+        }).then(async (status) => {
+          if (status) {
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            this.showMessage('We now have to type in the password field.', false, 1);
+            this.showMessage('Once again, you do not have to be registered on our server to enter in your wallet, everything happens locally on your computer and can work even without an internet connection.', false, 3);
+            this.showMessage('That said, you should remember the username and password combination you used as it will be your key to enter your wallet.', false, 11);
+            this.showMessage('I will now enter my ultra-secret password which is "1234".', false, 18);
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 24000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            document.querySelector('input[placeholder^=Password]').classList.add('pulsed');
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 250));
+            return this.queueAction('click', 'input[placeholder^=Password]');
+          } else {
+            throw new Error('Writing Username failed');
+          }
+        }).then((status) => {
+          if (status) {
+            document.querySelector('#login-button').classList.add('pulse-element');
+            return this.queueAction('input', 'input[placeholder^=Password]', '1234');
+          } else {
+            throw new Error('Clicking Password failed');
+          }
+        }).then(async (status) => {
+          if (status) {
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            this.showMessage('We now simply click the Login/Register button to create our first wallet!', false, 1);
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 4000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            document.querySelector('#login-button').classList.add('pulsed');
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 250));
+            return this.queueAction('click', '#login-button');
+          } else {
+            throw new Error('Writing Password failed');
+          }
+        }).then(async (status) => {
+          if (status) {
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 3000));
+            document.querySelector('.setup-buttons > div').classList.add('pulse-element');
+            document.querySelector('.setup-buttons > div:nth-child(2)').classList.add('pulse-element');
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            this.showMessage('If this is the first time we login with this wallet, we need to choose which coins our wallet will hold.', false, 1);
+            this.showMessage('For this tutorial, we will simply select Bitcoin and Ethereum.', false, 5);
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 8000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            return this.queueAction('click', ".coin-selection > div > a");
+          } else {
+            throw new Error('Clicking Login failed');
+          }
+        }).then(async (status) => {
+          if (status) {
+            return this.queueAction('click', ".coin-selection > div:nth-child(2) > a");
+          } else {
+            throw new Error('Clicking Bitcoin failed');
+          }
+        }).then(async (status) => {
+          if (status) {
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 1000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            this.showMessage('As a security precaution, before we go to our dashboard we have to backup our wallet in JSON format.', false, 1);
+            this.showMessage('This enables us to use our wallet in other services and also acts as a backup.', false, 6);
+            this.showMessage('In order to use it on other websites, we have to decrypt it using the password we logged in with as it is encrypted.', false, 10);
+            this.showMessage('Encrypting the backup is a lengthy process so we will skip it and go directly to the dashboard.', false, 15);
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 22000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 1000));
+            document.querySelector('.setup-buttons > div').classList.add('pulsed');
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 250));
+            return this.queueAction('click', ".setup-buttons > div > button");
+          } else {
+            throw new Error('Clicking Ethereum failed');
+          }
+        }).then(async (status) => {
+          if (status) {
+            document.querySelector('.setup-buttons > div:nth-child(2)').classList.add('pulsed');
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 250));
+            return this.queueAction('click', ".setup-buttons > div:nth-child(2) > button");
+          } else {
+            throw new Error('Clicking Backup failed');
+          }
+        }).then(async (status) => {
+          if (status) {
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            this.showMessage('Congratulations, you have successfully created your first wallet!', false, 1);
+            this.showMessage('On this dashboard you will see an overview of the cryptocurrencies you hold in your wallet as well as control them.', false, 4);
+            this.showMessage('You can watch the other tutorials to see how to manage your assets within Arctus.', false, 8);
+            this.showMessage('If you want to actually create a wallet, head over to https://wallet.arctus.io as this website is dedicated to tutorials only.', false, 13);
+            this.showMessage('Thanks for keeping me company!', false, 18);
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 20000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+          } else {
+            throw new Error('Clicking Save Settings failed');
+          }
+        }).catch((err) => {
+          this.showMessage(`Failed to conduct login tutorial with error: ${err.message}`, false, 1);
+          console.log(err);
+        });
+      } else if (window.location.hash.indexOf("transaction-tutorial") !== -1) {
+        this.showMessage("It seems you would like to know how to conduct transactions within our wallet.", false, 3);
+        this.showMessage("Let's head straight to the dashboard with my account.", false, 6);
+        await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 10000));
+        document.querySelector('.special-overlay').classList.toggle('hidden');
+        this.queueAction('click', '.fast-log').then(async (status) => {
+          if (status === true) {
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 3000));
+            document.querySelector('button[data-text^=Send ]').classList.add('pulse-element');
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            this.showMessage("We will first show you how to send your cryptocurrency.", false, 1);
+            this.showMessage("Let's click the Send BTC button.", false, 3);
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 6000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 1000));
+            document.querySelector('button[data-text^=Send ]').classList.add('pulsed');
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 250));
+            return this.queueAction('click', "button[data-text^=Send ]");
+          } else {
+            throw new Error(`Clicking fast-log failed`);
+          }
+        }).then(async (status) => {
+          if (status) {
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            this.showMessage('As you can see it is quite simple to send cryptocurrency to another user.', false, 1);
+            this.showMessage('Simply write their address on the Recipient field, the amount on the number field and click Start Transaction!', false, 4);
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 10000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 750));
+            return this.queueAction('click', 'input[placeholder^=Recipient]');
+          } else {
+            throw new Error('Clicking Send failed');
+          }
+        }).then(async (status) => {
+          if (status) {
+            return this.queueAction('input', 'input[placeholder^=Recipient]', '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa');
+          } else {
+            throw new Error('Clicking Recipient failed');
+          }
+        }).then((status) => {
+          if (status) {
+            return this.queueAction('click', 'input[step^=any]');
+          } else {
+            throw new Error('Writing Recipient failed');
+          }
+        }).then(async (status) => {
+          if (status) {
+            return this.queueAction('input', 'input[step^=any]', '0.32');
+          } else {
+            throw new Error('Clicking Amount failed');
+          }
+        }).then(async (status) => {
+          if (status) {
+            return this.queueAction('click', ".send-button");
+          } else {
+            throw new Error('Writing Amount failed');
+          }
+        }).then(async (status) => {
+          if (status) {
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            document.querySelector('button[data-text^=Receive ]').classList.add('pulse-element');
+            this.showMessage('We have successfully sent Bitcoin to another account!', false, 1);
+            this.showMessage('Clicking on the Transaction Hash will take us to a blockchain explorer where we can inspect how our transaction is going and how many confirmations it has.', false, 4);
+            this.showMessage('Let\'s see how we can receive cryptocurrency from another user by clicking the Receive button.', false, 8);
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 12000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 1000));
+            document.querySelector('button[data-text^=Receive ]').classList.add('pulsed');
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 250));
+            return this.queueAction('click', "button[data-text^=Receive ]");
+          } else {
+            throw new Error('Clicking Send Transaction failed');
+          }
+        }).then(async (status) => {
+          if (status) {
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            this.showMessage('Apart from sending our address directly to the user that wants to send us cryptocurrency, we can also show them a scannable QR Code.', false, 1);
+            this.showMessage('All we need to do is write the amount of cryptocurrency we want to receive and the QR will include our address automatically.', false, 7);
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 13000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            return this.queueAction('click', "input[placeholder^=Enter]");
+          } else {
+            throw new Error('Clicking Receive failed');
+          }
+        }).then(async (status) => {
+          if (status) {
+            return this.queueAction('input', "input[placeholder^=Enter]", "12.345");
+          } else {
+            throw new Error('Clicking Amount failed');
+          }
+        }).then(async (status) => {
+          if (status) {
+            return this.queueAction('click', ".send-button");
+          } else {
+            throw new Error('Writing Amount failed');
+          }
+        }).then(async (status) => {
+          if (status) {
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            this.showMessage('Congratulations, you have successfully conducted your first transactions!', false, 1);
+            this.showMessage('The generated QR code can be scanned by any user who has a QR compatible wallet or application.', false, 4);
+            this.showMessage('You can watch the other tutorials to see how to shift your assets between cryptocurrencies within Arctus.', false, 8);
+            this.showMessage('If you want to actually create a wallet, head over to https://wallet.arctus.io as this website is dedicated to tutorials only.', false, 13);
+            this.showMessage('Thanks for keeping me company!', false, 18);
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 20000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+          } else {
+            throw new Error('Clicking Generate failed');
+          }
+        }).catch((err) => {
+          this.showMessage(`Failed to conduct transaction tutorial with error: ${err.message}`, false, 1);
+          console.log(err);
+        });
+      } else if (window.location.hash.indexOf("shapeshift-tutorial") !== -1) {
+        // this.showMessage(this.firstPrompt(), false, 2);
+      }
     }
   }
 

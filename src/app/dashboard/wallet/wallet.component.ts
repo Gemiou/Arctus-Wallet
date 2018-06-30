@@ -220,14 +220,8 @@ export class WalletComponent implements OnInit {
   refreshUI(coins: Array<any>) {
     return new Observable((observer) => {
       for (let i = 0; i < coins.length; i++) {
-        this.ch.getCoinBalance(this.coins[i].urlIndex, this.coins[i].address, this.coins[i].tokenAddress).then((res) => {
-          const containerObj = {
-            coin: i,
-            balance: res
-          };
-          observer.next(containerObj);
-          return this.ch.getCoinValue(this.coins[i].urlIndex, this.coins[i].tokenAddress);
-        }).then((res) => {
+        observer.next({ coin: i, balance: 123456789 });
+        this.ch.getCoinValue(this.coins[i].urlIndex, this.coins[i].tokenAddress).then((res) => {
           const containerObj = {
             coin: i,
             value: res

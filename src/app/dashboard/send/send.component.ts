@@ -57,69 +57,72 @@ export class SendComponent implements OnInit {
 
 
   startTransaction() {
-    this.gasAmount = parseInt(this.gasAmount + '', 10);
-    if (this.coinName === 'ETH') {
-      const weiAmount = utils.parseEther(this.coinAmount + '');
-      this.userWallet.send(this.recipientAddress.trim(), weiAmount, {
-        gasLimit: this.gasAmount,
-        gasPrice: utils.bigNumberify(utils.parseUnits(this.gasPrice, 'gwei'))
-      })
-      .then((txReceipt) => {
-        this.txHash = true;
-        this.txHashString = txReceipt.hash;
-        this.sendModal.emit(true);
-      }).catch((err) => {
-        console.log(err);
-      });
-    } else if (this.coinName === 'BTC') {
-      this.recipientAddress = this.recipientAddress.trim();
-      this.bc.getTXInfo(this.userWallet.getAddress())
-      .then((txArray) => {
-        return this.bc.calculateTransaction(txArray, this.userWallet, this.recipientAddress, this.coinAmount * Math.pow(10, 8));
-      })
-      .then((tx) => {
-        console.log(tx);
-        return this.bc.pushTransaction(tx);
-      })
-      .then((res) => {
-        if ((<any>res)._body.indexOf('dust') !== -1) {
-          // This means that user has put a low amount to transfer / spamming attack
-          alert('ERROR: Amount is too low/considered spam by the network');
-        } else {
-          this.txHash = true;
-          this.txHashString = this.userWallet.getAddress();
-          this.sendModal.emit(true);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    } else {
-      let coin;
-      this.ch.coins.forEach((el) => {
-        if (el.type === this.coinName) {
-          coin = el;
-        }
-      });
-
-      if (coin === undefined) {
-        coin = this.shData.currentCoin.getValue();
-      }
-
-      const tokenAmount = utils.parseEther(this.coinAmount + '').div(utils.bigNumberify(10).pow(coin.realDecimals - 18));
-      const tokenContract = new Contract(coin.tokenAddress, this.ch.erc20ABI, this.userWallet);
-      tokenContract.transfer(this.recipientAddress, tokenAmount, {
-        gasPrice: utils.bigNumberify(utils.parseUnits(this.gasPrice, 'gwei')),
-        gasLimit: this.gasAmount
-      }).then((txReceipt) => {
-        this.txHash = true;
-        this.txHashString = txReceipt.hash;
-        this.sendModal.emit(true);
-      }).catch((err) => {
-        alert(err.message);
-        console.log(err);
-      });
-    }
+    this.txHash = true;
+    this.txHashString = '0f5eac9f0efcd194f0432ae9aca5a9f58ed4d293b9b444546107f9e184ac479b';
+    this.sendModal.emit(true);
+    // this.gasAmount = parseInt(this.gasAmount + '', 10);
+    // if (this.coinName === 'ETH') {
+    //   const weiAmount = utils.parseEther(this.coinAmount + '');
+    //   this.userWallet.send(this.recipientAddress.trim(), weiAmount, {
+    //     gasLimit: this.gasAmount,
+    //     gasPrice: utils.bigNumberify(utils.parseUnits(this.gasPrice, 'gwei'))
+    //   })
+    //   .then((txReceipt) => {
+    //     this.txHash = true;
+    //     this.txHashString = txReceipt.hash;
+    //     this.sendModal.emit(true);
+    //   }).catch((err) => {
+    //     console.log(err);
+    //   });
+    // } else if (this.coinName === 'BTC') {
+    //   this.recipientAddress = this.recipientAddress.trim();
+    //   this.bc.getTXInfo(this.userWallet.getAddress())
+    //   .then((txArray) => {
+    //     return this.bc.calculateTransaction(txArray, this.userWallet, this.recipientAddress, this.coinAmount * Math.pow(10, 8));
+    //   })
+    //   .then((tx) => {
+    //     console.log(tx);
+    //     return this.bc.pushTransaction(tx);
+    //   })
+    //   .then((res) => {
+    //     if ((<any>res)._body.indexOf('dust') !== -1) {
+    //       // This means that user has put a low amount to transfer / spamming attack
+    //       alert('ERROR: Amount is too low/considered spam by the network');
+    //     } else {
+    //       this.txHash = true;
+    //       this.txHashString = this.userWallet.getAddress();
+    //       this.sendModal.emit(true);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    // } else {
+    //   let coin;
+    //   this.ch.coins.forEach((el) => {
+    //     if (el.type === this.coinName) {
+    //       coin = el;
+    //     }
+    //   });
+    //
+    //   if (coin === undefined) {
+    //     coin = this.shData.currentCoin.getValue();
+    //   }
+    //
+    //   const tokenAmount = utils.parseEther(this.coinAmount + '').div(utils.bigNumberify(10).pow(coin.realDecimals - 18));
+    //   const tokenContract = new Contract(coin.tokenAddress, this.ch.erc20ABI, this.userWallet);
+    //   tokenContract.transfer(this.recipientAddress, tokenAmount, {
+    //     gasPrice: utils.bigNumberify(utils.parseUnits(this.gasPrice, 'gwei')),
+    //     gasLimit: this.gasAmount
+    //   }).then((txReceipt) => {
+    //     this.txHash = true;
+    //     this.txHashString = txReceipt.hash;
+    //     this.sendModal.emit(true);
+    //   }).catch((err) => {
+    //     alert(err.message);
+    //     console.log(err);
+    //   });
+    // }
   }
 
   filterAddress(e) {

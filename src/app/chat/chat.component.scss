@@ -9,6 +9,16 @@ Chat Styles
 /*
 #1. Popup chat on a side
 */
+.special-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: rgba(0,0,0,0.7);
+  z-index:1000;
+}
 .floated-chat-btn {
     z-index: 9999;
     position: fixed;

@@ -9,7 +9,7 @@
   <div class="col-lg-3">
     <div class="element-wrapper">
       <div class="element-box rc-controller">
-        
+
         <div class="imagecontainer" *ngIf="coins[selectedCoin].type !== null"><img class="img-label" src="../../../assets/img/sp/{{coins[selectedCoin].isCustom === undefined?coins[selectedCoin].type.trim():'ERC'}}.png" alt=""></div>
         <div class="row">
           <div class="col-lg-12 text-center">
@@ -25,12 +25,12 @@
           <div class="eth-c"></div>
         </div>
         <div class="row sr-button">
-          <button class="button--winona col-lg-12 col-md-6 col-6" [attr.data-text]="'Send '+coins[selectedCoin].type" (click)="send()">
+          <button class="button--winona col-lg-12 col-md-6 col-6 blue" [attr.data-text]="'Send '+coins[selectedCoin].type" (click)="send()">
             <span>Send
               <span class="font-weight-bold">{{coins[selectedCoin].type}}</span>
             </span>
           </button>
-          <button class="button--winona col-lg-12 col-md-6 col-6" [attr.data-text]="'Receive '+coins[selectedCoin].type" (click)="receive()">
+          <button class="button--winona col-lg-12 col-md-6 col-6 blue" [attr.data-text]="'Receive '+coins[selectedCoin].type" (click)="receive()">
             <span>Receive
               <span class="font-weight-bold">{{coins[selectedCoin].type}}</span>
             </span>
@@ -142,7 +142,7 @@
       <div class="element-box nopadding">
         <div class="container">
           <app-loading *ngIf="chartLoading"></app-loading>
-          <div [hidden] ="!(!chartLoading && totalPortfolioValue != 0)" class="row align-items-center">
+          <div [hidden]="!(!chartLoading && totalPortfolioValue != 0)" class="row align-items-center">
             <div class="col-lg-3">
               <div class="total-portfolio-value text-center">
                 <div>Total Value</div>

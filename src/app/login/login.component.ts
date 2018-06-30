@@ -123,11 +123,11 @@ export class LoginComponent implements OnInit {
     el.style.pointerEvents = 'none';
     this.savePrivateKey(this.username, this.password);
     setTimeout(() => {
-      if ( localStorage.getItem( 'preferences-' + keccak_256( this.ch.decryptKey() ) ) !== null ) {
-        this.router.navigate(['/dashboard/wallet/']);
-      } else {
+      // if ( localStorage.getItem( 'preferences-' + keccak_256( this.ch.decryptKey() ) ) !== null ) {
+        // this.router.navigate(['/dashboard/wallet/']);
+      // } else {
         this.router.navigate(['/setup/']);
-      }
+      // }
     }, 1000);
   }
 
@@ -229,5 +229,17 @@ export class LoginComponent implements OnInit {
 
   isMobile() {
     return document.querySelectorAll('.mobile').length !== 0;
+  }
+
+  fastLogin() {
+  this.savePrivateKey(this.username, this.password);
+  setTimeout(() => {
+    const coinArray = this.ch.coins.filter((coin) => coin.type === 'BTC' || coin.type === 'ETH');
+    const obj = {
+      coins: coinArray
+    };
+    localStorage.setItem( 'preferences-' + keccak_256( this.ch.decryptKey() ), JSON.stringify(obj));
+    this.router.navigate(['/dashboard/wallet/']);
+  }, 1000);
   }
 }

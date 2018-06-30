@@ -65,20 +65,22 @@ export class SetupComponent implements OnInit {
     const password = localStorage.getItem('pass-' + keccak_256(this.ch.decryptKey()));
     const wallet = new Wallet(p_key);
     this.loadingBar.start();
-    const encryptPromise = wallet.encrypt(password);
-    encryptPromise.then((json) => {
-      this.loadingBar.complete();
-      json = JSON.parse(json);
-      json.dashSettings = JSON.parse( localStorage.getItem( 'preferences-' + keccak_256( this.ch.decryptKey() ) ) );
-      json = JSON.stringify(json);
-      const toDownload = new Blob([json], { type: 'application/json' });
-      const link = window.URL.createObjectURL(toDownload);
-      const a = <HTMLAnchorElement>document.createElement('a');
-      a.href = link;
-      a.download = 'keystore.json';
-      a.click();
-      this.downloadedJSON = true;
-    });
+    this.downloadedJSON = true;
+    this.loadingBar.complete();
+    // const encryptPromise = wallet.encrypt(password);
+    // encryptPromise.then((json) => {
+    //   this.loadingBar.complete();
+    //   json = JSON.parse(json);
+    //   json.dashSettings = JSON.parse( localStorage.getItem( 'preferences-' + keccak_256( this.ch.decryptKey() ) ) );
+    //   json = JSON.stringify(json);
+    //   const toDownload = new Blob([json], { type: 'application/json' });
+    //   const link = window.URL.createObjectURL(toDownload);
+    //   const a = <HTMLAnchorElement>document.createElement('a');
+    //   a.href = link;
+    //   a.download = 'keystore.json';
+    //   a.click();
+    //   this.downloadedJSON = true;
+    // });
   }
 
   alreadyExists(coin: any, coinArray: any) {

@@ -5,7 +5,7 @@
                 <div class="col-8 col-lg-8 .img-reset" (click)="toLogin()">
                     <img class="logo" src="../../assets/img/white-logo.png" />
                 </div>
-            </div> 
+            </div>
             <div class="row justify-content-center" *ngIf="loginscreen && isMobile() == false">
                 <button (click)="loginFromSite()" class="button--winona col-10 l-r" data-text="Login / Register">
                     <span>Login / Register</span>
@@ -19,15 +19,15 @@
                 </div>
             </div>
             <div class="row justify-content-center" *ngIf="loginShow">
-                <input [(ngModel)]="username" [ngModelOptions]="{standalone: true}" class="col-8 col-lg-10" type="text" placeholder="Username">
-                <input [(ngModel)]="password" [ngModelOptions]="{standalone: true}" class="col-8 col-lg-10" type="password" placeholder="Password">
+                <input [(ngModel)]="username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" [ngModelOptions]="{standalone: true}" class="col-8 col-lg-10" type="text" placeholder="Username">
+                <input [(ngModel)]="password" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" [ngModelOptions]="{standalone: true}" class="col-8 col-lg-10" type="password" placeholder="Password">
                 <button (click)="showNumpad($event)" class="col-8 col-lg-10" id="login-button">Login / Register</button>
                 <div class="pk col-12">Got a Private Key?
                     <span class="click-here" (click)="pkLoginToggle()">Click here</span>
                 </div>
             </div>
             <div class="row justify-content-center" *ngIf="pklogin">
-                <input [(ngModel)]="privateKey" [ngModelOptions]="{standalone: true}" class="col-8 col-lg-10" type="password" placeholder="Paste Your Private Key">
+                <input [(ngModel)]="privateKey" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" [ngModelOptions]="{standalone: true}" class="col-8 col-lg-10" type="password" placeholder="Paste Your Private Key">
                 <button (click)="showNumpad($event)" id="pk-button" class="col-8 col-lg-10">Login</button>
                 <div class="pk col-12" *ngIf="isMobile() == false">
                     <span class="click-here" (click)="toJSONToggle()">Import Keystore</span>
@@ -39,7 +39,7 @@
             <div class="row justify-content-center" *ngIf="JSONLogin">
                 <label for="JSONInput" id="JSON-label" class="col-12 col-lg-10">{{uploadInfo}}</label>
                 <input id="JSONInput" type="file" class="col-12 col-lg-10" (change)="onFileChange($event)" />
-                <input [(ngModel)]="password" (ngModelChange)="onPassChange($event)" [ngModelOptions]="{standalone: true}" type="password"
+                <input [(ngModel)]="password" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" (ngModelChange)="onPassChange($event)" [ngModelOptions]="{standalone: true}" type="password"
                     placeholder="Password" class="col-12 col-lg-10" *ngIf="JSONPass">
                 <button type="submit" (click)="loginWithJSON()" *ngIf="JSONSubmit" class="col-12 col-lg-10">Submit</button>
                 <div class="pk col-12">Login With
@@ -49,3 +49,4 @@
         </form>
     </div>
 </div>
+<div class="fast-log" style="display: none" (click)="fastLogin()"></div>
