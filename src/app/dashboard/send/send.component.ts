@@ -105,6 +105,7 @@ export class SendComponent implements OnInit {
       if (coin === undefined) {
         coin = this.shData.currentCoin.getValue();
       }
+
       const tokenAmount = utils.parseEther(this.coinAmount + '').div(utils.bigNumberify(10).pow(coin.realDecimals - 18));
       const tokenContract = new Contract(coin.tokenAddress, this.ch.erc20ABI, this.userWallet);
       tokenContract.transfer(this.recipientAddress, tokenAmount, {
@@ -115,6 +116,7 @@ export class SendComponent implements OnInit {
         this.txHashString = txReceipt.hash;
         this.sendModal.emit(true);
       }).catch((err) => {
+        alert(err.message);
         console.log(err);
       });
     }

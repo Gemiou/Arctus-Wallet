@@ -88,7 +88,7 @@ export class WalletComponent implements OnInit {
   srOverlay = false;
   sendIsOpen = false;
   receiveIsOpen = false;
-  totalPortfolioValue: any;
+  totalPortfolioValue: any = 0;
   chartLoading = true;
 
   constructor(
@@ -400,6 +400,14 @@ export class WalletComponent implements OnInit {
   }
 
   receiveSendModal($event) {
+    this.srOverlay = $event;
+    if ($event) {
+      setTimeout(() => {
+        this.resetUI();
+      }, 5000);
+    }
+  }
+  receiveRecModal($event) {
     this.srOverlay = $event;
     if ($event) {
       setTimeout(() => {

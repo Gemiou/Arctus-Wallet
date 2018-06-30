@@ -2,7 +2,7 @@
 <div *ngIf="srOverlay" class="sr-sidebar" [@srsideanimation] [ngClass]="{'active': srOverlay}">
   <app-send *ngIf="sendIsOpen" [coinSend]="coins[selectedCoin].type" [addressSend]="coins[selectedCoin].address" (sendModal)="receiveSendModal($event)"></app-send>
   <app-receive *ngIf="receiveIsOpen" [coinReceive]="coins[selectedCoin].type" [addressReceive]="coins[selectedCoin].address"
-    (sendModal)="receiveRecModal($event)"></app-receive>
+    (recModal)="receiveRecModal($event)"></app-receive>
 </div>
 <!-- END Send Receive Modals -->
 <div class="row" id="wallet">
@@ -142,19 +142,24 @@
       <div class="element-box nopadding">
         <div class="container">
           <app-loading *ngIf="chartLoading"></app-loading>
-          <div *ngIf="!chartLoading" class="row align-items-center">
+          <div [hidden] ="!(!chartLoading && totalPortfolioValue != 0)" class="row align-items-center">
             <div class="col-lg-3">
-              <div class="total-portfolio-value text-center" *ngIf="!chartLoading">
+              <div class="total-portfolio-value text-center">
                 <div>Total Value</div>
                 <div>$ {{totalPortfolioValue}}</div>
               </div>
               <canvas id="myChart" width="200px" height="200px"></canvas>
             </div>
             <div class="col-lg-9">
-              <div class="col-lg-6 text-center portfolio-title" *ngIf="!chartLoading">
+              <div class="col-lg-6 text-center portfolio-title">
                 Total Portfolio Value
               </div>
               <div id="js-legend" class="chart-legend col-lg-6"></div>
+            </div>
+          </div>
+          <div class="row align-items-center" *ngIf ="totalPortfolioValue == 0 && !chartLoading">
+            <div class="col-12">
+              It seems your portfolio is empty. Try loading up your wallet to see your portfolio overview here.
             </div>
           </div>
         </div>
