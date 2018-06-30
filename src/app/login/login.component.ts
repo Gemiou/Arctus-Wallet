@@ -31,6 +31,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loginShow = this.isMobile();
+
     if (blockstack.isUserSignedIn()) {
       this.beginBSLoading();
       blockstack.getFile('key.json').then((data) => {
@@ -40,7 +42,7 @@ export class LoginComponent implements OnInit {
           const parsed = JSON.parse(data);
           this.ch.encryptKey('0x' + parsed.seed);
           localStorage.setItem('pass', '');
-          const el = <HTMLScriptElement>document.querySelector('.container');
+          const el = <HTMLScriptElement>document.querySelector('.container-fluid');
           el.style.opacity = '0';
           el.style.transform = 'scale(0.7)';
           el.style.pointerEvents = 'none';
@@ -56,11 +58,10 @@ export class LoginComponent implements OnInit {
           const keySeed = keccak_256(utils.randomBytes(32));
           this.ch.encryptKey('0x' + keySeed);
           localStorage.setItem('pass', '');
-          console.log("PASS: "+this.ch.decryptKey());
           blockstack.putFile('key.json', JSON.stringify({'seed': keySeed})).then(() => {
             // Saved successfully
-            console.log("Seed successfully saved");
-            const el = <HTMLScriptElement>document.querySelector('.container');
+            console.log('Seed successfully saved');
+            const el = <HTMLScriptElement>document.querySelector('.container-fluid');
             el.style.opacity = '0';
             el.style.transform = 'scale(0.7)';
             el.style.pointerEvents = 'none';
@@ -88,7 +89,7 @@ export class LoginComponent implements OnInit {
   beginBSLoading() {
     setTimeout(() => {
       (<HTMLButtonElement>document.querySelector('.l-r')).style.opacity = '0.5';
-      let element = document.querySelector('.blockstack span');
+      const element = document.querySelector('.blockstack span');
       element.innerHTML = 'Please Wait';
       this.rewriteLoad(element);
     }, 100);
@@ -96,25 +97,27 @@ export class LoginComponent implements OnInit {
 
   rewriteLoad(element) {
     setTimeout(() => {
-      element.innerHTML = (element.innerHTML.indexOf('.') + 2 === element.innerHTML.lastIndexOf('.')) ? 'Please Wait' : element.innerHTML + '.';
+      element.innerHTML = (
+        element.innerHTML.indexOf('.') + 2 === element.innerHTML.lastIndexOf('.')) ?
+        'Please Wait' :
+        element.innerHTML + '.';
       this.rewriteLoad(element);
     }, 500);
   }
 
-  blockstackLogin(){
-    // blockstack.signUserOut('google.com');
-    console.log('blockstack, is user logged in:', blockstack.isUserSignedIn());
+  blockstackLogin() {
     if (!blockstack.isUserSignedIn()) {
       blockstack.redirectToSignIn(`${window.location.origin}/login`, `${window.location.origin}/assets/js/manifest.json`);
-      setTimeout(function() {
-        window.open('','_parent','').close();
-      }, 5000);
     }
   }
 
   showNumpad(e) {
     e.preventDefault();
-    const el = <HTMLScriptElement>document.querySelector('.container');
+    if ((this.username === '' || this.password === '') && this.privateKey === '') {
+      alert('ERROR: Username / Password cannot be empty');
+      return;
+    }
+    const el = <HTMLScriptElement>document.querySelector('.container-fluid');
     el.style.opacity = '0';
     el.style.transform = 'scale(0.7)';
     el.style.pointerEvents = 'none';
@@ -136,7 +139,9 @@ export class LoginComponent implements OnInit {
       this.privateKey = keccak_256(key);
     }
     this.ch.encryptKey('0x' + this.privateKey);
-    localStorage.setItem('pass', k_pass);
+    if (!this.pklogin) {
+      localStorage.setItem('pass-' + keccak_256(this.ch.decryptKey()), k_pass);
+    }
   }
 
   pkLoginToggle() {
@@ -174,10 +179,10 @@ export class LoginComponent implements OnInit {
     Wallet.fromEncryptedWallet(this.JSONFile, pass).then((wallet) => {
       this.loadingBar.complete();
       this.ch.encryptKey(wallet.privateKey);
-      if (preferences !== undefined) {
+      if (preferences !== undefined && preferences !== null) {
         localStorage.setItem( 'preferences-' + keccak_256( this.ch.decryptKey()) , JSON.stringify(preferences));
       }
-      const el = <HTMLScriptElement>document.querySelector('.container');
+      const el = <HTMLScriptElement>document.querySelector('.container-fluid');
       el.style.opacity = '0';
       el.style.transform = 'scale(0.7)';
       el.style.pointerEvents = 'none';
@@ -198,7 +203,8 @@ export class LoginComponent implements OnInit {
       }
     });
   }
-  loginFromSite(){
+
+  loginFromSite() {
     this.loginscreen = false;
     this.loginShow = true;
   }
@@ -213,11 +219,15 @@ export class LoginComponent implements OnInit {
   }
 
   toLogin() {
-    this.loginscreen = true;
-    this.loginShow = false;
+    this.loginscreen = !this.isMobile();
+    this.loginShow = this.isMobile();
     this.JSONLogin = false;
     this.pklogin = false;
     this.uploadInfo = 'Upload Keystore';
     this.password = '';
+  }
+
+  isMobile() {
+    return document.querySelectorAll('.mobile').length !== 0;
   }
 }

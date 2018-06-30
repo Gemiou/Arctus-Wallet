@@ -1,93 +1,43 @@
-<!-- Send service -->
-
-<div id="sendCoins" class="element-wrapper">
-  <div class="element-box">
-    <div class="row">
-      <h3 class="col-sm-12 text-center margin-tb-1">Send {{coinName}}</h3>
+<div id="send" class="row m-0 justify-content-center">
+  <i class="close" (click)="close()">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 14">
+      <path class="stroked" fill="none" stroke-linecap="square" d="M 4.5 4.5 L 11.5 11.5 M 4.5 11.5 L 11.5 4.5" />
+    </svg>
+  </i>
+    <div class="col-lg-12 mt-5 header text-center">
+      SEND {{coinName}}
     </div>
-    <div class="row">
-      <!-- Addresses For Transactions -->
-      <div class="col-sm-6">
-        <div class="form-group row">
-          <div class="col-sm-2">
-            <label for="">From: </label>
-          </div>
-          <div class="col-sm-9">
-            <input class="effect-1" type="text" placeholder="From" [(ngModel)]="addressFrom" disabled/>
-            <span class="focus-border"></span>
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="col-sm-2">
-            <label for="">To: </label>
-          </div>
-          <div class="col-sm-9">
-            <input class="effect-1" type="text" placeholder="Recipient Address" [(ngModel)]="recipientAddress" (input)="filterAddress($event)">
-            <span class="focus-border"></span>
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="col-sm-3">
-            <label for=""> {{coinName}} Amount: </label>
-          </div>
-          <div class="col-sm-8">
-            <input class="effect-1" [(ngModel)]="coinAmount" (input)="filterEther($event)" [ngModelOptions]="{standalone: true}" placeholder="{{coinAmount}}"
-              type="text" />
-            <span class="focus-border"></span>
-          </div>
-        </div>
+    <div class="col-lg-12 mt-4 text-center">
+      <img class="coin-img" src="../../../assets/img/sp/{{coinName}}.png" alt="">
+    </div>
+    <div class="col-lg-8 mt-4 text-center" *ngIf="!txHash">
+      <input class="effect-1" spellcheck='false' type="text" placeholder="Recipient Address" [(ngModel)]="recipientAddress" (input)="filterAddress($event)">
+      <span class="focus-border"></span>
+    </div>
+    <div class="col-lg-8 mt-2 text-center" *ngIf="!txHash">
+      <input class="effect-1" [(ngModel)]="coinAmount" [ngModelOptions]="{standalone: true}" placeholder="{{coinAmount}}"
+        type="number" min="0" step="any" oninput="(validity.valid||(value=''));"/>
+      <span class="focus-border"></span>
+    </div>
+    <div class="col-lg-8 mt-4" *ngIf="this.coinName != 'BTC' && !txHash">
+      <div class="gas">Gas Price:
+        <span class="gasbold">{{gasPrice}}</span>
       </div>
-      <!-- End Addresses For Transactions -->
-      <!-- Settings for transaction -->
-      <div class="col-sm-6">
-        <div class="form-group row">
-          <div class="col-sm-4">
-            <label for="">Gas Price: </label>
-          </div>
-          <div class="col-sm-5">
-            <input id="gasPrice" class="effect-1 gas-price" type="text" [(ngModel)]="gasPrice" (input)="filterPrice($event)" [ngModelOptions]="{standalone: true}"
-              placeholder="{{gasPrice}}" type="text" />
-            <span class="focus-border"></span>
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="col-sm-4">
-            <label for=""> Gas Amount: </label>
-          </div>
-          <div class="col-sm-5">
-            <input class="effect-1" [(ngModel)]="gasAmount" (input)="filterAmount($event)" [ngModelOptions]="{standalone: true}" placeholder="{{gasAmount}}"
-              type="text" />
-            <span class="focus-border"></span>
-          </div>
-        </div>
-        <div class="form-group row" *ngIf="this.coinName == 'ETH'">
-          <div class="col-sm-4">
-            <label for=""> Data: </label>
-          </div>
-          <div class="col-sm-5">
-            <input class="effect-1" [(ngModel)]="callData" (input)="filterCallcode($event)" [ngModelOptions]="{standalone: true}" placeholder="{{callData}}"
-              disabled="true" type="text" />
-            <i class="typcn typcn-lock-closed locked" (click)="toggleLock()"></i>
-            <span class="focus-border"></span>
-          </div>
-        </div>
+      <div class="gas">Gas Amount:
+        <span class="gasbold">{{gasAmount}}</span>
       </div>
+    </div>
+    <div class="col-lg-8 mt-2 text-center broadcast" *ngIf="txHash">
+      Successfully Broadcasted Transaction
+    </div>
+    <div class="col-lg-8 mt-2 text-center" *ngIf="txHash">
+        <img src="../../../assets/img/mine.png" class="mine-image"/>
+        <a href="https://etherscan.io/tx/{{txHashString}}" target="blank" *ngIf="this.coinName != 'BTC'">Transaction Hash</a>
+        <a href="https://blockchain.info/address/{{txHashString}}" target="blank" *ngIf="this.coinName == 'BTC'">Transaction Hash</a>
+    </div>
 
-      <!-- End Settings for transaction -->
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-3 col-offset-6">
-      <button [routerLink]="['/dashboard/wallet']" class="button--winona col-sm-12" data-text="Cancel Transaction">
-        <span>Cancel Transaction</span>
-      </button>
-    </div>
-    <div class="col-sm-3">
-      <button 
-       [ngClass]="{ 'unavailable' : coinAmount == 0 }" class="button--winona col-sm-12" data-text="Start Transaction" (click)="startTransaction()">
-        <span>Start Transaction</span>
-      </button>
-    </div>
+  <div class="col-lg-12 p-4 send-button text-center"  [ngClass]="{ 'unavailable' : coinAmount == 0 || coinAmount > userBalance || recipientAddress == '' }"
+    *ngIf="!txHash" (click)="startTransaction()">
+    <span>{{coinAmount == 0?'No Amount Specified':(coinAmount > userBalance?'Insufficient Funds for Transaction':(recipientAddress == ''?'No Recipient Specified':'Start Transaction'))}}</span>
   </div>
 </div>
-<!-- End Send service -->

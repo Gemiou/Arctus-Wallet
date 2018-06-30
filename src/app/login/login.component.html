@@ -1,51 +1,51 @@
-<div class="wrapper">
-    <div id="login" class="container">
-        <div>
-            <img class="logo" src="../../assets/img/white-logo.png" />
-        </div>
-        <h1>ARCTUS</h1>
-        <form class="form">
-            <div class="row" *ngIf="loginscreen">
-                <button (click)="loginFromSite()" class="button--winona col-sm-6 offset-sm-3 l-r" data-text="Login / Register">
+<div id="login" class="container-fluid">
+    <div class="row justify-content-center align-items-center">
+        <form class="form col-12 col-lg-2 col-md-4">
+            <div class="row justify-content-center">
+                <div class="col-8 col-lg-8 .img-reset" (click)="toLogin()">
+                    <img class="logo" src="../../assets/img/white-logo.png" />
+                </div>
+            </div> 
+            <div class="row justify-content-center" *ngIf="loginscreen && isMobile() == false">
+                <button (click)="loginFromSite()" class="button--winona col-10 l-r" data-text="Login / Register">
                     <span>Login / Register</span>
                 </button>
-                <button (click)="blockstackLogin()" class="button--winona col-sm-6 offset-sm-3 blockstack" data-text="Blockstack Login">
+                <button (click)="blockstackLogin()" class="button--winona col-10 blockstack" data-text="Blockstack Login">
                     <img class="logo" src="../../assets/img/blockstack.png" />
                     <span>Blockstack Login</span>
                 </button>
-                <div class="pk col-sm-6 offset-sm-3">Got a Private Key?
+                <div class="pk col-12">Got a Private Key?
                     <span class="click-here" (click)="pkLoginToggle()">Click here</span>
                 </div>
             </div>
-            <div *ngIf="loginShow">
-                <input [(ngModel)]="username" [ngModelOptions]="{standalone: true}" type="text" placeholder="Username">
-                <input [(ngModel)]="password" [ngModelOptions]="{standalone: true}" type="password" placeholder="Password">
-                <button (click)="showNumpad($event)" id="login-button">Login / Register</button>
-                <div class="pk col-sm-6 offset-sm-3">Got a Private Key?
+            <div class="row justify-content-center" *ngIf="loginShow">
+                <input [(ngModel)]="username" [ngModelOptions]="{standalone: true}" class="col-8 col-lg-10" type="text" placeholder="Username">
+                <input [(ngModel)]="password" [ngModelOptions]="{standalone: true}" class="col-8 col-lg-10" type="password" placeholder="Password">
+                <button (click)="showNumpad($event)" class="col-8 col-lg-10" id="login-button">Login / Register</button>
+                <div class="pk col-12">Got a Private Key?
                     <span class="click-here" (click)="pkLoginToggle()">Click here</span>
                 </div>
             </div>
-            <div *ngIf="pklogin">
-                <input [(ngModel)]="privateKey" [ngModelOptions]="{standalone: true}" type="text" placeholder="Paste Your Private Key">
-                <button (click)="showNumpad($event)" id="pk-button">Login</button>
-                <div class="pk">
+            <div class="row justify-content-center" *ngIf="pklogin">
+                <input [(ngModel)]="privateKey" [ngModelOptions]="{standalone: true}" class="col-8 col-lg-10" type="password" placeholder="Paste Your Private Key">
+                <button (click)="showNumpad($event)" id="pk-button" class="col-8 col-lg-10">Login</button>
+                <div class="pk col-12" *ngIf="isMobile() == false">
                     <span class="click-here" (click)="toJSONToggle()">Import Keystore</span>
                 </div>
-                <div class="pk">No Private Key?
+                <div class="pk col-12">No Private Key?
                     <span class="click-here" (click)="toLogin()">Click here</span>
                 </div>
             </div>
-            <div *ngIf="JSONLogin">
-                <label for="JSONInput" id="JSON-label">{{uploadInfo}}</label>
-                <input id="JSONInput" type="file" (change)="onFileChange($event)" />
+            <div class="row justify-content-center" *ngIf="JSONLogin">
+                <label for="JSONInput" id="JSON-label" class="col-12 col-lg-10">{{uploadInfo}}</label>
+                <input id="JSONInput" type="file" class="col-12 col-lg-10" (change)="onFileChange($event)" />
                 <input [(ngModel)]="password" (ngModelChange)="onPassChange($event)" [ngModelOptions]="{standalone: true}" type="password"
-                    placeholder="Password" *ngIf="JSONPass">
-                <button type="submit" (click)="loginWithJSON()" *ngIf="JSONSubmit">Submit</button>
-                <div class="pk">Login With
+                    placeholder="Password" class="col-12 col-lg-10" *ngIf="JSONPass">
+                <button type="submit" (click)="loginWithJSON()" *ngIf="JSONSubmit" class="col-12 col-lg-10">Submit</button>
+                <div class="pk col-12">Login With
                     <span class="click-here" (click)="toLogin()">Username And Password</span>
                 </div>
             </div>
         </form>
-
     </div>
 </div>

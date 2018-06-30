@@ -4,9 +4,11 @@
         cursor: pointer;
         transition: background 0.5s ease-out;
     }
+    .crypto-image{
+        width: 40px;
+    }
     .sc {
-        font-size: 1.25vmax;
-        font-weight: 800;
+        font-size:15px;
     }
     .rc-controller {
         position: relative;
@@ -35,20 +37,17 @@
         font-size: 1.5vmax;
     }
     .cell-image-list {
-        font-size: 1vmax;
+        font-size: 18px;
     }
     td.text-right {
-        font-size: 1vmax;
+        font-size: 18px;
     }
 
     .cryptocoins > tr th {
-        font-size: 1vmax;
+        font-size: 18px;
         font-weight: 800;
     }
     form {
-      padding: 20px 0;
-      position: relative;
-      float: right;
       z-index: 2;
     }
     form input {
@@ -59,9 +58,9 @@
       border: 1px solid rgba(255, 255, 255, 0.4);
       background-color: #047bf8;
       color: white;
-      width: 250px;
+      width: 100%;
       border-radius: 0.3rem;
-      padding: 10px 15px;
+      padding: 0.5em 1em;
       margin: 0 0 10px auto;
       display: block;
       text-align: center;
@@ -70,10 +69,10 @@
       font-weight: 300;
     }
     form input:hover {
-        background-color: #047bf8D0;
+        background-color: rgba(4, 123, 248, 0.816);
     }
     form input:focus {
-      width: 300px;
+      width: 264px;
       background-color: white;
       color: #047bf8;
     }
@@ -96,11 +95,22 @@
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
         background-color: #047bf8;
     }
+    .copyAddress{
+        background: rgba(4, 123, 248, 0.3);
+        color: white;
+        font-size: 15px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-left: 1vmax;
+        transition: all 0.3s ease-in-out;
+    }
+    .copyAddress:hover{
+        background: #429af6;
+    }
 
 
     /* Winona */
     .button--winona {
-        margin-top: 20px;
         display: inline-block;
         overflow: hidden;
         padding: 0;
@@ -109,13 +119,17 @@
         -webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
         transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
         text-align: center;
-        font-size: 1vmax;
+        font-size: 18px;
         border-radius: 0.3rem;
         background: #047bf8;
         color: white;
         position: relative;
         border: 1px #047bf8 solid;
         cursor: pointer;
+    }
+    .button--winona.shapeshift-button {
+        background-color: #29384d;
+        border: 1px #29384d solid;
     }
     .sr-button > .button--winona {
         transform: scale(0.9);
@@ -146,8 +160,12 @@
         transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
     }
     .button--winona:hover {
-        border-color: #047bf8CC;
-        background-color: #047bf8CC;
+        border-color: rgba(3, 120, 246, 0.8);
+        background-color: rgba(4, 123, 248, 0.8);
+    }
+    .button--winona.shapeshift-button {
+        background-color: rgba(41, 56, 77, 0.8);
+        border: 1px rgba(41, 56, 77, 0.8) solid;
     }
     .button--winona:hover::after {
         opacity: 1;
@@ -167,19 +185,19 @@
         padding-bottom: 0;
     }
     .coin-value{
-        font-size: 2vmax;
+        font-size: 28px;
         color: #68410a;
     }
     .coin-name{
-        font-size: 1.2vmax;
+        font-size: 30px;
         color: #68410a;
         font-weight: 500;
     }
     .coin-usd{
-        font-size: 1vmax;
+        font-size: 19px;
     }
     .coin-euro{
-        font-size: 1vmax;
+        font-size: 19px;
     }
     .new-coin-wrapper{
         padding: 20px 0;
@@ -198,11 +216,153 @@
         transform: translateX(5px);
     }
     .fa{
-        font-size: 1vmax;
+        font-size: 18px;
         padding-right: 5px;
     }
     .unavailable {
          opacity: 0.5;
         pointer-events: none;
     }
+    .shapeshift-image {
+        height: 1.75vmax;
+        filter: brightness(2) hue-rotate(54deg);
+    }
+    .coin-ticker {
+        border-radius: 12px;
+        overflow: hidden;
+        padding: 0;
+        box-shadow: 0px 2px 4px rgba(126, 142, 177, 0.12);
+    }
+    .coin-ticker:first-child {
+        margin-top: calc(1rem + 20px);
+    }
+    @media (max-width: 768px) {
+        .coin-ticker{
+            display: none;
+        }
+        .nopadding{
+            padding: 5px;
+        }
+        #wallet > div.col-lg-9 > div > div > div.row > div:nth-child(1) > button{
+            font-size: 15px;
+        }
+        #wallet > div.col-lg-9 > div > div > div.row > div.col-lg-3.offset-lg-6 > form > input{
+            font-size: 15px;
+        }
+        .hide-mb{
+            display: none;
+        }
+        th, td {
+            font-size: 15px!important;
+        }
+        
+        form input:focus {
+            width: 150px!important;
+            color: black!important;
+          }
+          .form input, .button--winona{
+              font-size: 13px;
+          }
+    }
+}
+.checkmark__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  stroke: #7ac142;
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke: #fff;
+  stroke-miterlimit: 10;
+  margin: 10% auto;
+  box-shadow: inset 0px 0px 0px #7ac142;
+  animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.checkmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes scale {
+  0%, 100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px #7ac142;
+  }
+}
+
+// Send - receive Overlays
+.sr-sidebar {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    right: 0;
+    width: 450px;
+    height: 100vh;
+    opacity: 0.5;
+    background: rgba(40, 41, 43, 0.85);
+    transform: translateX(100%);
+    pointer-events: none;
+    transition: transform 0.75s cubic-bezier(.175,.885,.32,1), opacity 0.5s ease-out;
+    box-shadow: 0 5px 30px black;
+}
+
+.sr-sidebar.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0%);
+    background: rgba(40, 41, 43, 0.95);
+}
+.total-portfolio-value {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    display: block;
+    font-size: 18px;
+}
+.portfolio-title {
+    font-size: 18px;
+}
+.copy-f{
+    float:right;
+}
+.imagecontainer{
+    position: absolute;
+    top: 35%;
+    right: 50%;
+    -webkit-transform: translate(50%, -50%);
+    transform: translate(50%, -50%);
+    display: block;
+    font-size: 18px;
+    -webkit-filter: sepia(1) saturate(0);
+    filter: sepia(1) saturate(0);
+    opacity: 0.15;
+    width: 50%;
+}
+.img-label {
+    width: 100%;
 }

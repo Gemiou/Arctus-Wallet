@@ -1,37 +1,23 @@
-  <!-- Send service -->
- 
-  <div id="resCoins" class="element-wrapper">
-      <div class="element-box">
-        <div class="row">
-          <h3 class="col-sm-12 text-center margin-tb-1">Receive {{coinName}}</h3>
-          <div class="col-sm-6">
-            <div class="row">
-                <div class="col-sm-12">
-                <div class="form-group row">
-                    <label class="col-form-label col-sm-6" for=""> Amount You Want To receive: </label>
-                    <div class="col-sm-6">
-                      <input class="form-control" [(ngModel)]="amount" [ngModelOptions]="{standalone: true}" placeholder="Enter An Amount" type="text">
-                    </div>
-                  </div>
-                  </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-8">
-                    <button class="button--winona col-sm-12" data-text="Generate QR" (click)="generateQrCode(addressFrom,amount)">
-                        <span>Generate QR</span>
-                      </button>                      
-                  </div>
-                  <div class="col-sm-4">
-                    <button [routerLink]="['/dashboard/wallet/']" class="button--winona col-sm-12" data-text="Cancel">
-                      <span>Cancel</span>
-                    </button>
-                  </div>
-            </div>
-          </div>
-          <div class="col-sm-6 qr-code">
-            <app-qrcode [address]="addressFrom" [amount]="amountFrom" [coin]="coinName"></app-qrcode>
-          </div>         
-        </div>
+<div id="receive" class="row m-0 justify-content-center">
+  <i class="close" (click)="close()">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 14">
+      <path class="stroked" fill="none" stroke-linecap="square" d="M 4.5 4.5 L 11.5 11.5 M 4.5 11.5 L 11.5 4.5" />
+    </svg>
+  </i>
+  <div class="col-lg-12 mt-5 header text-center">
+    RECEIVE {{coinName}}
   </div>
+  <div class="col-lg-12 mt-4 text-center">
+    <img class="coin-img" src="../../../assets/img/sp/{{coinName}}.png" alt="">
   </div>
-<!-- End Send service -->
+  <div class="col-lg-8 mt-4 text-center">
+      <input class="effect-1" type="text" placeholder="Enter An Amount" [(ngModel)]="amount">
+      <span class="focus-border"></span>
+  </div>
+  <div class="col-lg-8 mt-4 text-center">
+      <app-qrcode [address]="addressFrom" [amount]="amountFrom" [coin]="coinName"></app-qrcode>
+  </div>
+  <div class="col-lg-12 p-4 send-button text-center" (click)="generateQrCode(addressFrom,amount)">
+    <span>Generate QR Code</span>
+  </div>
+</div>

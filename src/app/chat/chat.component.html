@@ -1,0 +1,44 @@
+<div onclick="document.querySelector('.floated-chat-w').classList.toggle('active');" (click)="welcomeUser()" class="floated-chat-btn">
+  <i class="os-icon os-icon-mail-07"></i>
+  <span>Chat</span>
+</div>
+<div class="floated-chat-w">
+  <div class="floated-chat-i">
+    <div class="chat-close" onclick="document.querySelector('.floated-chat-w').classList.toggle('active')">
+      <i class="os-icon os-icon-close"></i>
+    </div>
+    <div class="chat-head">
+      <div class="user-w with-status status-green">
+        <div class="user-avatar-w">
+          <div class="user-avatar">
+            <img alt="" src="../../assets/img/avatar.png">
+          </div>
+        </div>
+        <div class="user-name">
+          <h6 class="user-title">
+            Arcty
+          </h6>
+          <div class="user-role">
+            Personal Wallet Assistant
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chat-messages">
+      <div class="date-break">
+        {{currentDate}}
+      </div>
+      <div class="message display-none">
+        <div class="message-content">
+        </div>
+      </div>
+      <div class="message self display-none">
+        <div class="message-content">
+        </div>
+      </div>
+    </div>
+    <div class="chat-controls">
+      <input class="message-input" placeholder="Type your message here..." type="text" (keydown)="processInput($event)" [(ngModel)]="currentMsg" [ngModelOptions]="{standalone: true}">
+    </div>
+  </div>
+</div>

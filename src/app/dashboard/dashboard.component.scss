@@ -158,8 +158,8 @@
         transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
     }
     .button--winona:hover {
-        border-color: #047bf8CC;
-        background-color: #047bf8CC;
+        border-color: rgba(4, 123, 248, 0.8);
+        background-color: rgba(4, 123, 248, 0.8);
     }
     .button--winona:hover::after {
         opacity: 1;
@@ -199,7 +199,7 @@
     .add-new-coin{
         cursor: pointer;
         padding: 2px;
-        border-bottom: 1px solid #0000002e;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.18);
         transition: all 0.2s ease-in-out;
     }
     .add-new-coin:hover{
@@ -236,3 +236,86 @@
     app-settings{
         float: right;
     }
+    #shapeshift-modal {
+        position: absolute;
+        z-index: 2;
+        width: 1000px;
+        height: 500px;
+        transform: translate(-50%, -25%) scale(0.9);
+        pointer-events: none;
+        opacity: 0;
+        left: 50%;
+        top: 50%;
+        transition: transform 0.75s cubic-bezier(.175,.885,.32,1), opacity 0.5s ease-out;
+    }
+    #shapeshift-modal.active {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        pointer-events: auto;
+    }
+    #shapeshift-modal.transition {
+        transform: translate(-75%, -50%) scale(1);
+    }
+    #shapeshift-coinselection {
+        position: absolute;
+        z-index: 3;
+        top: 0;
+        right: 0;
+        width: 30vw;
+        height: 100vh;
+        opacity: 0;
+        transform: translateX(100%);
+        pointer-events: none;
+        transition: transform 0.75s cubic-bezier(.175,.885,.32,1), opacity 0.5s ease-out;
+    }
+    #shapeshift-modal.transition ~ #shapeshift-coinselection.active {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(0);
+    }
+    .overlay {
+        position: absolute;
+        width: 100vw;
+        height: 100%;
+        pointer-events: none;
+        left: 0;
+        top: 0;
+        z-index: 9999;
+        background: transparent;
+        transition: background 0.75s ease-out;
+    }
+    .overlay.active {
+        background: rgba(0,0,0,0.75);
+        pointer-events: auto;
+    }
+    app-settings{
+        height: 100%;
+        width: 100%;
+    }
+    @media (max-width: 768px) {
+    .content-box{
+        padding: 0;
+    }
+    .head-row {
+        margin-bottom: 20px;
+        margin-top: 20px;
+    } 
+    #shapeshift-modal.active {
+        transform: translate(0%, 0%) scale(1);
+        opacity: 1;
+        pointer-events: auto;
+    }
+    #shapeshift-modal{
+        position: relative;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(0 , 0) scale(0.9);
+        width: 100%;
+        height: 100%;
+    }
+    #shapeshift-coinselection{
+        width: 100vw;
+     }
+}

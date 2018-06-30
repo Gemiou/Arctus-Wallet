@@ -1,34 +1,116 @@
-<div class="element-wrapper">
-  <div class="element-box">
-    <div class="row">
-      <div class="offset-sm-4 col-sm-4">
+<ngx-loading-bar></ngx-loading-bar>
+<div class="overlaytwo" (click)="toggleCustomCoinModal($event)">
+  <div id="custom-coin-modal" class="container-fluid">
+    <div class="row align-items-center modal-contents">
+      <div class="col-lg-12">
+        <div class="row justify-content-center">
+          <div class="modal-title">
+            ERC-20 Token
+          </div>
+        </div>
+        <div class="row justify-content-center m3">
+          <div class="value col-lg-12 text-center">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+              viewBox="-542 530 282 224" style="enable-background:new -542 530 282 224;" xml:space="preserve">
+              <style type="text/css">
+                .st0 {
+                  font-family: 'MyriadPro-Regular';
+                }
+
+                .st1 {
+                  font-size: 18px;
+                }
+              </style>
+              <g transform="translate(0.000000,321.000000) scale(0.100000,-0.100000)">
+                <path d="M-4495-2136c-397-66-739-371-850-758c-39-138-54-126,154-126h178l23,63c102,285,374,477,674,477c125,0,214-21,326-76
+               c81-40,108-60,185-138c93-94,138-164,175-272c11-32,20-59,20-61c0-1-88-3-195-3c-112,0-195,4-195,9c0,26-104,120-162,147
+               c-55,26-74,29-153,28c-68,0-101-5-135-21c-230-105-290-392-121-575c127-138,341-152,487-32c25,20,55,52,67,70l22,34h193
+               c105,0,192-2,192-5s-14-41-30-84c-113-291-409-480-721-458c-181,13-320,78-455,212c-76,75-99,105-138,184c-25,51-46,101-46,111
+               c0,11-4,22-10,25c-5,3-88,7-185,8c-204,2-191,14-150-127c63-216,201-417,384-554c273-206,623-270,950-176c369,107,655,405,745,776
+               l21,88h140h140l170,170l169,170l-308,2l-309,3l-24,95c-47,186-164,385-306,517C-3821-2182-4161-2079-4495-2136z"
+                />
+              </g>
+              <text transform="matrix(1 0 0 1 -345 552)" class="cpright">©</text>
+            </svg>
+          </div>
+        </div>
+        <div class="row justify-content-center active">
+          <form class="col-lg-8 classic-token">
+            <div class="form-group">
+              <input type="text" class="form-control col-10 col-lg-12 token-address" placeholder="Token Contract Address" (input)="filterAddress($event)">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control col-10 col-lg-12 token-symbol" placeholder="Token Symbol">
+            </div>
+            <div class="form-group">
+              <input type="number" class="form-control col-10 col-lg-12 token-decimals" placeholder="Token Decimals">
+            </div>
+            <div class="form-group text-center">
+              <button class="button--winona" data-text="Add Token" (click)="addCustomToken($event)">
+                <span>Add Token</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="addnew" class="container-fluid">
+  <div class="row align-items-center ">
+    <div class="col-12 p-0">
+      <div class="row adjust-coins mobileMenu text-center" *ngIf="isMobile()">
+        <div class="col-12" *ngIf="searchActive">
+          <div class="">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search Coin" [(ngModel)]="coinName.class" [(ngModel)]="coinAbbr.type"
+                [ngModelOptions]="{standalone: true}">
+            </div>
+          </div>
+        </div>
+        <div class="col-4 p-0" (click)="mobileSearch()">
+          <div class="setupMenu-mobile">
+            <i class="fa fa-search"></i>
+          </div>
+        </div>
+        <div class="col-4 p-0">
+          <div class="setupMenu-mobile" data-text="Open Modal" (click)="toggleCustomCoinModal($event)">
+            <div>ERC-20</div>
+          </div>
+        </div>
+        <div class="col-4 p-0" (click)="saveSettings()">
+          <div class="setupMenu-mobile">
+            <i class="fa fa-arrow-right"></i>
+          </div>
+        </div>
+      </div>
+      <div class="row adjust-coins" *ngIf="!isMobile()">
+        <div class="col-lg-4 col-12">
           <form class="form">
             <input type="text" [(ngModel)]="coinName.class" [(ngModel)]="coinAbbr.type" [ngModelOptions]="{standalone: true}" placeholder="Search Coin">
           </form>
+        </div>
       </div>
-    </div>
-    <div class="row coin-selection">
-      <div class="col-sm-2" *ngFor="let coin of coins | filterBy: coinName;let i = index">
+      <div class="row justify-content-center coin-selection m-0">
+        <div class="col-lg-2 col-6" *ngFor="let coin of coins | filterBy: coinName;let i = index">
           <a class="element-box el-tablo centered" href="#" (click)="selectCoin($event, coin, i)" [ngClass]="{
-                'active':coin.selected
-              }">
-            <div class="value" >
-                <svg *ngIf="coin.icon == ''" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 512 640" enable-background="new 0 0 512 512" xml:space="preserve"><g><polygon fill="#000000" points="214.3,248.4 192.6,226.7 214.3,205 199.8,190.5 178.1,212.2 156.4,190.5 142,205 163.7,226.7    142,248.4 156.4,262.9 178.1,241.2 199.8,262.9  "/><polygon fill="#000000" points="369.9,248.4 348.2,226.7 369.9,205 355.5,190.5 333.8,212.2 312.1,190.5 297.6,205 319.3,226.7    297.6,248.4 312.1,262.9 333.8,241.2 355.5,262.9  "/><g><path fill="#000000" d="M265.8,368.2c-5.3-6.4-8-15.6-8-27.4V318h-72.5v-22.7h142.6v47c0,10.8-2.8,19.5-8.5,25.9    c-5.6,6.4-14.4,9.7-26.2,9.7C280.3,377.9,271.2,374.6,265.8,368.2z M305.3,350.8c2.4-2.9,3.6-7,3.6-12.2V318h-32.2v20.6    c0,5.2,1.3,9.3,3.9,12.2s6.8,4.3,12.5,4.3C298.8,355.1,302.8,353.7,305.3,350.8z"/></g></g><g><g><path fill="#000000" d="M427.5,82.2H84.4c-9.7,0-17.6,7.6-17.6,17.2v313.1c0,9.7,7.9,17.3,17.6,17.3h343.1    c9.7,0,17.7-7.7,17.7-17.3V99.4C445.2,89.7,437.2,82.2,427.5,82.2z M145.7,116.7c4.8,0,8.6,3.9,8.6,8.6c0,4.8-3.9,8.6-8.6,8.6    c-4.8,0-8.6-3.9-8.6-8.6C137.1,120.5,141,116.7,145.7,116.7z M110.3,116.7c4.8,0,8.6,3.9,8.6,8.6c0,4.8-3.9,8.6-8.6,8.6    c-4.8,0-8.6-3.9-8.6-8.6C101.7,120.5,105.5,116.7,110.3,116.7z M409.8,394.9h-308V169.2h308V394.9z M409.8,134.3H172.1v-17.2    h237.7V134.3z"/></g></g></svg>
-                <i class="cc {{coin.icon}}"></i>
+                  'active':coin.selected
+                }">
+            <div class="value">
+              <img src="../../../../assets/img/sp/{{coin.isCustom === undefined?coin.type.trim():'ERC'}}.png" class="crypto-image" alt="">
             </div>
-            <div class="label {{coin.type}}-identifier">
+            <div class="label coin-{{coin.type.trim()}}-identifier">
               {{coin.class | uppercase}}
             </div>
           </a>
         </div>
         <ng-container *ngFor="let coin of coins | filterBy: coinAbbr;let i = index">
-          <div class="col-sm-2" *ngIf="alreadyExists(coin.type)">
+          <div class="col-lg-2 col-5" *ngIf="!alreadyExists(coin, (coins | filterBy: coinName))">
             <a class="element-box el-tablo centered" href="#" (click)="selectCoin($event, coin, i)" [ngClass]="{
-                  'active':coin.selected
-                }">
-              <div class="value" >
-                  <svg *ngIf="coin.icon == ''" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 512 640" enable-background="new 0 0 512 512" xml:space="preserve"><g><polygon fill="#000000" points="214.3,248.4 192.6,226.7 214.3,205 199.8,190.5 178.1,212.2 156.4,190.5 142,205 163.7,226.7    142,248.4 156.4,262.9 178.1,241.2 199.8,262.9  "/><polygon fill="#000000" points="369.9,248.4 348.2,226.7 369.9,205 355.5,190.5 333.8,212.2 312.1,190.5 297.6,205 319.3,226.7    297.6,248.4 312.1,262.9 333.8,241.2 355.5,262.9  "/><g><path fill="#000000" d="M265.8,368.2c-5.3-6.4-8-15.6-8-27.4V318h-72.5v-22.7h142.6v47c0,10.8-2.8,19.5-8.5,25.9    c-5.6,6.4-14.4,9.7-26.2,9.7C280.3,377.9,271.2,374.6,265.8,368.2z M305.3,350.8c2.4-2.9,3.6-7,3.6-12.2V318h-32.2v20.6    c0,5.2,1.3,9.3,3.9,12.2s6.8,4.3,12.5,4.3C298.8,355.1,302.8,353.7,305.3,350.8z"/></g></g><g><g><path fill="#000000" d="M427.5,82.2H84.4c-9.7,0-17.6,7.6-17.6,17.2v313.1c0,9.7,7.9,17.3,17.6,17.3h343.1    c9.7,0,17.7-7.7,17.7-17.3V99.4C445.2,89.7,437.2,82.2,427.5,82.2z M145.7,116.7c4.8,0,8.6,3.9,8.6,8.6c0,4.8-3.9,8.6-8.6,8.6    c-4.8,0-8.6-3.9-8.6-8.6C137.1,120.5,141,116.7,145.7,116.7z M110.3,116.7c4.8,0,8.6,3.9,8.6,8.6c0,4.8-3.9,8.6-8.6,8.6    c-4.8,0-8.6-3.9-8.6-8.6C101.7,120.5,105.5,116.7,110.3,116.7z M409.8,394.9h-308V169.2h308V394.9z M409.8,134.3H172.1v-17.2    h237.7V134.3z"/></g></g></svg>
-                  <i class="cc {{coin.icon}}"></i>
+                    'active':coin.selected
+                  }">
+              <div class="value">
+                <img src="../../../../assets/img/sp/{{coin.isCustom === undefined?coin.type.trim():'ERC'}}.png" class="crypto-image" alt="">
               </div>
               <div class="label">
                 {{coin.class | uppercase}}
@@ -36,7 +118,7 @@
             </a>
           </div>
         </ng-container>
-        <div class="col-sm-2 offset-sm-5" *ngIf="(coins | filterBy: coinName).length === 0 && (coins | filterBy: coinAbbr).length === 0">
+        <div class="col-lg-2 col-5" *ngIf="(coins | filterBy: coinName).length === 0 && (coins | filterBy: coinAbbr).length === 0">
           <a class="element-box el-tablo centered" href="#">
             <div class="value">
               X
@@ -46,17 +128,18 @@
             </div>
           </a>
         </div>
-    </div>
-    <div class="row setup-buttons">
-      <div class="col-sm-6 ">
-        <button class="button--winona" data-text="Save Settings" (click)="saveSettings()">
-          <span>Save Settings</span>
-        </button>
       </div>
-      <div class="col-sm-6">
-        <button [routerLink]="['/dashboard/wallet']"class="button--winona" data-text="Cancel">
-          <span>Cancel</span>
-        </button>
+      <div class="row setup-buttons" *ngIf="!isMobile()">
+        <div class="col-lg-4">
+          <button class="button--winona" data-text="Save Settings" (click)="saveSettings()">
+            <span>Save Settings</span>
+          </button>
+        </div>
+        <div class="col-lg-4">
+          <button class="button--winona" data-text="Open Modal" (click)="toggleCustomCoinModal($event)">
+            <span>Add Custom ERC-20 Token</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>

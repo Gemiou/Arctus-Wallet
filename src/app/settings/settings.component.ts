@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { Wallet, utils } from 'ethers';
 import { CryptoHelperService } from '../services/crypto-helper.service';
+import { keccak_256 } from 'js-sha3';
 import * as blockstack from 'blockstack';
 
 @Component({
@@ -13,11 +14,13 @@ import * as blockstack from 'blockstack';
 export class SettingsComponent implements OnInit {
   inactive = false;
   active = false;
-  test = true;
-
+  shouldHaveJSON: Boolean = true;
   constructor(private router: Router, private loadingBar: LoadingBarService, private ch: CryptoHelperService) { }
 
   ngOnInit() {
+    if (!localStorage.getItem('pass-' + keccak_256(this.ch.decryptKey()))) {
+      this.shouldHaveJSON = false;
+    }
   }
 
   logout() {
@@ -32,7 +35,7 @@ export class SettingsComponent implements OnInit {
 
   toJSON() {
     const p_key = this.ch.decryptKey();
-    const password = localStorage.getItem('pass');
+    const password = localStorage.getItem('pass-' + keccak_256(this.ch.decryptKey()));
     const wallet = new Wallet(p_key);
     this.loadingBar.start();
     const encryptPromise = wallet.encrypt(password);
@@ -49,7 +52,16 @@ export class SettingsComponent implements OnInit {
       a.click();
     });
   }
+
+  exportPrivateKey() {
+    alert(`Your hex-encoded master key: ${this.ch.decryptKey().substring(2)}`);
+  }
+
   redirectToFAQ() {
-    window.location.href = "https://www.arctus.io/FAQ";
+    window.location.href = 'https://www.arctus.io/FAQ';
+  }
+
+  isMobile() {
+    return document.querySelectorAll('.mobile').length !== 0;
   }
 }

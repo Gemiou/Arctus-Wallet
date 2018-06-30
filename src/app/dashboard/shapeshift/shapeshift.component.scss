@@ -1,0 +1,371 @@
+.shapeshift-main {
+    .left-side {
+        background: #55779f;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        height: 487px;
+    }
+    .right-side {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        background: white;
+        transition: 0.5s all ease-in-out;
+    }
+    .heading-c {
+        background: rgba(0,0,0,.25);
+        border-top-left-radius: 10px;
+    }
+    .nopadding {
+        padding: 0 !important;
+        margin: 0 !important;
+     }
+    .heading-ch {
+        background: rgba(0,0,0,.07);
+    }    
+    .title {
+        font-size: 18px;
+        color: #bfc0c0;
+    }
+    .desc {
+        color: white;
+        font-size: 18px;
+    }
+    .image-shift{
+        width: 10vw;
+        filter: hue-rotate(26deg);
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .form{
+        margin: 30px;
+    }
+    .fa-exchange{
+        font-size: 40px;
+        color: #55779f;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        z-index: 2;
+        cursor: pointer;
+    }
+    .shapeshift-filter {
+        width: 100%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        z-index: 2;
+        filter: hue-rotate(26deg);
+    }
+    
+    
+    input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: rgb(29, 11, 11)!important;
+    }
+    .input-c{
+        margin: 25px 0;
+    }
+    .transaction-button {
+        background: rgba(61, 83, 113, 0.8);
+        color: white;
+        text-align: center;
+        font-size: 16px;
+        padding: 10px 0;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        }
+    .transaction-button:hover {
+        background: rgba(41, 56, 77, 0.8);
+    }
+    .close-modal {
+        position: absolute;
+        top: 2.5%;
+        right: 1%;
+        font-size: 20px!important;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        z-index: 2;
+    }
+    .close-modal:hover {
+        color: #d7d3d3!important;
+        z-index: 5;
+    }
+    .img-icon {
+        width: 100%;
+    }
+    .coins-selection {
+        margin-top: 1.5vmax;
+        position: relative;
+    }
+    .c-labels {
+        text-align: center;
+        color: #486587;
+        font-size: 18px;
+    }
+    input{
+        border: 1px solid rgba(85, 119, 159, 0.5);
+        background: #f8fafd;
+        color: #486587;
+        height: 40px;
+    }
+    input::placeholder{
+        color: #98a9bd!important;
+    }
+    input:focus {
+        border-color: rgba(85, 119, 159, 0.8);
+    }
+    .poweredby > a {
+        text-decoration: underline;
+        color: #d3d7db;
+    }
+    
+    .poweredby {
+        position: absolute;
+        color: #ffffff;
+        z-index: 5;
+        bottom: -3%;
+        right: 0;
+        font-size: 16px;
+    }
+    .hover-fade {
+        opacity: 1;
+        transition: 0.25s opacity ease-in-out;
+    }
+    .hover-fade:hover {
+        opacity: 0.75;
+        cursor: pointer;
+    }
+    .unavailable {
+        opacity: 0.8;
+        pointer-events: none;
+    }
+    .transaction-status {
+        color: black;
+        text-align: center;
+        div:first-child {
+            font-size: 20px;
+        }
+
+        div:last-child {
+            font-size: 15px;
+        }
+        .trans-desc{
+            font-size: 18px;
+        }
+        .checkmark__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: #7ac142;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+          }
+          
+          .checkmark {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 2;
+            stroke: #fff;
+            stroke-miterlimit: 10;
+            margin: 10% auto;
+            box-shadow: inset 0px 0px 0px #7ac142;
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+          }
+          
+          .checkmark__check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+          }
+          
+          
+          @keyframes stroke {
+            100% {
+              stroke-dashoffset: 0;
+            }
+          }
+          @keyframes scale {
+            0%, 100% {
+              transform: none;
+            }
+            50% {
+              transform: scale3d(1.1, 1.1, 1);
+            }
+          }
+          @keyframes fill {
+            100% {
+              box-shadow: inset 0px 0px 0px 30px #7ac142;
+            }
+          }          
+    }
+    @media (max-width: 768px) {
+        .left-side {
+            height: 365px;
+        }
+        .image-shift {
+            top: 95%;
+            left: 26%;
+        }
+        .right-side, .left-side{
+            border-radius: 0;
+        }
+        .coins-selection{
+            margin: 0;
+        }
+        .fa-exchange{
+            font-size: 12px;
+        }
+        .close-modal {
+            position: absolute;
+            top: 2.5%;
+            right: 2.5%;
+            color: white;
+        }
+    }
+    .converter {
+        font-size: 18px;
+        background: #efeff0;
+        padding: 12px 0;
+        border: 1px solid #e6e2e2;
+        color: #64758d;
+    }
+    .min {
+        font-size: 18px;
+        background: #f6f6f8;
+        padding: 12px 0;
+        border: 1px solid #e6e2e2;
+        border-top-left-radius: 8px;
+        color: #64758d;
+        font-weight: 600;
+        border: 1px solid #fffdfd;
+        box-shadow: 1px 1px 8px #cbc7c7;
+        z-index: 1;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+    .max{
+        font-size: 18px;
+        background: #f6f6f8;
+        padding: 12px 0;
+        border: 1px solid #fffdfd;
+        box-shadow: -1px 1px 8px #cbc7c7;
+        border-bottom-right-radius: 8px;
+        color: #64758d;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+    .min:hover, .max:hover {
+        box-shadow: 0px 2px 28px #CBC7C4;
+    }
+    .min:active, .max:active {
+        border: 1px solid #ccc7c7;
+    }
+    .convert-amount{
+        font-weight: 600;
+    }
+    .tryagain{
+        background: #55779f;
+        padding: 5px 10px;
+        border-radius: 5px;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+    }
+    .tryagain:hover{
+        background: #6b84a1;
+    }
+   
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+// coin animations
+
+.first-coin{
+    opacity: 0;
+    transform: translateX(0);
+    animation-name: first-coin-animation;
+    animation-duration:6s;
+    animation-iteration-count: infinite;
+
+}
+
+.second-coin{
+    opacity: 1;
+    transform: translateX(-115%);
+    animation-name: second-coin-animation;
+    animation-duration:6s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes first-coin-animation {
+    0%{
+        opacity: 0;
+        transform: translateX(0%);
+    }
+    10%{
+        opacity: 1;
+        transform: translateX(0%);
+    }
+    40%{
+        opacity: 1;
+        transform: translateX(110%);
+    }
+    50% {
+        opacity: 0;
+        transform: translateX(110%);
+    }
+    80% {
+        opacity: 0;
+        transform: translateX(110%);
+    }
+    90%{
+        opacity: 0;
+        transform: translateX(110%);
+    }
+    100%{
+        opacity: 0;
+        transform: translateX(0%);
+    }
+}
+@keyframes second-coin-animation {
+    0%{
+        opacity: 0;
+        transform: translateX(-115%);
+    }
+    22% {
+        opacity: 0;
+        transform: translateX(-115%);
+    }
+    45%{
+        opacity: 1;
+        transform: translateX(-115%);
+    }
+    82% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(0);
+    }
+}
+.advanced{
+    cursor: pointer;
+}
+.border{
+    border-bottom-left-radius: 12px; 
+}
+

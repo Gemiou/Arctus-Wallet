@@ -1,49 +1,36 @@
+<!-- Send Receive Modals -->
+<div *ngIf="srOverlay" class="sr-sidebar" [@srsideanimation] [ngClass]="{'active': srOverlay}">
+  <app-send *ngIf="sendIsOpen" [coinSend]="coins[selectedCoin].type" [addressSend]="coins[selectedCoin].address" (sendModal)="receiveSendModal($event)"></app-send>
+  <app-receive *ngIf="receiveIsOpen" [coinReceive]="coins[selectedCoin].type" [addressReceive]="coins[selectedCoin].address"
+    (sendModal)="receiveRecModal($event)"></app-receive>
+</div>
+<!-- END Send Receive Modals -->
 <div class="row" id="wallet">
-<div class="col-sm-3">
+  <div class="col-lg-3">
     <div class="element-wrapper">
       <div class="element-box rc-controller">
-        <svg *ngIf="coins[selectedCoin].icon == ''" class="cc" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"
-          version="1.1" x="0px" y="0px" viewBox="0 0 512 640" enable-background="new 0 0 512 512" xml:space="preserve">
-          <g>
-            <polygon fill="#000000" points="214.3,248.4 192.6,226.7 214.3,205 199.8,190.5 178.1,212.2 156.4,190.5 142,205 163.7,226.7    142,248.4 156.4,262.9 178.1,241.2 199.8,262.9  "
-            />
-            <polygon fill="#000000" points="369.9,248.4 348.2,226.7 369.9,205 355.5,190.5 333.8,212.2 312.1,190.5 297.6,205 319.3,226.7    297.6,248.4 312.1,262.9 333.8,241.2 355.5,262.9  "
-            />
-            <g>
-              <path fill="#000000" d="M265.8,368.2c-5.3-6.4-8-15.6-8-27.4V318h-72.5v-22.7h142.6v47c0,10.8-2.8,19.5-8.5,25.9    c-5.6,6.4-14.4,9.7-26.2,9.7C280.3,377.9,271.2,374.6,265.8,368.2z M305.3,350.8c2.4-2.9,3.6-7,3.6-12.2V318h-32.2v20.6    c0,5.2,1.3,9.3,3.9,12.2s6.8,4.3,12.5,4.3C298.8,355.1,302.8,353.7,305.3,350.8z"
-              />
-            </g>
-          </g>
-          <g>
-            <g>
-              <path fill="#000000" d="M427.5,82.2H84.4c-9.7,0-17.6,7.6-17.6,17.2v313.1c0,9.7,7.9,17.3,17.6,17.3h343.1    c9.7,0,17.7-7.7,17.7-17.3V99.4C445.2,89.7,437.2,82.2,427.5,82.2z M145.7,116.7c4.8,0,8.6,3.9,8.6,8.6c0,4.8-3.9,8.6-8.6,8.6    c-4.8,0-8.6-3.9-8.6-8.6C137.1,120.5,141,116.7,145.7,116.7z M110.3,116.7c4.8,0,8.6,3.9,8.6,8.6c0,4.8-3.9,8.6-8.6,8.6    c-4.8,0-8.6-3.9-8.6-8.6C101.7,120.5,105.5,116.7,110.3,116.7z M409.8,394.9h-308V169.2h308V394.9z M409.8,134.3H172.1v-17.2    h237.7V134.3z"
-              />
-            </g>
-          </g>
-        </svg>
-        <i class="cc {{coins[selectedCoin].icon == ''?'':coins[selectedCoin].icon}}"></i>
+        
+        <div class="imagecontainer" *ngIf="coins[selectedCoin].type !== null"><img class="img-label" src="../../../assets/img/sp/{{coins[selectedCoin].isCustom === undefined?coins[selectedCoin].type.trim():'ERC'}}.png" alt=""></div>
         <div class="row">
-          <div class="col-sm-12 text-center">
+          <div class="col-lg-12 text-center">
             <span class="coin-value" id="count-up" #cu>{{coins[selectedCoin].balance}}</span>
             <span class="coin-name">{{coins[selectedCoin].type}}</span>
           </div>
-          <div class="col-sm-6 text-center">
-            <span class="coin-usd">$ {{coins[selectedCoin].value | number:'1.2-2'}}</span>
+          <div class="col-lg-6 col-6 text-center">
+            <span class="coin-usd">$ {{coins[selectedCoin].value == 'N/A'?'N/A':coins[selectedCoin].value | number:'1.2-2'}}</span>
           </div>
-          <div class="col-sm-6 text-center">
-            <span class="coin-euro">€ {{coins[selectedCoin].value * USDtoEUR | number:'1.2-2'}}</span>
+          <div class="col-lg-6 col-6 text-center">
+            <span class="coin-euro">€ {{coins[selectedCoin].value == 'N/A'?'N/A':coins[selectedCoin].value * USDtoEUR | number:'1.2-2'}}</span>
           </div>
           <div class="eth-c"></div>
         </div>
         <div class="row sr-button">
-          <button [routerLink]="['/dashboard/send', coins[selectedCoin].type, coins[selectedCoin].address]" class="button--winona col-sm-12 col-md-6"
-            [attr.data-text]="'Send '+coins[selectedCoin].type" [ngClass]="{ 'unavailable' : coins[selectedCoin].type == 'BTC' }">
+          <button class="button--winona col-lg-12 col-md-6 col-6" [attr.data-text]="'Send '+coins[selectedCoin].type" (click)="send()">
             <span>Send
               <span class="font-weight-bold">{{coins[selectedCoin].type}}</span>
             </span>
           </button>
-          <button [routerLink]="['/dashboard/receive',coins[selectedCoin].type,coins[selectedCoin].address]" class="button--winona col-sm-12 col-md-6"
-            [attr.data-text]="'Receive '+coins[selectedCoin].type">
+          <button class="button--winona col-lg-12 col-md-6 col-6" [attr.data-text]="'Receive '+coins[selectedCoin].type" (click)="receive()">
             <span>Receive
               <span class="font-weight-bold">{{coins[selectedCoin].type}}</span>
             </span>
@@ -51,24 +38,34 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="col-sm-9">
     <div class="element-wrapper">
-      <div class="element-box">
+      <button class="button--winona col-lg-12 shapeshift-button" data-text="Shift Now" [ngClass]="{ 'unavailable': !availableSSCoins.includes(coins[selectedCoin].type) }"
+        (click)="toggleShapeshift();closeSrModal()">
+        <span>
+          <img class="shapeshift-image" src="../../../assets/img/shapeshift.png" />
+          <span class="font-weight-bold">ShapeShift</span> {{coins[selectedCoin].type}}
+        </span>
+      </button>
+    </div>
+    <div class="element-wrapper">
+      <div class="col-lg-12 coin-ticker"></div>
+      <div class="col-lg-12 coin-ticker"></div>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <div class="element-wrapper">
+      <div class="element-box nopadding">
         <div class="row">
-            <div class="col-sm-3">
-                <div [routerLink]="['/dashboard/addCoin/']" class="new-coin-wrapper">
-                  <div class="add-new-coin">
-                    <i class="fa fa-plus-circle"></i>
-                    <span class="typlab">Add New Coin</span>
-                  </div>
-                </div>
-              </div>
-          <div class="col-sm-6"></div>
-          <div class="col-sm-3">
-              <form class="form">
-                <input type="text" [(ngModel)]="coinName.class" [(ngModel)]="coinAbbr.type" [ngModelOptions]="{standalone: true}" placeholder="Search Coin">
-              </form>
+          <div class="col-lg-3 col-6">
+            <button (click)="closeSrModal()" class="button--winona add-coin" data-text="Go to Coin Page" [routerLink]="['/dashboard/addCoin/']">
+              <span class="typlab">
+                <i class="fa fa-plus-circle"></i>Add New Coin</span>
+            </button>
+          </div>
+          <div class="col-lg-3 offset-lg-6 col-6">
+            <form class="form">
+              <input type="text" [(ngModel)]="coinName.class" [(ngModel)]="coinAbbr.type" [ngModelOptions]="{standalone: true}" placeholder="Search Coin">
+            </form>
           </div>
         </div>
         <div class="table-responsive">
@@ -79,7 +76,7 @@
                 <th>
                   Symbol
                 </th>
-                <th>
+                <th class="hide-mb">
                   Address
                 </th>
                 <th class="text-right">
@@ -88,29 +85,33 @@
               </tr>
             </thead>
             <tbody *ngIf="!showLoading">
-              <tr class="crypto" *ngFor="let coin of coins | filterBy: coinName;let i = index" [ngStyle]="{'background': i == selectedCoin ? 'rgba(4, 123, 248, 0.15)' : 'rgba(0,0,0,0)' }"
-                (click)="makeActive(i)">
+              <tr *ngFor="let coin of coins | filterBy: coinName;let i = index" class="crypto coin-{{coin.type.trim()}}-identifier" [ngStyle]="{'background': coins[selectedCoin].type == coin.type ? 'rgba(4, 123, 248, 0.15)' : 'rgba(0,0,0,0)' }"
+                (click)="makeActive(coin)">
                 <td class="nowrap sc">
-                  {{coin.type}}
+                  <img src="../../../../assets/img/sp/{{coin.isCustom === undefined?coin.type.trim():'ERC'}}.png" class="crypto-image mr-1" alt=""> {{coin.type}}
                 </td>
-                <td>
-                  <div class="cell-image-list {{coin.type}}-identifier">
+                <td class="hide-mb">
+                  <div class="cell-image-list">
                     {{coin.address}}
+                  </div>
+                  <div class="text-right copy-f">
+                    <span class="copyAddress"  ngxClipboard [cbContent]="coin.address">Copy</span>
                   </div>
                 </td>
                 <td class="text-right">
                   {{coin.balance | number:coin.pipe}}
                 </td>
               </tr>
-              <tr class="crypto" *ngFor="let coin of coins | filterBy: coinAbbr;let i = index" [ngStyle]="{'background': i == selectedCoin ? 'rgba(4, 123, 248, 0.15)' : 'rgba(0,0,0,0)' }"
-                (click)="makeActive(i)">
-                <ng-container *ngIf="alreadyExists(coin.type)">
+              <tr *ngFor="let coin of coins | filterBy: coinAbbr;let i = index" class="crypto coin-{{coin.type.trim()}}-identifier" [ngStyle]="{'background': coins[selectedCoin].type == coin.type ? 'rgba(4, 123, 248, 0.15)' : 'rgba(0,0,0,0)' }"
+                (click)="makeActive(coin)">
+                <ng-container *ngIf="!alreadyExists(coin, (coins | filterBy: coinName))">
                   <td class="nowrap sc">
+                    <img src="../../../../assets/img/sp/{{coin.isCustom === undefined?coin.type.trim():'ERC'}}.png" class="crypto-image mr-1" alt="">
                     {{coin.type}}
                   </td>
-                  <td>
+                  <td class="hide-mb">
                     <div class="cell-image-list">
-                      {{coin.address}}
+                      {{coin.address}} <span class="copyAddress"  ngxClipboard [cbContent]="coin.address">Copy</span>
                     </div>
                   </td>
                   <td class="text-right">
@@ -118,7 +119,7 @@
                   </td>
                 </ng-container>
               </tr>
-              <tr *ngIf="(coins | filterBy: coinName).length === 0 && (coins | filterBy: coinAbbr).length === 0">
+              <tr *ngIf="(coins | filterBy: coinName) === undefined && (coins | filterBy: coinAbbr) === undefined">
                 <td class="nowrap">
                   <i class="typcn typcn-times"></i>
                 </td>
@@ -135,8 +136,29 @@
           </table>
         </div>
       </div>
-
     </div>
     <!-- End list of user coins -->
+    <div class="element-wrapper">
+      <div class="element-box nopadding">
+        <div class="container">
+          <app-loading *ngIf="chartLoading"></app-loading>
+          <div *ngIf="!chartLoading" class="row align-items-center">
+            <div class="col-lg-3">
+              <div class="total-portfolio-value text-center" *ngIf="!chartLoading">
+                <div>Total Value</div>
+                <div>$ {{totalPortfolioValue}}</div>
+              </div>
+              <canvas id="myChart" width="200px" height="200px"></canvas>
+            </div>
+            <div class="col-lg-9">
+              <div class="col-lg-6 text-center portfolio-title" *ngIf="!chartLoading">
+                Total Portfolio Value
+              </div>
+              <div id="js-legend" class="chart-legend col-lg-6"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -13,6 +13,7 @@ const { NoEmitOnErrorsPlugin, SourceMapDevToolPlugin, NamedModulesPlugin } = req
 const { ScriptsWebpackPlugin, NamedLazyChunksWebpackPlugin, BaseHrefWebpackPlugin, PostcssCliResources } = require('@angular/cli/plugins/webpack');
 const { CommonsChunkPlugin } = require('webpack').optimize;
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const nodeModules = path.join(process.cwd(), 'node_modules');
 const realNodeModules = fs.realpathSync(nodeModules);
@@ -493,6 +494,23 @@ module.exports = {
       "async": "common"
     }),
     new NamedModulesPlugin({}),
+    new UglifyJsPlugin({
+    	uglifyOptions: {
+        mangle: {
+      		reserved: [
+                      	'Buffer',
+                              'BigInteger',
+                              'Point',
+                              'ECPubKey',
+                              'ECKey',
+                              'sha512_asm',
+                              'asm',
+                              'ECPair',
+                              'HDNode'
+                      ]
+        }
+      }
+    }),
     new AngularCompilerPlugin({
       "mainPath": "main.ts",
       "platform": 0,
