@@ -20,7 +20,7 @@ Chat Styles
   z-index:1000;
 }
 .floated-chat-btn {
-    z-index: 9999;
+    z-index: 10001;
     position: fixed;
     bottom: 10px;
     left: 10px;
@@ -68,7 +68,7 @@ Chat Styles
   }
 
   .floated-chat-w {
-    z-index: 9999;
+    z-index: 10001;
     position: fixed;
     bottom: 70px;
     left: 10px;

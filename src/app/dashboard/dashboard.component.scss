@@ -280,7 +280,7 @@
         pointer-events: none;
         left: 0;
         top: 0;
-        z-index: 9999;
+        z-index: 5;  
         background: transparent;
         transition: background 0.75s ease-out;
     }
@@ -299,7 +299,7 @@
     .head-row {
         margin-bottom: 20px;
         margin-top: 20px;
-    } 
+    }
     #shapeshift-modal.active {
         transform: translate(0%, 0%) scale(1);
         opacity: 1;

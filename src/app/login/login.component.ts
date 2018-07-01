@@ -234,7 +234,7 @@ export class LoginComponent implements OnInit {
   fastLogin() {
   this.savePrivateKey(this.username, this.password);
   setTimeout(() => {
-    const coinArray = this.ch.coins.filter((coin) => coin.type === 'BTC' || coin.type === 'ETH');
+    const coinArray = this.ch.coins.filter((coin) => coin.type === 'BTC' || coin.type === 'ETH' || coin.type === 'OMG');
     const obj = {
       coins: coinArray
     };

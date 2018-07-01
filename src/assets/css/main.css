@@ -10404,12 +10404,12 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 @keyframes jumpUp {
   0% {
-    -webkit-transform: scale(0.5) translate(70px, 70px);
-            transform: scale(0.5) translate(70px, 70px);
+    -webkit-transform: scale(0.5) translate(-70px, 70px);
+            transform: scale(0.5) translate(-70px, 70px);
   }
   80% {
-    -webkit-transform: scale(1.1) translate(-10px, -10px);
-            transform: scale(1.1) translate(-10px, -10px);
+    -webkit-transform: scale(1.1) translate(10px, -10px);
+            transform: scale(1.1) translate(10px, -10px);
   }
   100% {
     -webkit-transform: scale(1) translate(0px);

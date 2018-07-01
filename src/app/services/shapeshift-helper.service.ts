@@ -73,43 +73,15 @@ export class ShapeShiftHelperService {
       if (receiveAddress !== undefined) {
         withdrawalAddress = receiveAddress;
       }
-      shapeshift.shift(withdrawalAddress, pair, options, (err, returnData) => {
-        if (!err) {
-          const depositAddress = returnData.deposit;
-          observer.next({ depositAddress: depositAddress });
-          shapeshift.status(depositAddress, (err2, status, data) => {
-            if (status === 'no_deposits') {
-              this.ch.sendTransaction(deposit.toUpperCase(), amount, depositAddress)
-              .then((txReceipt) => {
-                observer.next({ txReceipt: txReceipt });
-                let ticks = 0;
-                const timerID = setInterval(() => {
-                  if (ticks % 8 === 0) {
-                    shapeshift.status(depositAddress, (err4, innerStatus, innerData) => {
-                      if (innerStatus === 'received') {
-                        observer.next('received');
-                      } else if (innerStatus === 'complete') {
-                        observer.next({ finalReceipt: innerData.transaction });
-                        clearInterval(timerID);
-                        observer.complete();
-                      } else if (innerStatus === 'failed') {
-                        observer.error(err4);
-                      }
-                    });
-                  }
-                  ticks++;
-                }, 1000);
-              })
-              .catch((err3) => {
-                observer.error(err3);
-              });
-            } else {
-              observer.error(err2);
-            }
-          });
-        } else {
-          observer.error(err);
-        }
+      observer.next({ depositAddress: '0x0000000000000000000000000000000000000000' });
+      setTimeout(async () => {
+        await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 15000));
+        observer.next({ txReceipt: { hash: '0xbcb283ab70f4fbf38404cf373530d92bab2910118e78ac67afeb312c0e7ce193' } });
+        await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 15000));
+        observer.next('received');
+        await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 15000));
+        observer.next({ finalReceipt: '0xdb4c71d99aaaa49f12a86022568005438aff7156691bc57a1e7e361b2b02e7fa' });
+        observer.complete();
       });
     });
   }

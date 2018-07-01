@@ -153,6 +153,7 @@ export class ChatComponent implements OnInit {
             throw new Error('Clicking Save Settings failed');
           }
         }).catch((err) => {
+          document.querySelector('.special-overlay').classList.toggle('hidden');
           this.showMessage(`Failed to conduct login tutorial with error: ${err.message}`, false, 1);
           console.log(err);
         });
@@ -266,11 +267,116 @@ export class ChatComponent implements OnInit {
             throw new Error('Clicking Generate failed');
           }
         }).catch((err) => {
+          document.querySelector('.special-overlay').classList.toggle('hidden');
           this.showMessage(`Failed to conduct transaction tutorial with error: ${err.message}`, false, 1);
           console.log(err);
         });
       } else if (window.location.hash.indexOf("shapeshift-tutorial") !== -1) {
-        // this.showMessage(this.firstPrompt(), false, 2);
+        this.showMessage("It seems you would like to know how to shift your tokens within our wallet.", false, 3);
+        this.showMessage("Let's head straight to the dashboard with my account.", false, 6);
+        await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 10000));
+        document.querySelector('.special-overlay').classList.toggle('hidden');
+        this.queueAction('click', '.fast-log').then(async (status) => {
+          if (status === true) {
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 3000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            this.showMessage("Shifting tokens using ShapeShift is quite easy.", false, 1);
+            this.showMessage("First, select the token you want to shift.", false, 3);
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 6000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 1000));
+            return this.queueAction('click', ".coin-ETH-identifier");
+          } else {
+            throw new Error(`Clicking fast-log failed`);
+          }
+        }).then(async (status) => {
+          if (status) {
+            document.querySelector('.shapeshift-button').classList.add('pulse-element');
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            this.showMessage('All we have to do now is click the ShapeShift ETH button.', false, 1);
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 4000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 1000));
+            document.querySelector('.shapeshift-button').classList.add('pulsed');
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 250));
+            return this.queueAction('click', '.shapeshift-button');
+          } else {
+            throw new Error('Clicking Send failed');
+          }
+        }).then(async (status) => {
+          if (status) {
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 3000));
+            document.querySelector('.transaction-button').classList.add('pulse-element');
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            this.showMessage('You can change the token you want to convert to by clicking on the token icon under Receive.', false, 1);
+            this.showMessage('After you select your coin, simply write the amount you want to convert and click Convert!', false, 5);
+            this.showMessage('Let\'s convert our Ethereum to OmiseGo', false, 9);
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 12000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 1000));
+            return this.queueAction('click', '.hover-fade:nth-child(3)');
+          } else {
+            throw new Error('Clicking Recipient failed');
+          }
+        }).then((status) => {
+          if (status) {
+            return this.queueAction('click', '#shapeshift-coin-selection input');
+          } else {
+            throw new Error(`Failed to click coin to select`);
+          }
+        }).then((status) => {
+          if (status) {
+            return this.queueAction('input', '#shapeshift-coin-selection input', 'OMG');
+          } else {
+            throw new Error(`Failed to click coin selection`);
+          }
+        }).then((status) => {
+          if (status) {
+            return this.queueAction('click', `#shapeshift-coin-selection .coin-OMG-identifier`);
+          } else {
+            throw new Error(`Failed to write on coin selection.`);
+          }
+        }).then((status) => {
+          if (status === true) {
+            return this.queueAction('click', '#coinaddress');
+          } else {
+            throw new Error(`Coin OMG is not available on ShapeShift`);
+          }
+        }).then((status) => {
+          if (status) {
+            return this.queueAction('input', '#coinaddress', '1.1123');
+          } else {
+            throw new Error('Failed to click amount input.');
+          }
+        }).then(async (status) => {
+          if (status) {
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 500));
+            document.querySelector('.transaction-button').classList.add('pulsed');
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 250));
+            return this.queueAction('click', '.transaction-button');
+          } else {
+            throw new Error('Failed to write amount.');
+          }
+        }).then(async (status) => {
+          if (status) {
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+            this.showMessage('Congratulations, you have successfully converted your first tokens!', false, 1);
+            this.showMessage('Converting your tokens is a lengthy process as it depends on the response time of ShapeShift.', false, 4);
+            this.showMessage('Closing this window will have no impact on the conversion itself and it will continue to work on the background.', false, 8);
+            this.showMessage('If you want to actually create a wallet, head over to https://wallet.arctus.io as this website is dedicated to tutorials only.', false, 13);
+            this.showMessage('Thanks for keeping me company!', false, 18);
+            await new Promise((resolve, reject) => setTimeout(() => {resolve()}, 20000));
+            document.querySelector('.special-overlay').classList.toggle('hidden');
+          } else {
+            throw new Error('Failed to click transaction button.');
+          }
+        }).catch((err) => {
+          document.querySelector('.special-overlay').classList.toggle('hidden');
+          this.showMessage(`Failed to conduct ShapeShift tutorial with error: ${err.message}`, false, 1);
+          console.log(err);
+        });
+      } else {
+        this.showMessage("It seems you got here by accident, you most likely meant to visit https://wallet.arctus.io as this is a tutorial website. Alternatively, head over to https://arctus.io and click the appropriate tutorial to begin!", false, 3);
       }
     }
   }
