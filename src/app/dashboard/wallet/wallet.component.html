@@ -1,5 +1,5 @@
 <!-- Send Receive Modals -->
-<div *ngIf="srOverlay" class="sr-sidebar" [@srsideanimation] [ngClass]="{'active': srOverlay}">
+<div *ngIf="srOverlay" class="sr-sidebar" [@srsideanimation] [ngClass]="{'active': srOverlay, 'rec-open': receiveIsOpen, 'send-open': sendIsOpen }">
   <app-send *ngIf="sendIsOpen" [coinSend]="coins[selectedCoin].type" [addressSend]="coins[selectedCoin].address" (sendModal)="receiveSendModal($event)"></app-send>
   <app-receive *ngIf="receiveIsOpen" [coinReceive]="coins[selectedCoin].type" [addressReceive]="coins[selectedCoin].address"
     (recModal)="receiveRecModal($event)"></app-receive>

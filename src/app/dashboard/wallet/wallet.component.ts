@@ -34,11 +34,9 @@ const Vibrant = require('node-vibrant');
             top: '0',
             right: '0',
             opacity: 0.5,
-            background: 'rgba(40, 41, 43, 0.85)',
             transform: 'translateX(100%)'
           }),
           animate('750ms cubic-bezier(.175,.885,.32,1)', style({
-            background: 'rgba(40, 41, 43, 0.95)',
             opacity: 1,
             transform: 'translateX(0%)'
           }))
@@ -57,7 +55,6 @@ const Vibrant = require('node-vibrant');
               top: '0',
               right: '0',
               opacity: 0.5,
-              background: 'rgba(40, 41, 43, 0.85)',
               transform: 'translateX(100%)'
             }))
         ])
@@ -90,6 +87,8 @@ export class WalletComponent implements OnInit {
   receiveIsOpen = false;
   totalPortfolioValue: any = 0;
   chartLoading = true;
+  recOpen = false;
+  sendOpen = false;
 
   constructor(
     private ch: CryptoHelperService,
@@ -385,14 +384,14 @@ export class WalletComponent implements OnInit {
 
   send() {
     this.receiveIsOpen = false;
-    this.srOverlay = true;
     this.sendIsOpen = true;
+    this.srOverlay = true;
   }
 
   receive() {
     this.sendIsOpen = false;
-    this.srOverlay = true;
     this.receiveIsOpen = true;
+    this.srOverlay = true;
   }
 
   closeSrModal() {
@@ -401,6 +400,8 @@ export class WalletComponent implements OnInit {
 
   receiveSendModal($event) {
     this.srOverlay = $event;
+    this.receiveIsOpen = false;
+    this.sendIsOpen = $event;
     if ($event) {
       setTimeout(() => {
         this.resetUI();
@@ -409,6 +410,8 @@ export class WalletComponent implements OnInit {
   }
   receiveRecModal($event) {
     this.srOverlay = $event;
+    this.receiveIsOpen = $event;
+    this.sendIsOpen = false;
     if ($event) {
       setTimeout(() => {
         this.resetUI();
