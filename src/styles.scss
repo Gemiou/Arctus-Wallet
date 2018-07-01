@@ -81,20 +81,23 @@
 
   .nighty-button {
     position: fixed;
-    bottom: 1vmax;
-    left: 1vmax;
+    top: 10px;
+    left: 10px;
     border-radius: 12px;
     padding: 0.25vmax;
     font-weight: 800;
     cursor: pointer;
-    font-size: 30px;
+    font-size: 35px;
+    width: 40px;
+    height: 40px;
     background-color: white;
     color: black;
     transition: all 1s ease-in-out;
-    transform: translateX(-90%);
     i {
-      padding: 0.25vmax;
-      transform: scale(1.25);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
   }
 
